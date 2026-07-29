@@ -1,76 +1,11 @@
 from importlib.metadata import files
 import os
-from dataclasses import dataclass, field
 import sys
-
-from plotly import files
-from typing import Dict, Tuple
+from typing import Dict
 from src.logger import logging
 from src.exception import CustomException
 import pandas as pd
-
-
-@dataclass(frozen=True)
-class DataIngestionConfig:
-    """
-    Configuration for the Data Ingestion component.
-    """
-
-    raw_data_dir: str = os.path.join("data", "raw")
-
-    # Canonical table name -> accepted filenames
-    mandatory_tables: Dict[str, Tuple[str, ...]] = field(
-        default_factory=lambda: {
-            "postings": (
-                "postings.csv",
-                "job_postings.csv",
-            ),
-            "companies": (
-                "companies.csv",
-            ),
-            "industries": (
-                "industries.csv",
-            ),
-            "job_industries": (
-                "job_industries.csv",
-            ),
-        }
-    )
-
-    optional_tables: Dict[str, Tuple[str, ...]] = field(
-        default_factory=lambda: {
-            "benefits": (
-                "benefits.csv",
-            ),
-            "company_specialities": (
-                "company_specialities.csv",
-            ),
-            "employee_counts": (
-                "employee_counts.csv",
-            ),
-            "job_skills": (
-                "job_skills.csv",
-            ),
-            "skills": (
-                "skills.csv",
-            ),
-            "salaries": (
-                "salaries.csv",
-            ),
-        }
-    )
-    
-    @property
-    def all_files(self) -> Tuple[str, ...]:
-        files: list[str] = []
-            
-        for accepted_files in self.mandatory_tables.values():
-            files.extend(accepted_files)
-                
-        for accepted_files in self.optional_tables.values():
-            files.extend(accepted_files)
-                
-            return tuple(files)
+from src.configs.data_ingestion_config import DataIngestionConfig
         
 class DataIngestion:
 
@@ -78,9 +13,7 @@ class DataIngestion:
         self.config = config or DataIngestionConfig()
 
     def discover_versions(self) -> list[str]:
-        """
-        Discover all dataset version folders.
-        """
+       
         
         versions = sorted(
             (
@@ -101,9 +34,7 @@ class DataIngestion:
         return versions
 
     def _load_csv(self,version_path: str,file_name: str) -> pd.DataFrame:
-        """
-        Load a single CSV file.
-        """
+
         file_path = os.path.join(version_path, file_name)
         
         try:
@@ -175,7 +106,6 @@ class DataIngestion:
                 len(df),
             )
 
-        # ---------- Optional ----------
         for table_name, accepted_files in self.config.optional_tables.items():
 
             matched_file = None
@@ -220,10 +150,7 @@ class DataIngestion:
         return version_data
 
     def initiate_data_ingestion(self) -> Dict[str, Dict[str, pd.DataFrame]]:
-        """
-        Load every dataset version.
-        """
-
+        
         logging.info("=" * 70)
         logging.info("DATA INGESTION STARTED")
         logging.info("=" * 70)
@@ -265,14 +192,3 @@ class DataIngestion:
             )
 
             raise CustomException(e, sys)
-        
-if __name__ == "__main__":
-
-    ingestion = DataIngestion()
-
-    datasets = ingestion.initiate_data_ingestion()
-
-    logging.info(
-        "Loaded Versions: %s",
-        list(datasets.keys())
-    )

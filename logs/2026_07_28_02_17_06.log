@@ -1,0 +1,73 @@
+[2026-07-28 02:17:06,602] 14 src.logger - INFO - ######################################################################
+[2026-07-28 02:17:06,602] 15 src.logger - INFO - PIPELINE RUN STARTED
+[2026-07-28 02:17:06,603] 16 src.logger - INFO - ######################################################################
+[2026-07-28 02:17:06,603] 154 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:06,603] 155 src.logger - INFO - DATA INGESTION STARTED
+[2026-07-28 02:17:06,603] 156 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:06,605] 164 src.logger - INFO - Versions Found: Version_9, Version_13
+[2026-07-28 02:17:06,605] 171 src.logger - INFO - Loading Version_9
+[2026-07-28 02:17:08,640] 101 src.logger - INFO - [Version_9] Loaded job_postings.csv as 'postings' (33246 rows)
+[2026-07-28 02:17:08,894] 101 src.logger - INFO - [Version_9] Loaded companies.csv as 'companies' (11361 rows)
+[2026-07-28 02:17:08,897] 101 src.logger - INFO - [Version_9] Loaded industries.csv as 'industries' (229 rows)
+[2026-07-28 02:17:08,918] 101 src.logger - INFO - [Version_9] Loaded job_industries.csv as 'job_industries' (44091 rows)
+[2026-07-28 02:17:08,940] 142 src.logger - INFO - [Version_9] Loaded benefits.csv as 'benefits' (29325 rows)
+[2026-07-28 02:17:09,015] 142 src.logger - INFO - [Version_9] Loaded company_specialities.csv as 'company_specialities' (78405 rows)
+[2026-07-28 02:17:09,031] 142 src.logger - INFO - [Version_9] Loaded employee_counts.csv as 'employee_counts' (14275 rows)
+[2026-07-28 02:17:09,054] 142 src.logger - INFO - [Version_9] Loaded job_skills.csv as 'job_skills' (56591 rows)
+[2026-07-28 02:17:09,057] 142 src.logger - INFO - [Version_9] Loaded skills.csv as 'skills' (35 rows)
+[2026-07-28 02:17:09,077] 142 src.logger - INFO - [Version_9] Loaded salaries.csv as 'salaries' (13352 rows)
+[2026-07-28 02:17:09,077] 171 src.logger - INFO - Loading Version_13
+[2026-07-28 02:17:15,977] 101 src.logger - INFO - [Version_13] Loaded postings.csv as 'postings' (123849 rows)
+[2026-07-28 02:17:16,343] 101 src.logger - INFO - [Version_13] Loaded companies.csv as 'companies' (24473 rows)
+[2026-07-28 02:17:16,346] 101 src.logger - INFO - [Version_13] Loaded industries.csv as 'industries' (422 rows)
+[2026-07-28 02:17:16,395] 101 src.logger - INFO - [Version_13] Loaded job_industries.csv as 'job_industries' (164808 rows)
+[2026-07-28 02:17:16,426] 142 src.logger - INFO - [Version_13] Loaded benefits.csv as 'benefits' (67943 rows)
+[2026-07-28 02:17:16,534] 142 src.logger - INFO - [Version_13] Loaded company_specialities.csv as 'company_specialities' (169387 rows)
+[2026-07-28 02:17:16,560] 142 src.logger - INFO - [Version_13] Loaded employee_counts.csv as 'employee_counts' (35787 rows)
+[2026-07-28 02:17:16,614] 142 src.logger - INFO - [Version_13] Loaded job_skills.csv as 'job_skills' (213768 rows)
+[2026-07-28 02:17:16,617] 142 src.logger - INFO - [Version_13] Loaded skills.csv as 'skills' (35 rows)
+[2026-07-28 02:17:16,651] 142 src.logger - INFO - [Version_13] Loaded salaries.csv as 'salaries' (40785 rows)
+[2026-07-28 02:17:16,651] 178 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:16,651] 179 src.logger - INFO - Loaded 2 dataset version(s).
+[2026-07-28 02:17:16,661] 183 src.logger - INFO - DATA INGESTION COMPLETED
+[2026-07-28 02:17:16,661] 184 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:16,661] 23 src.logger - INFO - Loaded 2 dataset version(s): ['Version_9', 'Version_13']
+[2026-07-28 02:17:16,664] 328 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:16,664] 329 src.logger - INFO - SCHEMA ALIGNMENT STARTED
+[2026-07-28 02:17:16,664] 330 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:16,664] 339 src.logger - INFO - Aligning Version_9
+[2026-07-28 02:17:17,345] 275 src.logger - WARNING - [Version_9/postings] Columns not found in source, created empty: ('normalized_salary', 'zip_code', 'fips')
+[2026-07-28 02:17:17,345] 290 src.logger - WARNING - [Version_9/postings] 6 unmapped source column(s) preserved (prefixed): ('job_posting_url', 'application_url', 'application_type', 'skills_desc', 'posting_domain', 'scraped')
+[2026-07-28 02:17:17,345] 297 src.logger - INFO - [Version_9/postings] Alignment complete -> 31 columns, 33246 rows.
+[2026-07-28 02:17:17,417] 297 src.logger - INFO - [Version_9/companies] Alignment complete -> 10 columns, 11361 rows.
+[2026-07-28 02:17:17,419] 297 src.logger - INFO - [Version_9/industries] Alignment complete -> 2 columns, 229 rows.
+[2026-07-28 02:17:17,421] 297 src.logger - INFO - [Version_9/job_industries] Alignment complete -> 2 columns, 44091 rows.
+[2026-07-28 02:17:17,423] 297 src.logger - INFO - [Version_9/benefits] Alignment complete -> 3 columns, 29325 rows.
+[2026-07-28 02:17:17,435] 297 src.logger - INFO - [Version_9/company_specialities] Alignment complete -> 2 columns, 78405 rows.
+[2026-07-28 02:17:17,437] 297 src.logger - INFO - [Version_9/employee_counts] Alignment complete -> 4 columns, 14275 rows.
+[2026-07-28 02:17:17,440] 297 src.logger - INFO - [Version_9/job_skills] Alignment complete -> 2 columns, 56591 rows.
+[2026-07-28 02:17:17,442] 297 src.logger - INFO - [Version_9/skills] Alignment complete -> 2 columns, 35 rows.
+[2026-07-28 02:17:17,445] 297 src.logger - INFO - [Version_9/salaries] Alignment complete -> 8 columns, 13352 rows.
+[2026-07-28 02:17:17,445] 339 src.logger - INFO - Aligning Version_13
+[2026-07-28 02:17:17,494] 290 src.logger - WARNING - [Version_13/postings] 6 unmapped source column(s) preserved (prefixed): ('company_name', 'job_posting_url', 'application_url', 'application_type', 'skills_desc', 'posting_domain')
+[2026-07-28 02:17:17,494] 297 src.logger - INFO - [Version_13/postings] Alignment complete -> 31 columns, 123849 rows.
+[2026-07-28 02:17:17,500] 297 src.logger - INFO - [Version_13/companies] Alignment complete -> 10 columns, 24473 rows.
+[2026-07-28 02:17:17,502] 297 src.logger - INFO - [Version_13/industries] Alignment complete -> 2 columns, 422 rows.
+[2026-07-28 02:17:17,504] 297 src.logger - INFO - [Version_13/job_industries] Alignment complete -> 2 columns, 164808 rows.
+[2026-07-28 02:17:17,506] 297 src.logger - INFO - [Version_13/benefits] Alignment complete -> 3 columns, 67943 rows.
+[2026-07-28 02:17:17,513] 297 src.logger - INFO - [Version_13/company_specialities] Alignment complete -> 2 columns, 169387 rows.
+[2026-07-28 02:17:17,515] 297 src.logger - INFO - [Version_13/employee_counts] Alignment complete -> 4 columns, 35787 rows.
+[2026-07-28 02:17:17,518] 297 src.logger - INFO - [Version_13/job_skills] Alignment complete -> 2 columns, 213768 rows.
+[2026-07-28 02:17:17,519] 297 src.logger - INFO - [Version_13/skills] Alignment complete -> 2 columns, 35 rows.
+[2026-07-28 02:17:17,522] 297 src.logger - INFO - [Version_13/salaries] Alignment complete -> 8 columns, 40785 rows.
+[2026-07-28 02:17:17,523] 353 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:17,526] 354 src.logger - INFO - Alignment summary: {'versions_processed': 2, 'tables_processed': 20, 'columns_renamed': 0, 'columns_missing': 3, 'columns_preserved': 12, 'columns_dropped': 0, 'tables_with_empty_required': 0, 'tables_with_structural_issues': 1, 'execution_time_seconds': 0.8578}
+[2026-07-28 02:17:17,526] 355 src.logger - INFO - SCHEMA ALIGNMENT COMPLETED
+[2026-07-28 02:17:17,526] 356 src.logger - INFO - ======================================================================
+[2026-07-28 02:17:17,527] 29 src.logger - INFO - Pipeline Summary: {'versions_processed': 2, 'tables_processed': 20, 'columns_renamed': 0, 'columns_missing': 3, 'columns_preserved': 12, 'columns_dropped': 0, 'tables_with_empty_required': 0, 'tables_with_structural_issues': 1, 'execution_time_seconds': 0.8578}
+[2026-07-28 02:17:17,527] 32 src.logger - INFO - ######################################################################
+[2026-07-28 02:17:17,527] 33 src.logger - INFO - PIPELINE RUN COMPLETED
+[2026-07-28 02:17:17,527] 34 src.logger - INFO - ######################################################################
+[2026-07-28 02:17:17,558] 48 src.logger - INFO - Aligned versions: ['Version_9', 'Version_13']
+[2026-07-28 02:17:17,564] 49 src.logger - INFO - Tables with structural issues: [('Version_9', 'postings')]
+[2026-07-28 02:17:17,564] 57 src.logger - INFO - Alignment summary: {'versions_processed': 2, 'tables_processed': 20, 'columns_renamed': 0, 'columns_missing': 3, 'columns_preserved': 12, 'columns_dropped': 0, 'tables_with_empty_required': 0, 'tables_with_structural_issues': 1, 'execution_time_seconds': 0.8578}
