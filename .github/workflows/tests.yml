@@ -30,16 +30,11 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest tests/ \
-            --cov=src.configs.schema_alignment_config \
+          pytest \
+            --cov=src \
             --cov-report=term-missing \
             --cov-report=xml \
             --cov-fail-under=90
-        # NOTE: coverage is scoped to the components that currently have a
-        # test suite (Schema Alignment). As Data Ingestion, Data
-        # Validation, etc. get their own tests/test_*.py files, add their
-        # modules to --cov here (or switch to --cov=src once every
-        # component has tests) so the 90% gate applies pipeline-wide.
 
       - name: Upload coverage report
         if: matrix.python-version == '3.12'
