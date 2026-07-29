@@ -1,0 +1,170 @@
+[2026-07-30 01:44:23,738] 89 src.logger - INFO - ######################################################################
+[2026-07-30 01:44:23,738] 90 src.logger - INFO - PIPELINE RUN STARTED
+[2026-07-30 01:44:23,739] 91 src.logger - INFO - ######################################################################
+[2026-07-30 01:44:23,739] 95 src.logger - INFO - Starting Data Ingestion...
+[2026-07-30 01:44:23,739] 154 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:23,739] 155 src.logger - INFO - DATA INGESTION STARTED
+[2026-07-30 01:44:23,739] 156 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:23,741] 164 src.logger - INFO - Versions Found: Version_9, Version_13
+[2026-07-30 01:44:23,741] 171 src.logger - INFO - Loading Version_9
+[2026-07-30 01:44:26,129] 101 src.logger - INFO - [Version_9] Loaded job_postings.csv as 'postings' (33246 rows)
+[2026-07-30 01:44:26,327] 101 src.logger - INFO - [Version_9] Loaded companies.csv as 'companies' (11361 rows)
+[2026-07-30 01:44:26,330] 101 src.logger - INFO - [Version_9] Loaded industries.csv as 'industries' (229 rows)
+[2026-07-30 01:44:26,345] 101 src.logger - INFO - [Version_9] Loaded job_industries.csv as 'job_industries' (44091 rows)
+[2026-07-30 01:44:26,359] 142 src.logger - INFO - [Version_9] Loaded benefits.csv as 'benefits' (29325 rows)
+[2026-07-30 01:44:26,404] 142 src.logger - INFO - [Version_9] Loaded company_specialities.csv as 'company_specialities' (78405 rows)
+[2026-07-30 01:44:26,415] 142 src.logger - INFO - [Version_9] Loaded employee_counts.csv as 'employee_counts' (14275 rows)
+[2026-07-30 01:44:26,431] 142 src.logger - INFO - [Version_9] Loaded job_skills.csv as 'job_skills' (56591 rows)
+[2026-07-30 01:44:26,434] 142 src.logger - INFO - [Version_9] Loaded skills.csv as 'skills' (35 rows)
+[2026-07-30 01:44:26,448] 142 src.logger - INFO - [Version_9] Loaded salaries.csv as 'salaries' (13352 rows)
+[2026-07-30 01:44:26,448] 171 src.logger - INFO - Loading Version_13
+[2026-07-30 01:44:33,191] 101 src.logger - INFO - [Version_13] Loaded postings.csv as 'postings' (123849 rows)
+[2026-07-30 01:44:33,567] 101 src.logger - INFO - [Version_13] Loaded companies.csv as 'companies' (24473 rows)
+[2026-07-30 01:44:33,571] 101 src.logger - INFO - [Version_13] Loaded industries.csv as 'industries' (422 rows)
+[2026-07-30 01:44:33,620] 101 src.logger - INFO - [Version_13] Loaded job_industries.csv as 'job_industries' (164808 rows)
+[2026-07-30 01:44:33,652] 142 src.logger - INFO - [Version_13] Loaded benefits.csv as 'benefits' (67943 rows)
+[2026-07-30 01:44:33,762] 142 src.logger - INFO - [Version_13] Loaded company_specialities.csv as 'company_specialities' (169387 rows)
+[2026-07-30 01:44:33,786] 142 src.logger - INFO - [Version_13] Loaded employee_counts.csv as 'employee_counts' (35787 rows)
+[2026-07-30 01:44:33,939] 142 src.logger - INFO - [Version_13] Loaded job_skills.csv as 'job_skills' (213768 rows)
+[2026-07-30 01:44:33,941] 142 src.logger - INFO - [Version_13] Loaded skills.csv as 'skills' (35 rows)
+[2026-07-30 01:44:33,975] 142 src.logger - INFO - [Version_13] Loaded salaries.csv as 'salaries' (40785 rows)
+[2026-07-30 01:44:33,976] 178 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:33,976] 179 src.logger - INFO - Loaded 2 dataset version(s).
+[2026-07-30 01:44:33,981] 183 src.logger - INFO - DATA INGESTION COMPLETED
+[2026-07-30 01:44:33,982] 184 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:33,982] 101 src.logger - INFO - Data Ingestion completed in 10.24 sec
+[2026-07-30 01:44:33,983] 105 src.logger - INFO - Starting Schema Alignment...
+[2026-07-30 01:44:33,983] 328 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:33,983] 329 src.logger - INFO - SCHEMA ALIGNMENT STARTED
+[2026-07-30 01:44:33,983] 330 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:33,983] 339 src.logger - INFO - Aligning Version_9
+[2026-07-30 01:44:34,371] 275 src.logger - WARNING - [Version_9/postings] Columns not found in source, created empty: ('normalized_salary', 'zip_code', 'fips')
+[2026-07-30 01:44:34,371] 290 src.logger - WARNING - [Version_9/postings] 6 unmapped source column(s) preserved (prefixed): ('job_posting_url', 'application_url', 'application_type', 'skills_desc', 'posting_domain', 'scraped')
+[2026-07-30 01:44:34,371] 297 src.logger - INFO - [Version_9/postings] Alignment complete -> 31 columns, 33246 rows.
+[2026-07-30 01:44:34,394] 297 src.logger - INFO - [Version_9/companies] Alignment complete -> 10 columns, 11361 rows.
+[2026-07-30 01:44:34,395] 297 src.logger - INFO - [Version_9/industries] Alignment complete -> 2 columns, 229 rows.
+[2026-07-30 01:44:34,396] 297 src.logger - INFO - [Version_9/job_industries] Alignment complete -> 2 columns, 44091 rows.
+[2026-07-30 01:44:34,398] 297 src.logger - INFO - [Version_9/benefits] Alignment complete -> 3 columns, 29325 rows.
+[2026-07-30 01:44:34,404] 297 src.logger - INFO - [Version_9/company_specialities] Alignment complete -> 2 columns, 78405 rows.
+[2026-07-30 01:44:34,405] 297 src.logger - INFO - [Version_9/employee_counts] Alignment complete -> 4 columns, 14275 rows.
+[2026-07-30 01:44:34,407] 297 src.logger - INFO - [Version_9/job_skills] Alignment complete -> 2 columns, 56591 rows.
+[2026-07-30 01:44:34,408] 297 src.logger - INFO - [Version_9/skills] Alignment complete -> 2 columns, 35 rows.
+[2026-07-30 01:44:34,410] 297 src.logger - INFO - [Version_9/salaries] Alignment complete -> 8 columns, 13352 rows.
+[2026-07-30 01:44:34,410] 339 src.logger - INFO - Aligning Version_13
+[2026-07-30 01:44:34,441] 290 src.logger - WARNING - [Version_13/postings] 6 unmapped source column(s) preserved (prefixed): ('company_name', 'job_posting_url', 'application_url', 'application_type', 'skills_desc', 'posting_domain')
+[2026-07-30 01:44:34,441] 297 src.logger - INFO - [Version_13/postings] Alignment complete -> 31 columns, 123849 rows.
+[2026-07-30 01:44:34,445] 297 src.logger - INFO - [Version_13/companies] Alignment complete -> 10 columns, 24473 rows.
+[2026-07-30 01:44:34,446] 297 src.logger - INFO - [Version_13/industries] Alignment complete -> 2 columns, 422 rows.
+[2026-07-30 01:44:34,447] 297 src.logger - INFO - [Version_13/job_industries] Alignment complete -> 2 columns, 164808 rows.
+[2026-07-30 01:44:34,448] 297 src.logger - INFO - [Version_13/benefits] Alignment complete -> 3 columns, 67943 rows.
+[2026-07-30 01:44:34,451] 297 src.logger - INFO - [Version_13/company_specialities] Alignment complete -> 2 columns, 169387 rows.
+[2026-07-30 01:44:34,452] 297 src.logger - INFO - [Version_13/employee_counts] Alignment complete -> 4 columns, 35787 rows.
+[2026-07-30 01:44:34,454] 297 src.logger - INFO - [Version_13/job_skills] Alignment complete -> 2 columns, 213768 rows.
+[2026-07-30 01:44:34,455] 297 src.logger - INFO - [Version_13/skills] Alignment complete -> 2 columns, 35 rows.
+[2026-07-30 01:44:34,456] 297 src.logger - INFO - [Version_13/salaries] Alignment complete -> 8 columns, 40785 rows.
+[2026-07-30 01:44:34,457] 353 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,457] 354 src.logger - INFO - Alignment summary: {'versions_processed': 2, 'tables_processed': 20, 'columns_renamed': 0, 'columns_missing': 3, 'columns_preserved': 12, 'columns_dropped': 0, 'tables_with_empty_required': 0, 'tables_with_structural_issues': 1, 'execution_time_seconds': 0.4729}
+[2026-07-30 01:44:34,457] 355 src.logger - INFO - SCHEMA ALIGNMENT COMPLETED
+[2026-07-30 01:44:34,457] 356 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,457] 109 src.logger - INFO - Schema Alignment completed in 0.47 sec
+[2026-07-30 01:44:34,457] 113 src.logger - INFO - Starting Data Validation...
+[2026-07-30 01:44:34,457] 454 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,457] 455 src.logger - INFO - DATA VALIDATION STARTED
+[2026-07-30 01:44:34,457] 456 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,458] 464 src.logger - INFO - Validating Version_9
+[2026-07-30 01:44:34,515] 393 src.logger - WARNING - [Version_9/postings] Null violations: {'company_id': 654}
+[2026-07-30 01:44:34,515] 418 src.logger - WARNING - [Version_9/postings] Broken relationships (orphan foreign keys): {'company_id': 47}
+[2026-07-30 01:44:34,515] 423 src.logger - INFO - [Version_9/postings] Validation complete -> 33246 row(s), passed: False
+[2026-07-30 01:44:34,522] 393 src.logger - WARNING - [Version_9/companies] Null violations: {'name': 1}
+[2026-07-30 01:44:34,522] 423 src.logger - INFO - [Version_9/companies] Validation complete -> 11361 row(s), passed: False
+[2026-07-30 01:44:34,524] 393 src.logger - WARNING - [Version_9/industries] Null violations: {'industry_name': 17}
+[2026-07-30 01:44:34,524] 423 src.logger - INFO - [Version_9/industries] Validation complete -> 229 row(s), passed: False
+[2026-07-30 01:44:34,542] 418 src.logger - WARNING - [Version_9/job_industries] Broken relationships (orphan foreign keys): {'job_id': 1040}
+[2026-07-30 01:44:34,542] 423 src.logger - INFO - [Version_9/job_industries] Validation complete -> 44091 row(s), passed: False
+[2026-07-30 01:44:34,551] 423 src.logger - INFO - [Version_9/benefits] Validation complete -> 29325 row(s), passed: True
+[2026-07-30 01:44:34,558] 418 src.logger - WARNING - [Version_9/company_specialities] Broken relationships (orphan foreign keys): {'company_id': 335}
+[2026-07-30 01:44:34,558] 423 src.logger - INFO - [Version_9/company_specialities] Validation complete -> 78405 row(s), passed: False
+[2026-07-30 01:44:34,562] 418 src.logger - WARNING - [Version_9/employee_counts] Broken relationships (orphan foreign keys): {'company_id': 45}
+[2026-07-30 01:44:34,562] 423 src.logger - INFO - [Version_9/employee_counts] Validation complete -> 14275 row(s), passed: False
+[2026-07-30 01:44:34,577] 418 src.logger - WARNING - [Version_9/job_skills] Broken relationships (orphan foreign keys): {'job_id': 932}
+[2026-07-30 01:44:34,577] 423 src.logger - INFO - [Version_9/job_skills] Validation complete -> 56591 row(s), passed: False
+[2026-07-30 01:44:34,580] 423 src.logger - INFO - [Version_9/skills] Validation complete -> 35 row(s), passed: True
+[2026-07-30 01:44:34,591] 423 src.logger - INFO - [Version_9/salaries] Validation complete -> 13352 row(s), passed: True
+[2026-07-30 01:44:34,591] 464 src.logger - INFO - Validating Version_13
+[2026-07-30 01:44:34,712] 393 src.logger - WARNING - [Version_13/postings] Null violations: {'company_id': 1717}
+[2026-07-30 01:44:34,712] 418 src.logger - WARNING - [Version_13/postings] Broken relationships (orphan foreign keys): {'company_id': 1}
+[2026-07-30 01:44:34,712] 423 src.logger - INFO - [Version_13/postings] Validation complete -> 123849 row(s), passed: False
+[2026-07-30 01:44:34,724] 393 src.logger - WARNING - [Version_13/companies] Null violations: {'name': 1}
+[2026-07-30 01:44:34,724] 423 src.logger - INFO - [Version_13/companies] Validation complete -> 24473 row(s), passed: False
+[2026-07-30 01:44:34,726] 393 src.logger - WARNING - [Version_13/industries] Null violations: {'industry_name': 34}
+[2026-07-30 01:44:34,726] 423 src.logger - INFO - [Version_13/industries] Validation complete -> 422 row(s), passed: False
+[2026-07-30 01:44:34,794] 418 src.logger - WARNING - [Version_13/job_industries] Broken relationships (orphan foreign keys): {'job_id': 5845}
+[2026-07-30 01:44:34,794] 423 src.logger - INFO - [Version_13/job_industries] Validation complete -> 164808 row(s), passed: False
+[2026-07-30 01:44:34,838] 418 src.logger - WARNING - [Version_13/benefits] Broken relationships (orphan foreign keys): {'job_id': 2550}
+[2026-07-30 01:44:34,839] 423 src.logger - INFO - [Version_13/benefits] Validation complete -> 67943 row(s), passed: False
+[2026-07-30 01:44:34,853] 423 src.logger - INFO - [Version_13/company_specialities] Validation complete -> 169387 row(s), passed: True
+[2026-07-30 01:44:34,862] 423 src.logger - INFO - [Version_13/employee_counts] Validation complete -> 35787 row(s), passed: True
+[2026-07-30 01:44:34,926] 418 src.logger - WARNING - [Version_13/job_skills] Broken relationships (orphan foreign keys): {'job_id': 7990}
+[2026-07-30 01:44:34,926] 423 src.logger - INFO - [Version_13/job_skills] Validation complete -> 213768 row(s), passed: False
+[2026-07-30 01:44:34,927] 423 src.logger - INFO - [Version_13/skills] Validation complete -> 35 row(s), passed: True
+[2026-07-30 01:44:34,973] 418 src.logger - WARNING - [Version_13/salaries] Broken relationships (orphan foreign keys): {'job_id': 4712}
+[2026-07-30 01:44:34,973] 423 src.logger - INFO - [Version_13/salaries] Validation complete -> 40785 row(s), passed: False
+[2026-07-30 01:44:34,973] 473 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,973] 474 src.logger - INFO - Validation summary: {'versions_processed': 2, 'tables_processed': 20, 'tables_passed': 6, 'tables_failed': 14, 'tables_skipped_no_rules': 0, 'total_structural_issues': 0, 'total_null_violations': 2424, 'total_duplicate_key_rows': 0, 'total_invalid_values': 0, 'total_dtype_conformance_issues': 0, 'total_broken_relationships': 23497, 'execution_time_seconds': 0.5155, 'passed': False}
+[2026-07-30 01:44:34,973] 475 src.logger - INFO - DATA VALIDATION COMPLETED
+[2026-07-30 01:44:34,973] 476 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,973] 119 src.logger - INFO - Data Validation completed in 0.52 sec
+[2026-07-30 01:44:34,974] 123 src.logger - INFO - Starting Data Cleaning...
+[2026-07-30 01:44:34,974] 237 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,974] 238 src.logger - INFO - DATA CLEANING STARTED
+[2026-07-30 01:44:34,974] 239 src.logger - INFO - ======================================================================
+[2026-07-30 01:44:34,974] 256 src.logger - INFO - Cleaning Version_9 (10 tables detected)
+[2026-07-30 01:44:35,545] 321 src.logger - INFO - [Version_9/companies] Cleaned: 11361 -> 11361 rows (Strings modified: 9301, Nulls filled: 1, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:44:41,074] 321 src.logger - INFO - [Version_9/postings] Cleaned: 33246 -> 32545 rows (Strings modified: 33004, Nulls filled: 0, Dtype conversions: 5, Invalids: 0, Duplicates: 0, Orphans: 47)
+[2026-07-30 01:44:41,078] 321 src.logger - INFO - [Version_9/industries] Cleaned: 229 -> 229 rows (Strings modified: 212, Nulls filled: 17, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:44:41,081] 321 src.logger - INFO - [Version_9/skills] Cleaned: 35 -> 35 rows (Strings modified: 35, Nulls filled: 0, Dtype conversions: 0, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:44:41,104] 321 src.logger - INFO - [Version_9/job_industries] Cleaned: 44091 -> 42769 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 1322)
+[2026-07-30 01:44:41,191] 321 src.logger - INFO - [Version_9/benefits] Cleaned: 29325 -> 28621 rows (Strings modified: 19842, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 704)
+[2026-07-30 01:44:41,395] 321 src.logger - INFO - [Version_9/company_specialities] Cleaned: 78405 -> 77978 rows (Strings modified: 66650, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 92, Orphans: 335)
+[2026-07-30 01:44:41,405] 321 src.logger - INFO - [Version_9/employee_counts] Cleaned: 14275 -> 14230 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 3, Invalids: 0, Duplicates: 0, Orphans: 45)
+[2026-07-30 01:44:41,503] 321 src.logger - INFO - [Version_9/job_skills] Cleaned: 56591 -> 54760 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 1831)
+[2026-07-30 01:44:41,578] 321 src.logger - INFO - [Version_9/salaries] Cleaned: 13352 -> 13116 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 236)
+[2026-07-30 01:44:41,578] 256 src.logger - INFO - Cleaning Version_13 (10 tables detected)
+[2026-07-30 01:44:42,676] 321 src.logger - INFO - [Version_13/companies] Cleaned: 24473 -> 24473 rows (Strings modified: 20092, Nulls filled: 1, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:45:08,890] 321 src.logger - INFO - [Version_13/postings] Cleaned: 123849 -> 122131 rows (Strings modified: 124674, Nulls filled: 0, Dtype conversions: 6, Invalids: 0, Duplicates: 0, Orphans: 1)
+[2026-07-30 01:45:08,901] 321 src.logger - INFO - [Version_13/industries] Cleaned: 422 -> 422 rows (Strings modified: 388, Nulls filled: 34, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:45:08,907] 321 src.logger - INFO - [Version_13/skills] Cleaned: 35 -> 35 rows (Strings modified: 35, Nulls filled: 0, Dtype conversions: 0, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:45:09,014] 321 src.logger - INFO - [Version_13/job_industries] Cleaned: 164808 -> 158355 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 6453)
+[2026-07-30 01:45:09,231] 321 src.logger - INFO - [Version_13/benefits] Cleaned: 67943 -> 64802 rows (Strings modified: 43712, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 3141)
+[2026-07-30 01:45:09,764] 321 src.logger - INFO - [Version_13/company_specialities] Cleaned: 169387 -> 169213 rows (Strings modified: 143019, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 174, Orphans: 0)
+[2026-07-30 01:45:09,806] 321 src.logger - INFO - [Version_13/employee_counts] Cleaned: 35787 -> 35787 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 4, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-07-30 01:45:10,207] 321 src.logger - INFO - [Version_13/job_skills] Cleaned: 213768 -> 203167 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 10601)
+[2026-07-30 01:45:10,484] 321 src.logger - INFO - [Version_13/salaries] Cleaned: 40785 -> 35563 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 5222)
+[2026-07-30 01:45:10,486] 360 src.logger - INFO - ======================================================================
+[2026-07-30 01:45:10,486] 361 src.logger - INFO - Cleaning summary: 20/20 tables succeeded. Total rows removed: 32575 (2.9%). Orphans: 29938, Nulls filled: 53, Invalids: 0, Conversions: 38.
+[2026-07-30 01:45:10,486] 367 src.logger - INFO - DATA CLEANING COMPLETED
+[2026-07-30 01:45:10,486] 368 src.logger - INFO - ======================================================================
+[2026-07-30 01:45:10,488] 129 src.logger - INFO - Data Cleaning completed in 35.51 sec
+[2026-07-30 01:45:10,488] 133 src.logger - INFO - ######################################################################
+[2026-07-30 01:45:10,488] 134 src.logger - INFO - PIPELINE RUN COMPLETED SUCCESSFULLY
+[2026-07-30 01:45:10,488] 135 src.logger - INFO - ######################################################################
+[2026-07-30 01:45:13,396] 71 src.logger - INFO - Saved artifact: C:\Users\lenovo\OneDrive\Desktop\job_postings_project\artifacts\pipeline_summary.json
+[2026-07-30 01:45:13,402] 71 src.logger - INFO - Saved artifact: C:\Users\lenovo\OneDrive\Desktop\job_postings_project\artifacts\cleaning_summary.json
+[2026-07-30 01:45:14,266] 71 src.logger - INFO - Saved artifact: C:\Users\lenovo\OneDrive\Desktop\job_postings_project\artifacts\validation_summary.json
+[2026-07-30 01:45:14,334] 222 src.logger - INFO - 
+==========================================================
+PIPELINE SUMMARY
+==========================================================
+Versions Processed : 2
+Tables Processed   : 20
+Rows Before        : 1,122,167
+Rows After         : 1,089,592
+Rows Removed       : 32,575
+Nulls Filled       : 53
+Duplicates Removed : 266
+Orphans Removed    : 29,938
+Execution Time     : 46.75 sec
+==========================================================
+Memory Usage       : 1306.08 MB
+==========================================================
+
