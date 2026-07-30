@@ -3,50 +3,51 @@ Pipeline entrypoint.
 
 Chains the pipeline stages together, in order:
 
-    Data Ingestion -> Schema Alignment -> Data Validation -> Data Cleaning -> (Consolidation -> ...)
+    Data Ingestion -> Schema Alignment -> Data Validation -> Data Cleaning -> Dataset Consolidation -> (Feature Engineering -> ...)
 
 Run with:
     python -m src.pipeline
 
-Why this file exists (and `if __name__ == "__main__"` doesn't live in
-each component instead):
-
-Each component (`DataIngestion`, `SchemaAlignment`, `DataValidation`, and
-`DataCleaning`) is meant to be a pure, importable library with zero execution
-side-effects -- importing any of them should never have a chance of kicking off a
-pipeline run. Execution logic belongs in exactly one place: here. This also means
-there is a single, obvious spot to look when you want to know "what does an
-end-to-end run actually do", instead of that answer being scattered across N
-components' `__main__` blocks.
+Execution logic belongs in exactly one place: here.
 """
 
-from __future__ import annotations
-
 import json
-from dataclasses import asdict, is_dataclass
-from pathlib import Path
 import sys
+from dataclasses import asdict, dataclass, is_dataclass
+from pathlib import Path
 from time import perf_counter
-from typing import Dict, Any
+from typing import Any, Dict
 
 import pandas as pd
-from dataclasses import dataclass
+
 from src.components.data_ingestion import DataIngestion
 from src.components.schema_alignment import SchemaAlignment
-from src.components.data_validation import DataValidation, DataValidationResult
-from src.components.data_cleaning import DataCleaning, DataCleaningResult
+from src.components.data_validation import (
+    DataValidation,
+    DataValidationResult,
+    )
+
+from src.components.data_cleaning import (
+    DataCleaning,
+    DataCleaningResult,
+    )
+
+from src.components.data_consolidation import (
+    MasterDatasetBuilder,
+    DatasetBuildResult,
+)
+from src.configs.Pipeline_Config import PipelineConfig
 from src.exception import CustomException
 from src.logger import logging
-from src.configs.Pipeline_Config import PipelineConfig
-
 pipeline_config = PipelineConfig()
+
 
 @dataclass
 class PipelineResult:
     cleaning_result: DataCleaningResult
     validation_result: DataValidationResult
+    dataset_build_result: DatasetBuildResult
     stage_times: dict[str, float]
-
 
 def _get_cleaned_memory_usage_mb(data: Dict[str, Dict[str, pd.DataFrame]]) -> float:
     """Calculates memory usage of all DataFrames in memory in MB."""
@@ -55,6 +56,12 @@ def _get_cleaned_memory_usage_mb(data: Dict[str, Dict[str, pd.DataFrame]]) -> fl
         for version in data.values()
         for df in version.values()
     )
+    return round(total_bytes / (1024 * 1024), 2)
+
+
+def _get_consolidated_memory_usage_mb(consolidated_data: Dict[str, pd.DataFrame]) -> float:
+    """Calculates memory usage of consolidated analytical DataFrames in MB."""
+    total_bytes = sum(df.memory_usage(deep=True).sum() for df in consolidated_data.values())
     return round(total_bytes / (1024 * 1024), 2)
 
 
@@ -75,13 +82,13 @@ def run_pipeline() -> PipelineResult:
     """
     Runs every pipeline stage implemented so far:
 
-        1. Data Ingestion   - discover + load raw CSVs per dataset version
-        2. Schema Alignment - align every table to its canonical schema
-        3. Data Validation  - detect (never fix) data-quality issues
-        4. Data Cleaning    - clean strings, fill nulls, convert dtypes, handle 
-                              invalids, deduplicate, and drop orphans
+        1. Data Ingestion       - discover + load raw CSVs per dataset version
+        2. Schema Alignment     - align every table to its canonical schema
+        3. Data Validation      - detect data-quality issues
+        4. Data Cleaning        - clean strings, fill nulls, convert dtypes, drop orphans
+        5. Dataset Consolidation- aggregate & denormalize into 1:1 job_id Analytical Base Table
 
-    Returns execution artifacts, validation results, and DataCleaningResult.
+    Returns execution artifacts, validation, cleaning, and consolidation results.
     """
     total_pipeline_start = perf_counter()
 
@@ -128,6 +135,19 @@ def run_pipeline() -> PipelineResult:
         cleaning_time = perf_counter() - start_time
         logging.info("Data Cleaning completed in %.2f sec", cleaning_time)
 
+        # 5. Master Dataset Builder
+        start_time = perf_counter()
+        logging.info("Starting Master Dataset Builder...")
+
+        builder  = MasterDatasetBuilder()
+
+        dataset_build_result: DatasetBuildResult = builder.build_master_dataset(cleaning_result.cleaned_data)
+
+        # Persist master dataset and metadata
+        builder.save_result(result=dataset_build_result, output_dir=pipeline_config.master_dataset_dir,)
+
+        consolidation_time = perf_counter() - start_time
+        logging.info("Master Dataset Builder completed in %.2f sec", consolidation_time)
         total_execution_time = perf_counter() - total_pipeline_start
 
         logging.info("#" * 70)
@@ -137,14 +157,16 @@ def run_pipeline() -> PipelineResult:
         return PipelineResult(
             cleaning_result=cleaning_result,
             validation_result=validation_result,
+            dataset_build_result=dataset_build_result,
             stage_times={
                 "ingestion_sec": round(ingestion_time, 2),
                 "alignment_sec": round(alignment_time, 2),
                 "validation_sec": round(validation_time, 2),
                 "cleaning_sec": round(cleaning_time, 2),
+                "consolidation_sec": round(consolidation_time, 2),
                 "total_sec": round(total_execution_time, 2),
-                },
-            )
+            },
+        )
 
     except CustomException:
         raise
@@ -158,14 +180,18 @@ if __name__ == "__main__":
     
     result: DataCleaningResult = pipeline_outputs.cleaning_result
     validation_result = pipeline_outputs.validation_result
+    dataset_build_result = pipeline_outputs.dataset_build_result
     stage_times = pipeline_outputs.stage_times
 
     # Calculate memory footprint
-    memory_usage_mb = _get_cleaned_memory_usage_mb(result.cleaned_data)
+    relational_memory_mb = _get_cleaned_memory_usage_mb(result.cleaned_data)
+    consolidated_memory_mb = _get_consolidated_memory_usage_mb(
+    dataset_build_result.consolidated_data )
 
     # -------------------------------------------------------------------------
-    # Save Metrics Artifacts to `artifacts/`
+    # Save Metrics Artifacts to `summary_reports_dir`
     # -------------------------------------------------------------------------
+    reports_dir = pipeline_config.summary_reports_dir
 
     # 1. Pipeline High-Level Summary
     pipeline_summary_data = {
@@ -180,23 +206,20 @@ if __name__ == "__main__":
         "orphans_removed": result.summary.total_orphan_rows_removed,
         "invalid_values_handled": result.summary.total_invalid_values_handled,
         "dtype_conversions": result.summary.total_dtype_conversions,
-        "memory_usage_mb": memory_usage_mb,
+        "relational_memory_mb": relational_memory_mb,
+        "consolidated_memory_mb": consolidated_memory_mb,
         "stage_execution_times": stage_times,
     }
-    _save_json_artifact(pipeline_config.artifacts_dir / "pipeline_summary.json", pipeline_summary_data)
+    _save_json_artifact(reports_dir / "pipeline_summary.json", pipeline_summary_data)
 
-    # 2. Cleaning Detailed Summary & Per-Table Reports
-    cleaning_summary_data = {
-        "summary": result.summary,
-        "reports": result.reports,
-    }
-    _save_json_artifact(pipeline_config.artifacts_dir / "cleaning_summary.json", cleaning_summary_data)
+    # 2. Cleaning Detailed Summary
+    _save_json_artifact(reports_dir / "cleaning_summary.json", result)
 
-    # 3. Validation Detailed Summary & Reports
-    if hasattr(validation_result, "summary") or is_dataclass(validation_result):
-        _save_json_artifact(pipeline_config.artifacts_dir / "validation_summary.json", validation_result)
-    else:
-        _save_json_artifact(pipeline_config.artifacts_dir / "validation_summary.json", {"validation": str(validation_result)})
+    # 3. Validation Detailed Summary
+    _save_json_artifact(reports_dir / "validation_summary.json", validation_result)
+
+    # 4. Consolidation Detailed Summary
+    _save_json_artifact(reports_dir / "consolidation_summary.json", dataset_build_result)
 
     # -------------------------------------------------------------------------
     # Console Output Banner
@@ -205,17 +228,23 @@ if __name__ == "__main__":
 ==========================================================
 PIPELINE SUMMARY
 ==========================================================
-Versions Processed : {result.summary.versions_processed}
-Tables Processed   : {result.summary.tables_processed}
-Rows Before        : {result.summary.total_rows_before:,}
-Rows After         : {result.summary.total_rows_after:,}
-Rows Removed       : {result.summary.total_rows_removed:,}
-Nulls Filled       : {result.summary.total_nulls_filled:,}
-Duplicates Removed : {result.summary.total_duplicates_removed:,}
-Orphans Removed    : {result.summary.total_orphan_rows_removed:,}
-Execution Time     : {stage_times['total_sec']} sec
+Versions Processed    : {result.summary.versions_processed}
+Tables Processed      : {result.summary.tables_processed}
+Rows Before (Raw)     : {result.summary.total_rows_before:,}
+Rows After (Cleaned)  : {result.summary.total_rows_after:,}
+Rows Removed          : {result.summary.total_rows_removed:,}
+Nulls Filled          : {result.summary.total_nulls_filled:,}
+Duplicates Removed    : {result.summary.total_duplicates_removed:,}
+Orphans Removed       : {result.summary.total_orphan_rows_removed:,}
+----------------------------------------------------------
+CONSOLIDATED ANALYTICAL BASE TABLES
+----------------------------------------------------------
+Analytical Rows       : {dataset_build_result.summary.rows_processed:,}
+Total Output Columns  : {dataset_build_result.summary.new_columns:,}
+Total Execution Time  : {stage_times['total_sec']} sec
 ==========================================================
-Memory Usage       : {memory_usage_mb} MB
+Relational Memory     : {relational_memory_mb} MB
+Consolidated Memory   : {consolidated_memory_mb} MB
 ==========================================================
 """
     print(banner)

@@ -1,0 +1,23 @@
+{
+    "versions_processed": 2,
+    "tables_processed": 20,
+    "rows_before": 1122167,
+    "rows_after": 1089592,
+    "rows_removed": 32575,
+    "percentage_rows_removed": 2.9,
+    "nulls_filled": 53,
+    "duplicates_removed": 266,
+    "orphans_removed": 29938,
+    "invalid_values_handled": 0,
+    "dtype_conversions": 38,
+    "relational_memory_mb": 1773.55,
+    "consolidated_memory_mb": 2156.43,
+    "stage_execution_times": {
+        "ingestion_sec": 11.49,
+        "alignment_sec": 0.84,
+        "validation_sec": 0.99,
+        "cleaning_sec": 37.3,
+        "consolidation_sec": 56.21,
+        "total_sec": 106.82
+    }
+}
