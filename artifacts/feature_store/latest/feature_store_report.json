@@ -1,0 +1,366 @@
+{
+  "summary": {
+    "dataset_id": "fs_20260730_224026",
+    "rows_before": 154676,
+    "rows_after": 154676,
+    "rows_removed": 0,
+    "columns_before": 64,
+    "columns_after": 65,
+    "identifiers_dropped": [
+      "job_id",
+      "company_id",
+      "salary_id"
+    ],
+    "columns_removed": [
+      "job_id",
+      "company_id",
+      "salary_id"
+    ],
+    "columns_created": [
+      "salary_available",
+      "has_company_description",
+      "has_description",
+      "listing_age_available",
+      "skill_count",
+      "benefit_count",
+      "industry_count",
+      "speciality_count"
+    ],
+    "dtype_conversions": {},
+    "null_values_before": 2885077,
+    "null_values_after": 1224283,
+    "missing_values_filled": 1553440,
+    "duplicates_removed": 0,
+    "schema_hash": "bb957320ce8a92429225a28078f2e357700be1fdc77a168186f8af76b3ef1e8f",
+    "execution_time_seconds": 77.9248,
+    "integrity_passed": true
+  },
+  "steps": [
+    {
+      "step_name": "dtype_standardization",
+      "columns_affected": [],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {
+        "dtype_conversions": {}
+      },
+      "execution_time_seconds": 0.0016
+    },
+    {
+      "step_name": "identifier_handling",
+      "columns_affected": [
+        "job_id",
+        "company_id",
+        "salary_id"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {
+        "dropped": [
+          "job_id",
+          "company_id",
+          "salary_id"
+        ],
+        "missing_from_source": []
+      },
+      "execution_time_seconds": 0.2016
+    },
+    {
+      "step_name": "datetime_standardization",
+      "columns_affected": [
+        "listed_time",
+        "original_listed_time",
+        "expiry",
+        "closed_time"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {},
+      "execution_time_seconds": 0.1753
+    },
+    {
+      "step_name": "missing_value_handling",
+      "columns_affected": [
+        "views",
+        "applies",
+        "pay_period",
+        "currency",
+        "compensation_type",
+        "remote_allowed",
+        "formatted_experience_level",
+        "unmapped__scraped",
+        "company_size",
+        "listed_max_salary",
+        "listed_med_salary",
+        "listed_min_salary",
+        "listed_pay_period",
+        "listed_currency",
+        "listed_compensation_type",
+        "top_skill",
+        "top_benefit"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {
+        "views": {
+          "strategy": "median",
+          "null_before": 8882,
+          "null_after": 0,
+          "filled": 8882
+        },
+        "applies": {
+          "strategy": "median",
+          "null_before": 115909,
+          "null_after": 0,
+          "filled": 115909
+        },
+        "pay_period": {
+          "strategy": "mode",
+          "null_before": 105997,
+          "null_after": 0,
+          "filled": 105997
+        },
+        "currency": {
+          "strategy": "mode",
+          "null_before": 105997,
+          "null_after": 0,
+          "filled": 105997
+        },
+        "compensation_type": {
+          "strategy": "mode",
+          "null_before": 105997,
+          "null_after": 0,
+          "filled": 105997
+        },
+        "remote_allowed": {
+          "strategy": "median",
+          "null_before": 135197,
+          "null_after": 0,
+          "filled": 135197
+        },
+        "formatted_experience_level": {
+          "strategy": "constant",
+          "null_before": 36536,
+          "null_after": 0,
+          "filled": 36536
+        },
+        "unmapped__scraped": {
+          "strategy": "median",
+          "null_before": 122131,
+          "null_after": 0,
+          "filled": 122131
+        },
+        "company_size": {
+          "strategy": "constant",
+          "null_before": 6438,
+          "null_after": 0,
+          "filled": 6438
+        },
+        "listed_max_salary": {
+          "strategy": "median",
+          "null_before": 114433,
+          "null_after": 0,
+          "filled": 114433
+        },
+        "listed_med_salary": {
+          "strategy": "median",
+          "null_before": 146240,
+          "null_after": 0,
+          "filled": 146240
+        },
+        "listed_min_salary": {
+          "strategy": "median",
+          "null_before": 114433,
+          "null_after": 0,
+          "filled": 114433
+        },
+        "listed_pay_period": {
+          "strategy": "mode",
+          "null_before": 105997,
+          "null_after": 0,
+          "filled": 105997
+        },
+        "listed_currency": {
+          "strategy": "mode",
+          "null_before": 105997,
+          "null_after": 0,
+          "filled": 105997
+        },
+        "listed_compensation_type": {
+          "strategy": "mode",
+          "null_before": 105997,
+          "null_after": 0,
+          "filled": 105997
+        },
+        "top_skill": {
+          "strategy": "mode",
+          "null_before": 2557,
+          "null_after": 0,
+          "filled": 2557
+        },
+        "top_benefit": {
+          "strategy": "mode",
+          "null_before": 114702,
+          "null_after": 0,
+          "filled": 114702
+        }
+      },
+      "execution_time_seconds": 1.2704
+    },
+    {
+      "step_name": "boolean_standardization",
+      "columns_affected": [
+        "remote_allowed",
+        "sponsored"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {},
+      "execution_time_seconds": 0.1905
+    },
+    {
+      "step_name": "categorical_cleanup",
+      "columns_affected": [
+        "formatted_work_type",
+        "work_type",
+        "formatted_experience_level",
+        "pay_period",
+        "compensation_type",
+        "currency",
+        "company_size",
+        "company_state",
+        "company_country",
+        "company_city"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {},
+      "execution_time_seconds": 1.2025
+    },
+    {
+      "step_name": "text_cleanup",
+      "columns_affected": [
+        "title",
+        "description",
+        "company_name",
+        "company_description",
+        "location",
+        "company_address"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {},
+      "execution_time_seconds": 43.6872
+    },
+    {
+      "step_name": "list_column_standardization",
+      "columns_affected": [
+        "skill_list",
+        "benefit_list",
+        "industry_list",
+        "speciality_list"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {
+        "delimiter": "|"
+      },
+      "execution_time_seconds": 4.6652
+    },
+    {
+      "step_name": "derived_features",
+      "columns_affected": [
+        "salary_available",
+        "has_company_description",
+        "has_description",
+        "listing_age_available",
+        "skill_count",
+        "benefit_count",
+        "industry_count",
+        "speciality_count"
+      ],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {},
+      "execution_time_seconds": 0.6375
+    },
+    {
+      "step_name": "duplicate_removal",
+      "columns_affected": [],
+      "rows_before": 154676,
+      "rows_after": 154676,
+      "details": {
+        "removed": 0
+      },
+      "execution_time_seconds": 16.8559
+    }
+  ],
+  "final_schema": {
+    "title": "object",
+    "description": "object",
+    "location": "object",
+    "views": "Int64",
+    "applies": "Int64",
+    "min_salary": "float64",
+    "med_salary": "float64",
+    "max_salary": "float64",
+    "pay_period": "category",
+    "currency": "category",
+    "compensation_type": "category",
+    "normalized_salary": "float64",
+    "formatted_work_type": "category",
+    "work_type": "category",
+    "remote_allowed": "boolean",
+    "formatted_experience_level": "category",
+    "listed_time": "datetime64[ns]",
+    "original_listed_time": "datetime64[ns]",
+    "expiry": "datetime64[ns]",
+    "closed_time": "datetime64[ns]",
+    "sponsored": "boolean",
+    "zip_code": "string",
+    "fips": "float64",
+    "unmapped__job_posting_url": "string",
+    "unmapped__application_url": "string",
+    "unmapped__application_type": "string",
+    "unmapped__skills_desc": "string",
+    "unmapped__posting_domain": "string",
+    "unmapped__scraped": "float64",
+    "company_name": "object",
+    "company_description": "object",
+    "company_size": "category",
+    "company_state": "category",
+    "company_country": "category",
+    "company_city": "category",
+    "company_zip_code": "string",
+    "company_address": "object",
+    "company_url": "string",
+    "company_employee_count": "Int64",
+    "company_follower_count": "Int64",
+    "company_employee_count_recorded_at": "float64",
+    "listed_max_salary": "float64",
+    "listed_med_salary": "float64",
+    "listed_min_salary": "float64",
+    "listed_pay_period": "string",
+    "listed_currency": "string",
+    "listed_compensation_type": "string",
+    "industry_count": "int64",
+    "top_industry": "string",
+    "industry_list": "object",
+    "skill_count": "int64",
+    "top_skill": "string",
+    "skill_list": "object",
+    "benefit_count": "int64",
+    "top_benefit": "string",
+    "benefit_list": "object",
+    "speciality_count": "int64",
+    "top_speciality": "string",
+    "speciality_list": "object",
+    "dataset_version": "object",
+    "unmapped__company_name": "string",
+    "salary_available": "boolean",
+    "has_company_description": "boolean",
+    "has_description": "boolean",
+    "listing_age_available": "boolean"
+  },
+  "generated_at": "2026-07-30T22:41:52.875400+00:00"
+}

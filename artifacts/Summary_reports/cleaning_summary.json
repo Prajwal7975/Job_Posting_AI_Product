@@ -2,7 +2,7 @@
     "cleaned_data": {
         "Version_9": {
             "companies": "       company_id                                    name  ...                                address                                                url\n0            1009                                     IBM  ...  International Business Machines Corp.               https://www.linkedin.com/company/ibm\n1            1016                           GE HealthCare  ...                                      -      https://www.linkedin.com/company/gehealthcare\n2            1021                                GE Power  ...                           1 River Road           https://www.linkedin.com/company/gepower\n3            1025              Hewlett Packard Enterprise  ...            1701 E Mossy Oaks Rd Spring  https://www.linkedin.com/company/hewlett-packa...\n4            1028                                  Oracle  ...                        2300 Oracle Way            https://www.linkedin.com/company/oracle\n...           ...                                     ...  ...                                    ...                                                ...\n11356  3700144594                                  BYREDO  ...                                      0            https://www.linkedin.com/company/byredo\n11357  3700144710  Pros2Plan, a division of Spinnaker SCA  ...                                      0         https://www.linkedin.com/company/pros2plan\n11358  3700147810                       Ascendo Resources  ...                       2 Alhambra Plaza  https://www.linkedin.com/company/ascendoresources\n11359  3700150295                          The Crox Group  ...                     6818 N Lincoln Ave    https://www.linkedin.com/company/the-crox-group\n11360  3700152513                       Sidley Austin LLP  ...                     One South Dearborn     https://www.linkedin.com/company/sidley-austin\n\n[11361 rows x 10 columns]",
-            "postings": "           job_id  company_id  ...  unmapped__posting_domain unmapped__scraped\n0      3757940104      553718  ...  careers-demant.icims.com        1699138101\n1      3757940025     2192142  ...       www.click2apply.net        1699085420\n2      3757938019      474443  ...       www.click2apply.net        1699085644\n3      3757938018    18213359  ...           jobs.apploi.com        1699087461\n4      3757937095      437225  ...         careers.iherb.com        1699085346\n...           ...         ...  ...                       ...               ...\n33238   381055942    96654609  ...                      <NA>                 1\n33240   133196985     1089558  ...                      <NA>                 1\n33241   133114754    77766802  ...                      <NA>                 1\n33243   102339515    52132271  ...                      <NA>        1699063495\n33245     3958427      630152  ...                      <NA>        1699057868\n\n[32545 rows x 31 columns]",
+            "postings": "           job_id  company_id                                              title  ...                              unmapped__skills_desc  unmapped__posting_domain  unmapped__scraped\n0      3757940104      553718                              Hearing Care Provider  ...                                               <NA>  careers-demant.icims.com         1699138101\n1      3757940025     2192142  Shipping & Receiving Associate 2nd shift (Beav...  ...                                               <NA>       www.click2apply.net         1699085420\n2      3757938019      474443                               Manager, Engineering  ...  Bachelor's Degree in Mechanical Engineering pr...       www.click2apply.net         1699085644\n3      3757938018    18213359                                               Cook  ...                                               <NA>           jobs.apploi.com         1699087461\n4      3757937095      437225        Principal Cloud Security Architect (Remote)  ...                                               <NA>         careers.iherb.com         1699085346\n...           ...         ...                                                ...  ...                                                ...                       ...                ...\n33238   381055942    96654609                                   Business Manager  ...                                               <NA>                      <NA>                  1\n33240   133196985     1089558                                 Model Risk Auditor  ...                                               <NA>                      <NA>                  1\n33241   133114754    77766802                                      Sales Manager  ...                                               <NA>                      <NA>                  1\n33243   102339515    52132271                                    Franchise Owner  ...                                               <NA>                      <NA>         1699063495\n33245     3958427      630152                                   Stylist/ Clorist  ...  Must be a seasoned stylist with an existing bo...                      <NA>         1699057868\n\n[32545 rows x 31 columns]",
             "industries": "     industry_id                             industry_name\n0              1           defense and space manufacturing\n1              3           computer hardware manufacturing\n2              4                      software development\n3              5              computer networking products\n4              6      technology, information and internet\n..           ...                                       ...\n224         3240         renewable energy power generation\n225         3241  renewable energy equipment manufacturing\n226         3242                      engineering services\n227         3243             services for renewable energy\n228         3251  climate technology product manufacturing\n\n[229 rows x 2 columns]",
             "skills": "   skill_abr              skill_name\n0       PRCH              purchasing\n1       SUPL            supply chain\n2         PR        public relations\n3        SCI                 science\n4       STRA       strategy/planning\n5        WRT         writing/editing\n6         QA       quality assurance\n7       DIST            distribution\n8       PROD              production\n9       PRJM      project management\n10      ADVR             advertising\n11      RSCH                research\n12        HR         human resources\n13       LGL                   legal\n14      PRDM      product management\n15      MRKT               marketing\n16       EDU               education\n17      TRNG                training\n18      ANLS                 analyst\n19       FIN                 finance\n20      SALE                   sales\n21        BD    business development\n22      MGMT              management\n23      MNFC           manufacturing\n24      GENB        general business\n25      CUST        customer service\n26       ENG             engineering\n27      OTHR                   other\n28      CNSL              consulting\n29      ACCT     accounting/auditing\n30      HCPR    health care provider\n31      DSGN                  design\n32       ART            art/creative\n33        IT  information technology\n34       ADM          administrative",
             "job_industries": "           job_id  industry_id\n15     3691797924            6\n28     3691799471           25\n29     3691799471           18\n31     3691799474           44\n33     3692300361           44\n...           ...          ...\n44086  3757486249           47\n44087  3757486249           43\n44088  3757780487          104\n44089  3757934256           80\n44090  3757498232           14\n\n[42769 rows x 2 columns]",
@@ -14,7 +14,7 @@
         },
         "Version_13": {
             "companies": "       company_id                               name  ...                                address                                                url\n0            1009                                IBM  ...  International Business Machines Corp.               https://www.linkedin.com/company/ibm\n1            1016                      GE HealthCare  ...                                      -      https://www.linkedin.com/company/gehealthcare\n2            1025         Hewlett Packard Enterprise  ...            1701 E Mossy Oaks Rd Spring  https://www.linkedin.com/company/hewlett-packa...\n3            1028                             Oracle  ...                        2300 Oracle Way            https://www.linkedin.com/company/oracle\n4            1033                          Accenture  ...                    Grand Canal Harbour         https://www.linkedin.com/company/accenture\n...           ...                                ...  ...                                    ...                                                ...\n24468   103463217                       JRC Services  ...                                      0       https://www.linkedin.com/company/jrcservices\n24469   103466352             Centent Consulting LLC  ...                                      0  https://www.linkedin.com/company/centent-consu...\n24470   103467540  Kings and Queens Productions, LLC  ...                                      0  https://www.linkedin.com/company/kings-and-que...\n24471   103468936                           WebUnite  ...                    720 2nd Street Pike          https://www.linkedin.com/company/webunite\n24472   103472979                            BlackVe  ...                                      0           https://www.linkedin.com/company/blackve\n\n[24473 rows x 10 columns]",
-            "postings": "            job_id  company_id  ...                              unmapped__skills_desc    unmapped__posting_domain\n0           921716     2774458  ...  Requirements: We are seeking a College or Grad...                        <NA>\n2         10998357    64896719  ...  We are currently accepting resumes for FOH - A...                        <NA>\n3         23221523      766262  ...  This position requires a baseline understandin...                        <NA>\n5         91700727     1481176  ...                                               <NA>                        <NA>\n6        103254301    81942316  ...                                               <NA>                        <NA>\n...            ...         ...  ...                                                ...                         ...\n123844  3906267117       56120  ...                                               <NA>                        <NA>\n123845  3906267126     1124131  ...                                               <NA>    www.pinterestcareers.com\n123846  3906267131    90552133  ...                                               <NA>  epsoperations.bamboohr.com\n123847  3906267195     2793699  ...                                               <NA>                        <NA>\n123848  3906267224       43325  ...                                               <NA>                        <NA>\n\n[122131 rows x 31 columns]",
+            "postings": "            job_id  company_id                                              title  ... unmapped__application_type                              unmapped__skills_desc    unmapped__posting_domain\n0           921716     2774458                              Marketing Coordinator  ...         ComplexOnsiteApply  Requirements: We are seeking a College or Grad...                        <NA>\n2         10998357    64896719                        Assitant Restaurant Manager  ...         ComplexOnsiteApply  We are currently accepting resumes for FOH - A...                        <NA>\n3         23221523      766262  Senior Elder Law / Trusts and Estates Associat...  ...         ComplexOnsiteApply  This position requires a baseline understandin...                        <NA>\n5         91700727     1481176           Economic Development and Planning Intern  ...         ComplexOnsiteApply                                               <NA>                        <NA>\n6        103254301    81942316                                           Producer  ...          SimpleOnsiteApply                                               <NA>                        <NA>\n...            ...         ...                                                ...  ...                        ...                                                ...                         ...\n123844  3906267117       56120                   Title IX/Investigations Attorney  ...         ComplexOnsiteApply                                               <NA>                        <NA>\n123845  3906267126     1124131       Staff Software Engineer, ML Serving Platform  ...               OffsiteApply                                               <NA>    www.pinterestcareers.com\n123846  3906267131    90552133               Account Executive, Oregon/Washington  ...               OffsiteApply                                               <NA>  epsoperations.bamboohr.com\n123847  3906267195     2793699                       Business Development Manager  ...         ComplexOnsiteApply                                               <NA>                        <NA>\n123848  3906267224       43325                  Marketing Social Media Specialist  ...         ComplexOnsiteApply                                               <NA>                        <NA>\n\n[122131 rows x 31 columns]",
             "industries": "     industry_id                             industry_name\n0              1           defense and space manufacturing\n1              3           computer hardware manufacturing\n2              4                      software development\n3              5              computer networking products\n4              6      technology, information and internet\n..           ...                                       ...\n417         3249            surveying and mapping services\n418         3250                         retail pharmacies\n419         3251  climate technology product manufacturing\n420         3252                climate data and analytics\n421         3253    alternative fuel vehicle manufacturing\n\n[422 rows x 2 columns]",
             "skills": "   skill_abr              skill_name\n0        ART            art/creative\n1       DSGN                  design\n2       ADVR             advertising\n3       PRDM      product management\n4       DIST            distribution\n5        EDU               education\n6       TRNG                training\n7       PRJM      project management\n8       CNSL              consulting\n9       PRCH              purchasing\n10      SUPL            supply chain\n11      ANLS                 analyst\n12      HCPR    health care provider\n13      RSCH                research\n14       SCI                 science\n15      GENB        general business\n16      CUST        customer service\n17      STRA       strategy/planning\n18       FIN                 finance\n19      OTHR                   other\n20       LGL                   legal\n21       ENG             engineering\n22        QA       quality assurance\n23        BD    business development\n24        IT  information technology\n25       ADM          administrative\n26      PROD              production\n27      MRKT               marketing\n28        PR        public relations\n29       WRT         writing/editing\n30      ACCT     accounting/auditing\n31        HR         human resources\n32      MNFC           manufacturing\n33      SALE                   sales\n34      MGMT              management",
             "job_industries": "            job_id  industry_id\n0       3884428798           82\n1       3887473071           48\n2       3887465684           41\n3       3887467939           82\n4       3887467939           80\n...            ...          ...\n164802  3902866633           62\n164803  3902882321          104\n164805  3902876855           80\n164806  3902878689          116\n164807  3902883233           44\n\n[158355 rows x 2 columns]",
@@ -38,7 +38,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 1,
             "strings_modified": 9301,
-            "execution_time_seconds": 0.6022
+            "execution_time_seconds": 0.514
         },
         {
             "version": "Version_9",
@@ -52,7 +52,7 @@
             "orphan_rows_removed": 47,
             "dtype_conversions": 5,
             "strings_modified": 33004,
-            "execution_time_seconds": 5.642
+            "execution_time_seconds": 6.1276
         },
         {
             "version": "Version_9",
@@ -66,7 +66,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 1,
             "strings_modified": 212,
-            "execution_time_seconds": 0.0036
+            "execution_time_seconds": 0.0071
         },
         {
             "version": "Version_9",
@@ -80,7 +80,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 0,
             "strings_modified": 35,
-            "execution_time_seconds": 0.0029
+            "execution_time_seconds": 0.0059
         },
         {
             "version": "Version_9",
@@ -94,7 +94,7 @@
             "orphan_rows_removed": 1322,
             "dtype_conversions": 2,
             "strings_modified": 0,
-            "execution_time_seconds": 0.0288
+            "execution_time_seconds": 0.0576
         },
         {
             "version": "Version_9",
@@ -108,7 +108,7 @@
             "orphan_rows_removed": 704,
             "dtype_conversions": 2,
             "strings_modified": 19842,
-            "execution_time_seconds": 0.089
+            "execution_time_seconds": 0.2001
         },
         {
             "version": "Version_9",
@@ -122,7 +122,7 @@
             "orphan_rows_removed": 335,
             "dtype_conversions": 1,
             "strings_modified": 66650,
-            "execution_time_seconds": 0.219
+            "execution_time_seconds": 0.5474
         },
         {
             "version": "Version_9",
@@ -136,7 +136,7 @@
             "orphan_rows_removed": 45,
             "dtype_conversions": 3,
             "strings_modified": 0,
-            "execution_time_seconds": 0.0103
+            "execution_time_seconds": 0.0357
         },
         {
             "version": "Version_9",
@@ -150,7 +150,7 @@
             "orphan_rows_removed": 1831,
             "dtype_conversions": 1,
             "strings_modified": 0,
-            "execution_time_seconds": 0.1175
+            "execution_time_seconds": 0.1253
         },
         {
             "version": "Version_9",
@@ -164,7 +164,7 @@
             "orphan_rows_removed": 236,
             "dtype_conversions": 2,
             "strings_modified": 0,
-            "execution_time_seconds": 0.0775
+            "execution_time_seconds": 0.0904
         },
         {
             "version": "Version_13",
@@ -178,7 +178,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 1,
             "strings_modified": 20092,
-            "execution_time_seconds": 1.0046
+            "execution_time_seconds": 1.5131
         },
         {
             "version": "Version_13",
@@ -192,7 +192,7 @@
             "orphan_rows_removed": 1,
             "dtype_conversions": 6,
             "strings_modified": 124674,
-            "execution_time_seconds": 26.0663
+            "execution_time_seconds": 31.0997
         },
         {
             "version": "Version_13",
@@ -206,7 +206,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 1,
             "strings_modified": 388,
-            "execution_time_seconds": 0.0089
+            "execution_time_seconds": 0.0105
         },
         {
             "version": "Version_13",
@@ -220,7 +220,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 0,
             "strings_modified": 35,
-            "execution_time_seconds": 0.0065
+            "execution_time_seconds": 0.0089
         },
         {
             "version": "Version_13",
@@ -234,7 +234,7 @@
             "orphan_rows_removed": 6453,
             "dtype_conversions": 2,
             "strings_modified": 0,
-            "execution_time_seconds": 0.1313
+            "execution_time_seconds": 0.1771
         },
         {
             "version": "Version_13",
@@ -248,7 +248,7 @@
             "orphan_rows_removed": 3141,
             "dtype_conversions": 2,
             "strings_modified": 43712,
-            "execution_time_seconds": 0.2914
+            "execution_time_seconds": 0.2778
         },
         {
             "version": "Version_13",
@@ -262,7 +262,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 1,
             "strings_modified": 143019,
-            "execution_time_seconds": 0.697
+            "execution_time_seconds": 1.0332
         },
         {
             "version": "Version_13",
@@ -276,7 +276,7 @@
             "orphan_rows_removed": 0,
             "dtype_conversions": 4,
             "strings_modified": 0,
-            "execution_time_seconds": 0.0262
+            "execution_time_seconds": 0.0656
         },
         {
             "version": "Version_13",
@@ -290,7 +290,7 @@
             "orphan_rows_removed": 10601,
             "dtype_conversions": 1,
             "strings_modified": 0,
-            "execution_time_seconds": 0.4713
+            "execution_time_seconds": 0.6974
         },
         {
             "version": "Version_13",
@@ -304,7 +304,7 @@
             "orphan_rows_removed": 5222,
             "dtype_conversions": 2,
             "strings_modified": 0,
-            "execution_time_seconds": 1.4824
+            "execution_time_seconds": 0.4116
         }
     ],
     "summary": {
@@ -321,6 +321,6 @@
         "total_duplicates_removed": 266,
         "total_orphan_rows_removed": 29938,
         "total_dtype_conversions": 38,
-        "execution_time_seconds": 37.2926
+        "execution_time_seconds": 43.588
     }
 }
