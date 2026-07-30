@@ -10,14 +10,19 @@
     "orphans_removed": 29938,
     "invalid_values_handled": 0,
     "dtype_conversions": 38,
+    "feature_store_rows": 154676,
+    "feature_store_columns": 65,
+    "feature_store_schema_hash": "bb957320ce8a92429225a28078f2e357700be1fdc77a168186f8af76b3ef1e8f",
     "relational_memory_mb": 1773.55,
     "consolidated_memory_mb": 2156.43,
+    "feature_store_memory_mb": 2074.82,
     "stage_execution_times": {
-        "ingestion_sec": 11.49,
-        "alignment_sec": 0.84,
-        "validation_sec": 0.99,
-        "cleaning_sec": 37.3,
-        "consolidation_sec": 56.21,
-        "total_sec": 106.82
+        "ingestion_sec": 10.87,
+        "alignment_sec": 0.43,
+        "validation_sec": 0.67,
+        "cleaning_sec": 43.59,
+        "consolidation_sec": 72.45,
+        "feature_engineering_sec": 86.78,
+        "total_sec": 214.81
     }
 }
