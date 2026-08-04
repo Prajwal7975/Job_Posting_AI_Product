@@ -644,8 +644,8 @@ class CommonFeatureEngineering:
             cfg = self.config
             out_dir = ensure_dir(cfg.latest_output_dir)
 
-            feature_store_path = out_dir / "feature_store.parquet"
-            df.to_parquet(feature_store_path, index=False)
+            feature_store_path = out_dir / "feature_store.csv"
+            df.to_csv(feature_store_path, index=False)
             logging.info("Feature Store successfully written to %s", feature_store_path)
             
             result = FeatureEngineeringResult(
@@ -696,7 +696,7 @@ class CommonFeatureEngineering:
             if cfg.save_archive_copy:
                 archive_dir = ensure_dir(Path(cfg.archive_root_dir) / summary.dataset_id)
 
-                dst_fs = archive_dir / "feature_store.parquet"
+                dst_fs = archive_dir / "feature_store.csv"
                 shutil.copy2(feature_store_path, dst_fs)
                 result.archive_feature_store_path = str(dst_fs)
 
