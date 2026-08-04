@@ -1,0 +1,89 @@
+{
+  "dataset_id": "20260803T212129Z_b4694f1b",
+  "created_at": "2026-08-04T12:51:46.365100+00:00",
+  "input_dataset_path": "artifacts\\salary_feature_store\\latest\\salary_modeling_dataset.parquet",
+  "train_output_path": "artifacts\\salary_dataset_splits\\latest\\train.parquet",
+  "validation_output_path": "artifacts\\salary_dataset_splits\\latest\\validation.parquet",
+  "test_output_path": "artifacts\\salary_dataset_splits\\latest\\test.parquet",
+  "split_strategy": "GroupShuffleSplit",
+  "group_column": "posting_group_id",
+  "status": "EXECUTED",
+  "summary": {
+    "dataset_id": "20260803T212129Z_b4694f1b",
+    "input_row_count": 48122,
+    "input_group_count": 46563,
+    "train_row_count": 33708,
+    "validation_row_count": 4809,
+    "test_row_count": 9605,
+    "train_group_count": 32593,
+    "validation_group_count": 4657,
+    "test_group_count": 9313,
+    "train_ratio": 0.70047,
+    "validation_ratio": 0.099934,
+    "test_ratio": 0.199597,
+    "requested_train_ratio": 0.7,
+    "requested_validation_ratio": 0.1,
+    "requested_test_ratio": 0.2,
+    "train_ratio_deviation": 0.00047,
+    "validation_ratio_deviation": 6.6e-05,
+    "test_ratio_deviation": 0.000403,
+    "train_validation_group_overlap": 0,
+    "train_test_group_overlap": 0,
+    "validation_test_group_overlap": 0,
+    "train_target_null_count": 0,
+    "validation_target_null_count": 0,
+    "test_target_null_count": 0,
+    "target_annual_train_stats": {
+      "count": 33708,
+      "min": 10000.0,
+      "max": 998426.0,
+      "mean": 96594.7785411475,
+      "median": 82500.0,
+      "std": 60830.783959852255
+    },
+    "target_annual_validation_stats": {
+      "count": 4809,
+      "min": 10000.0,
+      "max": 960000.0,
+      "mean": 96042.33765023913,
+      "median": 82500.0,
+      "std": 61576.35573299347
+    },
+    "target_annual_test_stats": {
+      "count": 9605,
+      "min": 10000.0,
+      "max": 750000.0,
+      "mean": 96564.26354346695,
+      "median": 83200.0,
+      "std": 58434.36059440295
+    },
+    "target_log_train_stats": {
+      "count": 33708,
+      "min": 9.210440366976517,
+      "max": 13.813936319500868,
+      "mean": 11.317547198406537,
+      "median": 11.320565693461432,
+      "std": 0.5629169472769701
+    },
+    "target_log_validation_stats": {
+      "count": 4809,
+      "min": 9.210440366976517,
+      "max": 13.774689605110144,
+      "mean": 11.309991342288544,
+      "median": 11.320565693461432,
+      "std": 0.5646093878219078
+    },
+    "target_log_test_stats": {
+      "count": 9605,
+      "min": 9.210440366976517,
+      "max": 13.527829818844937,
+      "mean": 11.319942685789126,
+      "median": 11.329014645967838,
+      "std": 0.5610278267657628
+    },
+    "random_state": 42,
+    "schema_hash": "6d5ac96809cb5c53a97879dfc4db9c6d5251563575a7962b6ec9ec2e1d34795c",
+    "execution_time_seconds": 1.112,
+    "integrity_passed": true
+  }
+}

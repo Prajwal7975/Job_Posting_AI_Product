@@ -1,0 +1,27 @@
+[2026-08-04 03:02:31,128] 252 src.logger - INFO - ######################################################################
+[2026-08-04 03:02:31,129] 253 src.logger - INFO - SALARY TRAINING PIPELINE STARTED
+[2026-08-04 03:02:31,129] 254 src.logger - INFO - ######################################################################
+[2026-08-04 03:02:31,130] 294 src.logger - INFO - Calculating common feature-store fingerprint...
+[2026-08-04 03:02:31,541] 304 src.logger - INFO - Current feature-store fingerprint: 79c3e0ae9b207df4...
+[2026-08-04 03:02:31,542] 231 src.logger - INFO - Common feature store unchanged and salary modeling dataset already exists.
+[2026-08-04 03:02:31,543] 400 src.logger - INFO - Skipping Salary Feature Engineering.
+[2026-08-04 03:02:31,543] 404 src.logger - INFO - Reusing existing salary dataset: artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+[2026-08-04 03:02:31,543] 450 src.logger - INFO - ######################################################################
+[2026-08-04 03:02:31,543] 451 src.logger - INFO - SALARY TRAINING PIPELINE COMPLETED
+[2026-08-04 03:02:31,543] 454 src.logger - INFO - ######################################################################
+[2026-08-04 03:02:31,543] 537 src.logger - INFO - 
+======================================================================
+SALARY TRAINING PIPELINE SUMMARY
+======================================================================
+Salary Feature Engineering : REUSED
+
+Salary Dataset:
+artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+
+Input Feature Store Fingerprint:
+79c3e0ae9b207df4...
+
+Feature Engineering Time : 0.0 sec
+Total Pipeline Time       : 0.41 sec
+======================================================================
+

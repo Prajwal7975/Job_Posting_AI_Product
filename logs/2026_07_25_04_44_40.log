@@ -1,0 +1,14 @@
+[2026-07-25 04:44:42,535] 208 src.logger - INFO - ======================================================================
+[2026-07-25 04:44:42,535] 209 src.logger - INFO - DATA INGESTION STARTED
+[2026-07-25 04:44:42,535] 210 src.logger - INFO - ======================================================================
+[2026-07-25 04:44:42,537] 218 src.logger - INFO - Versions Found: Version_13, Version_9
+[2026-07-25 04:44:42,537] 225 src.logger - INFO - Loading Version_13
+[2026-07-25 04:44:42,537] 246 src.logger - ERROR - Data Ingestion Failed
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\data_ingestion.py", line 231, in initiate_data_ingestion
+    self.load_version(version)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\data_ingestion.py", line 136, in load_version
+    for file_name in self.config.mandatory_files:
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataIngestionConfig' object has no attribute 'mandatory_files'. Did you mean: 'mandatory_tables'?
