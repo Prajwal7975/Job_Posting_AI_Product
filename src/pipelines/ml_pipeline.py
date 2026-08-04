@@ -6,17 +6,19 @@ Training pipeline for the Salary Prediction model.
 Current stages
 --------------
 1. Salary Feature Engineering
+2. Salary Dataset Splitting
 
 Future stages
 -------------
-2. Dataset Splitting
 3. Train-only Preprocessing
 4. Model Training
 5. Model Evaluation
 6. Model Registration
 
 The pipeline supports reuse of an existing salary feature store when the
-input common feature store has not changed.
+input common feature store has not changed. The dataset-splitting stage
+manages its own reuse decision internally (see SalaryDatasetSplitter),
+based on a fingerprint of its own input plus its split configuration.
 """
 
 from __future__ import annotations
@@ -44,6 +46,18 @@ from src.entity.salary_predict.salary_feature_engineering_entity import (
     SalaryFeatureEngineeringResult,
 )
 
+from src.components.salary_predict.salary_dataset_splitter import (
+    SalaryDatasetSplitter,
+)
+
+from src.configs.salary_predict.salary_dataset_splitter_config import (
+    SalaryDatasetSplitterConfig,
+)
+
+from src.entity.salary_predict.salary_dataset_splitter_entity import (
+    SalaryDatasetSplitResult,
+)
+
 
 # =====================================================================
 # PIPELINE RESULT
@@ -62,6 +76,12 @@ class SalaryTrainingPipelineResult:
     feature_engineering_executed: bool
 
     input_fingerprint: str
+
+    dataset_split_result: Optional[
+        SalaryDatasetSplitResult
+    ]
+
+    dataset_splitting_status: str
 
     stage_times: dict[str, float]
 
@@ -181,7 +201,7 @@ def _save_pipeline_metadata(
 
 
 # =====================================================================
-# CACHE DECISION
+# CACHE DECISION — FEATURE ENGINEERING
 # =====================================================================
 
 
@@ -237,6 +257,40 @@ def _should_run_salary_feature_engineering(
 
 
 # =====================================================================
+# BOUNDARY INTEGRITY CHECK — DATASET SPLITTING
+# =====================================================================
+
+
+def _verify_split_artifacts_exist(
+    dataset_split_result: SalaryDatasetSplitResult,
+) -> None:
+    """
+    Stage 2 reporting EXECUTED or REUSED is a claim, not a guarantee at the
+    pipeline boundary. This gives Stage 3 (and anyone reading this pipeline)
+    a hard contract: if this function returns without raising, all three
+    split files are physically present on disk right now.
+    """
+
+    split_paths = [
+        dataset_split_result.train_dataset_path,
+        dataset_split_result.validation_dataset_path,
+        dataset_split_result.test_dataset_path,
+    ]
+
+    missing_paths = [
+        path
+        for path in split_paths
+        if not path.exists()
+    ]
+
+    if missing_paths:
+        raise FileNotFoundError(
+            "Dataset splitting completed/reused, but expected "
+            f"split artifacts are missing: {missing_paths}"
+        )
+
+
+# =====================================================================
 # PIPELINE
 # =====================================================================
 
@@ -273,6 +327,13 @@ def run_salary_training_pipeline(
         pipeline_metadata_path = (
             feature_config.latest_dir
             / "salary_pipeline_state.json"
+        )
+
+        splitter_config = (
+            SalaryDatasetSplitterConfig(
+                base_artifacts_dir=
+                    feature_config.base_artifacts_dir
+            )
         )
 
         # -------------------------------------------------------------
@@ -320,7 +381,7 @@ def run_salary_training_pipeline(
         # Decide whether Salary Feature Engineering must run
         # -------------------------------------------------------------
 
-        should_run = (
+        should_run_feature_engineering = (
             _should_run_salary_feature_engineering(
 
                 input_fingerprint=
@@ -344,7 +405,7 @@ def run_salary_training_pipeline(
         # STAGE 1 — SALARY FEATURE ENGINEERING
         # =============================================================
 
-        if should_run:
+        if should_run_feature_engineering:
 
             logging.info(
                 "Starting Salary Feature Engineering..."
@@ -407,16 +468,55 @@ def run_salary_training_pipeline(
             )
 
         # =============================================================
+        # STAGE 2 — SALARY DATASET SPLITTING
+        # =============================================================
+        #
+        # The splitter is always invoked — it independently fingerprints
+        # its own input (the salary modeling dataset produced above,
+        # whether freshly built or reused) together with its split
+        # configuration, and decides EXECUTED vs REUSED on its own. This
+        # means Stage 2 correctly reruns whenever Stage 1 produced a new
+        # dataset, even if Stage 1 itself was skipped as unchanged from
+        # a *previous* run but a rebuild was forced further downstream.
+
+        logging.info(
+            "Starting Salary Dataset Splitting..."
+        )
+
+        stage_start = perf_counter()
+
+        splitter = (
+            SalaryDatasetSplitter(
+                config=splitter_config
+            )
+        )
+
+        dataset_split_result = (
+            splitter
+            .initiate_dataset_splitting(
+                force_rebuild=
+                    force_rebuild,
+            )
+        )
+
+        dataset_splitting_time = (
+            perf_counter()
+            - stage_start
+        )
+
+        logging.info(
+            "Salary Dataset Splitting %s in %.2f sec.",
+            dataset_split_result.status,
+            dataset_splitting_time,
+        )
+
+        _verify_split_artifacts_exist(
+            dataset_split_result
+        )
+
+        # =============================================================
         # FUTURE STAGES
         # =============================================================
-
-        # -------------------------------------------------------------
-        # Stage 2 — Salary Dataset Splitting
-        # -------------------------------------------------------------
-        #
-        # splitter = SalaryDatasetSplitter(...)
-        # split_result = splitter.run(...)
-        #
 
         # -------------------------------------------------------------
         # Stage 3 — Train-only preprocessing
@@ -462,16 +562,28 @@ def run_salary_training_pipeline(
                 salary_dataset_path,
 
             feature_engineering_executed=
-                should_run,
+                should_run_feature_engineering,
 
             input_fingerprint=
                 input_fingerprint,
+
+            dataset_split_result=
+                dataset_split_result,
+
+            dataset_splitting_status=
+                dataset_split_result.status,
 
             stage_times={
 
                 "salary_feature_engineering_sec":
                     round(
                         feature_engineering_time,
+                        2,
+                    ),
+
+                "salary_dataset_splitting_sec":
+                    round(
+                        dataset_splitting_time,
                         2,
                     ),
 
@@ -509,7 +621,7 @@ if __name__ == "__main__":
         run_salary_training_pipeline()
     )
 
-    status = (
+    fe_status = (
         "EXECUTED"
         if result.feature_engineering_executed
         else "REUSED"
@@ -519,15 +631,22 @@ if __name__ == "__main__":
 ======================================================================
 SALARY TRAINING PIPELINE SUMMARY
 ======================================================================
-Salary Feature Engineering : {status}
+Salary Feature Engineering : {fe_status}
+Salary Dataset Splitting   : {result.dataset_splitting_status}
 
 Salary Dataset:
 {result.salary_feature_store_path}
+
+Split Artifacts:
+train      -> {result.dataset_split_result.train_dataset_path}
+validation -> {result.dataset_split_result.validation_dataset_path}
+test       -> {result.dataset_split_result.test_dataset_path}
 
 Input Feature Store Fingerprint:
 {result.input_fingerprint[:16]}...
 
 Feature Engineering Time : {result.stage_times['salary_feature_engineering_sec']} sec
+Dataset Splitting Time    : {result.stage_times['salary_dataset_splitting_sec']} sec
 Total Pipeline Time       : {result.stage_times['total_sec']} sec
 ======================================================================
 """

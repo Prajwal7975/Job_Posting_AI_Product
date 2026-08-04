@@ -33,8 +33,8 @@ env/
 # ======================================================
 # Logs
 # ======================================================
-logs/
-*.log
+# logs/
+# *.log
 
 # ======================================================
 # Testing
@@ -56,7 +56,7 @@ artifacts/master_dataset/latest/
 artifacts/master_dataset/archive/
 artifacts/Summary_reports/
 artifacts/master_dataset/
-logs/
+# logs/
 *.parquet
 
 # ======================================================

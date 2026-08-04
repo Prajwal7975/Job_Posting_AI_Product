@@ -1,0 +1,47 @@
+[2026-08-04 18:23:21,456] 306 src.logger - INFO - ######################################################################
+[2026-08-04 18:23:21,457] 307 src.logger - INFO - SALARY TRAINING PIPELINE STARTED
+[2026-08-04 18:23:21,457] 308 src.logger - INFO - ######################################################################
+[2026-08-04 18:23:21,458] 355 src.logger - INFO - Calculating common feature-store fingerprint...
+[2026-08-04 18:23:21,884] 365 src.logger - INFO - Current feature-store fingerprint: 79c3e0ae9b207df4...
+[2026-08-04 18:23:21,885] 251 src.logger - INFO - Common feature store unchanged and salary modeling dataset already exists.
+[2026-08-04 18:23:21,886] 461 src.logger - INFO - Skipping Salary Feature Engineering.
+[2026-08-04 18:23:21,886] 465 src.logger - INFO - Reusing existing salary dataset: artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+[2026-08-04 18:23:21,886] 482 src.logger - INFO - Starting Salary Dataset Splitting...
+[2026-08-04 18:23:21,886] 78 src.logger - INFO - ======================================================================
+[2026-08-04 18:23:21,886] 79 src.logger - INFO - SALARY DATASET SPLITTING STARTED
+[2026-08-04 18:23:21,886] 80 src.logger - INFO - ======================================================================
+[2026-08-04 18:23:21,965] 425 src.logger - INFO - Existing train/validation/test artifact fingerprints verified.
+[2026-08-04 18:23:21,965] 103 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-04 18:23:21,965] 104 src.logger - INFO - Input dataset unchanged.
+[2026-08-04 18:23:21,965] 105 src.logger - INFO - Split configuration unchanged.
+[2026-08-04 18:23:21,965] 106 src.logger - INFO - Existing artifacts valid.
+[2026-08-04 18:23:21,965] 107 src.logger - INFO - 
+[2026-08-04 18:23:21,965] 108 src.logger - INFO - Salary Dataset Splitting : REUSED
+[2026-08-04 18:23:21,965] 109 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-04 18:23:21,965] 507 src.logger - INFO - Salary Dataset Splitting REUSED in 0.08 sec.
+[2026-08-04 18:23:21,965] 550 src.logger - INFO - ######################################################################
+[2026-08-04 18:23:21,965] 551 src.logger - INFO - SALARY TRAINING PIPELINE COMPLETED
+[2026-08-04 18:23:21,965] 554 src.logger - INFO - ######################################################################
+[2026-08-04 18:23:21,966] 656 src.logger - INFO - 
+======================================================================
+SALARY TRAINING PIPELINE SUMMARY
+======================================================================
+Salary Feature Engineering : REUSED
+Salary Dataset Splitting   : REUSED
+
+Salary Dataset:
+artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+
+Split Artifacts:
+train      -> artifacts\salary_dataset_splits\latest\train.parquet
+validation -> artifacts\salary_dataset_splits\latest\validation.parquet
+test       -> artifacts\salary_dataset_splits\latest\test.parquet
+
+Input Feature Store Fingerprint:
+79c3e0ae9b207df4...
+
+Feature Engineering Time : 0.0 sec
+Dataset Splitting Time    : 0.08 sec
+Total Pipeline Time       : 0.51 sec
+======================================================================
+

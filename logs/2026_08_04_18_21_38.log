@@ -1,0 +1,53 @@
+[2026-08-04 18:21:44,514] 306 src.logger - INFO - ######################################################################
+[2026-08-04 18:21:44,514] 307 src.logger - INFO - SALARY TRAINING PIPELINE STARTED
+[2026-08-04 18:21:44,515] 308 src.logger - INFO - ######################################################################
+[2026-08-04 18:21:44,515] 355 src.logger - INFO - Calculating common feature-store fingerprint...
+[2026-08-04 18:21:44,909] 365 src.logger - INFO - Current feature-store fingerprint: 79c3e0ae9b207df4...
+[2026-08-04 18:21:44,910] 251 src.logger - INFO - Common feature store unchanged and salary modeling dataset already exists.
+[2026-08-04 18:21:44,911] 461 src.logger - INFO - Skipping Salary Feature Engineering.
+[2026-08-04 18:21:44,911] 465 src.logger - INFO - Reusing existing salary dataset: artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+[2026-08-04 18:21:44,911] 482 src.logger - INFO - Starting Salary Dataset Splitting...
+[2026-08-04 18:21:44,911] 78 src.logger - INFO - ======================================================================
+[2026-08-04 18:21:44,911] 79 src.logger - INFO - SALARY DATASET SPLITTING STARTED
+[2026-08-04 18:21:44,911] 80 src.logger - INFO - ======================================================================
+[2026-08-04 18:21:44,924] 315 src.logger - INFO - No previous split state found. Fresh split required.
+[2026-08-04 18:21:45,394] 113 src.logger - INFO - Loading: artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+[2026-08-04 18:21:45,394] 114 src.logger - INFO - Input rows: 48,122
+[2026-08-04 18:21:45,540] 122 src.logger - INFO - Unique posting groups: 46,563
+[2026-08-04 18:21:45,541] 123 src.logger - INFO - Split strategy: GroupShuffleSplit
+[2026-08-04 18:21:45,541] 124 src.logger - INFO - Requested: Train 70%  Validation 10%  Test 20%
+[2026-08-04 18:21:46,021] 149 src.logger - INFO - Actual: Train 70.05%  Validation 9.99%  Test 19.96%
+[2026-08-04 18:21:46,022] 154 src.logger - INFO - Group leakage: Train\u2194Validation = 0  Train\u2194Test = 0  Validation\u2194Test = 0
+[2026-08-04 18:21:46,096] 174 src.logger - INFO - Integrity checks: PASSED
+[2026-08-04 18:21:46,456] 929 src.logger - INFO - Split state written with train/validation/test artifact fingerprints.
+[2026-08-04 18:21:46,490] 193 src.logger - INFO - Artifacts written...
+[2026-08-04 18:21:46,490] 194 src.logger - INFO - ======================================================================
+[2026-08-04 18:21:46,490] 195 src.logger - INFO - SALARY DATASET SPLITTING COMPLETED
+[2026-08-04 18:21:46,490] 196 src.logger - INFO - ======================================================================
+[2026-08-04 18:21:46,515] 507 src.logger - INFO - Salary Dataset Splitting EXECUTED in 1.60 sec.
+[2026-08-04 18:21:46,516] 550 src.logger - INFO - ######################################################################
+[2026-08-04 18:21:46,516] 551 src.logger - INFO - SALARY TRAINING PIPELINE COMPLETED
+[2026-08-04 18:21:46,516] 554 src.logger - INFO - ######################################################################
+[2026-08-04 18:21:46,517] 656 src.logger - INFO - 
+======================================================================
+SALARY TRAINING PIPELINE SUMMARY
+======================================================================
+Salary Feature Engineering : REUSED
+Salary Dataset Splitting   : EXECUTED
+
+Salary Dataset:
+artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+
+Split Artifacts:
+train      -> artifacts\salary_dataset_splits\latest\train.parquet
+validation -> artifacts\salary_dataset_splits\latest\validation.parquet
+test       -> artifacts\salary_dataset_splits\latest\test.parquet
+
+Input Feature Store Fingerprint:
+79c3e0ae9b207df4...
+
+Feature Engineering Time : 0.0 sec
+Dataset Splitting Time    : 1.6 sec
+Total Pipeline Time       : 2.0 sec
+======================================================================
+

@@ -1,0 +1,35 @@
+[2026-08-04 02:51:28,844] 252 src.logger - INFO - ######################################################################
+[2026-08-04 02:51:28,844] 253 src.logger - INFO - SALARY TRAINING PIPELINE STARTED
+[2026-08-04 02:51:28,844] 254 src.logger - INFO - ######################################################################
+[2026-08-04 02:51:28,845] 294 src.logger - INFO - Calculating common feature-store fingerprint...
+[2026-08-04 02:51:29,256] 304 src.logger - INFO - Current feature-store fingerprint: 79c3e0ae9b207df4...
+[2026-08-04 02:51:29,256] 206 src.logger - INFO - Salary modeling dataset does not exist. Feature Engineering will run.
+[2026-08-04 02:51:29,257] 349 src.logger - INFO - Starting Salary Feature Engineering...
+[2026-08-04 02:51:29,257] 81 src.logger - INFO - === Salary Feature Engineering started ===
+[2026-08-04 02:51:29,257] 405 src.logger - INFO - Loading feature store from artifacts\feature_store\latest\feature_store.parquet
+[2026-08-04 02:51:36,121] 412 src.logger - INFO - Feature store loaded -> shape=(154676, 65)
+[2026-08-04 02:51:36,226] 631 src.logger - WARNING - 15 rows contained salary information but could not produce a valid salary candidate.
+[2026-08-04 02:51:37,552] 1228 src.logger - INFO - Salary feature engineering integrity checks passed.
+[2026-08-04 02:51:37,919] 1476 src.logger - INFO - Salary modeling dataset written -> artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet (48122 rows)
+[2026-08-04 02:51:37,919] 1482 src.logger - INFO - Salary Feature Engineering summary: {'dataset_id': '20260803T212129Z_b4694f1b', 'input_row_count': 154676, 'salary_candidate_count': 48664, 'valid_usd_salary_count': 48651, 'rows_removed_missing_salary': 105997, 'rows_removed_currency': 13, 'rows_removed_unsupported_pay_period': 1, 'rows_removed_out_of_bounds': 528, 'final_row_count': 48122, 'target_coverage_pct': 31.1115, 'target_source_counts': {'RANGE_MIDPOINT': 39731, 'MEDIAN_SALARY': 8391}, 'annual_salary_stats': {'min': 10000.0, 'max': 998426.0, 'mean': 96533.48049042017, 'median': 82500.0, 'std': 60434.54297821553}, 'log_salary_stats': {'min': 9.210440366976517, 'max': 13.813936319500868, 'mean': 11.317270246996337, 'median': 11.320565693461432, 'std': 0.5627041816907273}, 'feature_columns': ['title', 'formatted_experience_level', 'formatted_work_type', 'company_state', 'company_country', 'company_size', 'company_employee_count', 'company_follower_count', 'top_industry', 'top_skill', 'skill_list', 'skill_count', 'log_company_employee_count', 'log_company_follower_count'], 'metadata_columns': ['company_name', 'location', 'original_listed_time', 'listed_time', 'dataset_version', 'posting_group_id', 'salary_target_source'], 'leakage_columns_removed': ['min_salary', 'med_salary', 'max_salary', 'normalized_salary', 'listed_min_salary', 'listed_med_salary', 'listed_max_salary', 'salary_available', 'views', 'applies', 'closed_time', 'expiry', 'dataset_version', 'pay_period', 'currency', 'listed_currency', 'listed_pay_period', 'listed_compensation_type'], 'schema_hash': '6d5ac96809cb5c53a97879dfc4db9c6d5251563575a7962b6ec9ec2e1d34795c', 'execution_time_seconds': 8.314, 'integrity_passed': True}
+[2026-08-04 02:51:37,920] 367 src.logger - INFO - === Salary Feature Engineering completed: 48122/154676 rows retained (31.11% coverage) in 8.31s ===
+[2026-08-04 02:51:38,884] 392 src.logger - INFO - Salary Feature Engineering completed in 9.62 sec.
+[2026-08-04 02:51:38,884] 450 src.logger - INFO - ######################################################################
+[2026-08-04 02:51:38,884] 451 src.logger - INFO - SALARY TRAINING PIPELINE COMPLETED
+[2026-08-04 02:51:38,884] 454 src.logger - INFO - ######################################################################
+[2026-08-04 02:51:38,885] 537 src.logger - INFO - 
+======================================================================
+SALARY TRAINING PIPELINE SUMMARY
+======================================================================
+Salary Feature Engineering : EXECUTED
+
+Salary Dataset:
+artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+
+Input Feature Store Fingerprint:
+79c3e0ae9b207df4...
+
+Feature Engineering Time : 9.62 sec
+Total Pipeline Time       : 10.04 sec
+======================================================================
+

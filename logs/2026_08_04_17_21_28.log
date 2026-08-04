@@ -1,0 +1,35 @@
+[2026-08-04 17:21:47,328] 306 src.logger - INFO - ######################################################################
+[2026-08-04 17:21:47,329] 307 src.logger - INFO - SALARY TRAINING PIPELINE STARTED
+[2026-08-04 17:21:47,329] 308 src.logger - INFO - ######################################################################
+[2026-08-04 17:21:47,330] 355 src.logger - INFO - Calculating common feature-store fingerprint...
+[2026-08-04 17:21:47,713] 365 src.logger - INFO - Current feature-store fingerprint: 79c3e0ae9b207df4...
+[2026-08-04 17:21:47,727] 251 src.logger - INFO - Common feature store unchanged and salary modeling dataset already exists.
+[2026-08-04 17:21:47,728] 461 src.logger - INFO - Skipping Salary Feature Engineering.
+[2026-08-04 17:21:47,728] 465 src.logger - INFO - Reusing existing salary dataset: artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+[2026-08-04 17:21:47,728] 482 src.logger - INFO - Starting Salary Dataset Splitting...
+[2026-08-04 17:21:47,728] 74 src.logger - INFO - ======================================================================
+[2026-08-04 17:21:47,728] 75 src.logger - INFO - SALARY DATASET SPLITTING STARTED
+[2026-08-04 17:21:47,728] 76 src.logger - INFO - ======================================================================
+[2026-08-04 17:21:47,762] 291 src.logger - INFO - No previous split state found. Fresh split required.
+[2026-08-04 17:21:48,822] 103 src.logger - INFO - Loading: artifacts\salary_feature_store\latest\salary_modeling_dataset.parquet
+[2026-08-04 17:21:48,823] 104 src.logger - INFO - Input rows: 48,122
+[2026-08-04 17:21:48,908] 112 src.logger - INFO - Unique posting groups: 46,563
+[2026-08-04 17:21:48,908] 113 src.logger - INFO - Split strategy: GroupShuffleSplit
+[2026-08-04 17:21:48,909] 114 src.logger - INFO - Requested: Train 70%  Validation 10%  Test 20%
+[2026-08-04 17:21:50,001] 133 src.logger - INFO - Actual: Train 70.05%  Validation 9.99%  Test 19.96%
+[2026-08-04 17:21:50,001] 138 src.logger - INFO - Group leakage: Train\u2194Validation = 0  Train\u2194Test = 0  Validation\u2194Test = 0
+[2026-08-04 17:21:50,037] 198 src.logger - ERROR - Salary Dataset Splitting failed: SalaryDatasetSplitSummary.__init__() missing 6 required positional arguments: 'train_ratio_deviation', 'validation_ratio_deviation', 'test_ratio_deviation', 'train_target_null_count', 'validation_target_null_count', and 'test_target_null_count'
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_dataset_splitter.py", line 146, in initiate_dataset_splitting
+    summary = self._build_summary(
+        dataset_id=dataset_id,
+    ...<7 lines>...
+        execution_time=execution_time,
+    )
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_dataset_splitter.py", line 625, in _build_summary
+    return SalaryDatasetSplitSummary(
+        dataset_id=dataset_id,
+    ...<26 lines>...
+        integrity_passed=True,
+    )
+TypeError: SalaryDatasetSplitSummary.__init__() missing 6 required positional arguments: 'train_ratio_deviation', 'validation_ratio_deviation', 'test_ratio_deviation', 'train_target_null_count', 'validation_target_null_count', and 'test_target_null_count'
