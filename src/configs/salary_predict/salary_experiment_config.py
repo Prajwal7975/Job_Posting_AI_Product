@@ -1,22 +1,3 @@
-"""
-src/configs/salary_predict/salary_experiment_config.py
-
-Salary Experiment Configuration.
-
-This module answers ONE question: "WHAT should a given salary-model
-experiment be?" It does not answer "HOW do we run it?" — that is the job
-of future components (SalaryPreprocessorBuilder, SalaryModelFactory,
-SalaryModelTrainer, SalaryModelEvaluator, salary_experiment_runner.py).
-
-This module intentionally has ZERO dependency on pandas, numpy, sklearn,
-mlflow, or joblib. It is a pure, standard-library configuration contract:
-dataclasses, enums, validation, deterministic serialization, and a
-deterministic behavior-fingerprint ("config_signature").
-
-Nothing in this file trains a model, reads a dataset, fits a transformer,
-computes a metric, or writes an artifact.
-"""
-
 from __future__ import annotations
 
 import hashlib
@@ -24,8 +5,17 @@ import json
 from dataclasses import dataclass, field, replace
 from enum import Enum
 from types import MappingProxyType
-from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Mapping, Optional, Tuple
-
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    FrozenSet,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Tuple,
+)
 
 # ======================================================================
 # ENUMS
@@ -33,22 +23,12 @@ from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Mapping, Opti
 
 
 class ModelName(str, Enum):
-    """
-    Stable model identifiers. Adding a new algorithm (e.g. ElasticNet)
-    means adding a member here AND teaching the future SalaryModelFactory
-    how to build it — this enum alone does not instantiate anything.
-    """
 
     DUMMY = "dummy"
     RIDGE = "ridge"
 
 
 class SkillEncoding(str, Enum):
-    """
-    How `skill_list` should be represented, if at all. This is a switch,
-    not a feature-list entry — `skill_list` must never appear literally
-    inside `categorical_features`/`numeric_features` (see __post_init__).
-    """
 
     NONE = "none"
     TFIDF = "tfidf"
@@ -80,7 +60,9 @@ class TfidfConfig:
         if (
             not isinstance(self.ngram_range, tuple)
             or len(self.ngram_range) != 2
-            or not all(isinstance(n, int) and not isinstance(n, bool) for n in self.ngram_range)
+            or not all(
+                isinstance(n, int) and not isinstance(n, bool) for n in self.ngram_range
+            )
         ):
             raise ValueError(
                 "ngram_range must be a tuple containing exactly two integers."
@@ -92,9 +74,7 @@ class TfidfConfig:
             raise ValueError("ngram_range values must be >= 1.")
 
         if n_min > n_max:
-            raise ValueError(
-                "ngram_range lower bound must not exceed upper bound."
-            )
+            raise ValueError("ngram_range lower bound must not exceed upper bound.")
 
         if not isinstance(self.min_df, int) or isinstance(self.min_df, bool):
             raise ValueError("min_df must be an integer.")
@@ -107,9 +87,7 @@ class TfidfConfig:
             or isinstance(self.max_df, bool)
             or not (0 < self.max_df <= 1.0)
         ):
-            raise ValueError(
-                "max_df must be numeric and satisfy 0 < max_df <= 1.0."
-            )
+            raise ValueError("max_df must be numeric and satisfy 0 < max_df <= 1.0.")
 
         if self.max_features is not None:
             if (
@@ -117,14 +95,10 @@ class TfidfConfig:
                 or isinstance(self.max_features, bool)
                 or self.max_features <= 0
             ):
-                raise ValueError(
-                    "max_features must be a positive integer if provided."
-                )
+                raise ValueError("max_features must be a positive integer if provided.")
 
         if self.strip_accents not in (None, "ascii", "unicode"):
-            raise ValueError(
-                "strip_accents must be None, 'ascii', or 'unicode'."
-            )
+            raise ValueError("strip_accents must be None, 'ascii', or 'unicode'.")
 
         if not isinstance(self.sublinear_tf, bool):
             raise ValueError("sublinear_tf must be a boolean.")
@@ -164,9 +138,6 @@ OPTIONAL_CATEGORICAL_FEATURES: Tuple[str, ...] = (
     "company_size",
 )
 
-# top_skill is neither "core" nor "optional" in the product-input sense —
-# it is specifically an ablation feature tested by E5, kept in its own
-# group so uses_optional_features doesn't accidentally fire for it.
 ABLATION_CATEGORICAL_FEATURES: Tuple[str, ...] = ("top_skill",)
 
 CORE_NUMERIC_FEATURES: Tuple[str, ...] = ("skill_count",)
@@ -176,17 +147,15 @@ OPTIONAL_NUMERIC_FEATURES: Tuple[str, ...] = ("log_company_employee_count",)
 EXPERIMENTAL_NUMERIC_FEATURES: Tuple[str, ...] = ("log_company_follower_count",)
 
 ALL_KNOWN_CATEGORICAL_FEATURES: FrozenSet[str] = frozenset(
-    CORE_CATEGORICAL_FEATURES + OPTIONAL_CATEGORICAL_FEATURES + ABLATION_CATEGORICAL_FEATURES
+    CORE_CATEGORICAL_FEATURES
+    + OPTIONAL_CATEGORICAL_FEATURES
+    + ABLATION_CATEGORICAL_FEATURES
 )
 
 ALL_KNOWN_NUMERIC_FEATURES: FrozenSet[str] = frozenset(
     CORE_NUMERIC_FEATURES + OPTIONAL_NUMERIC_FEATURES + EXPERIMENTAL_NUMERIC_FEATURES
 )
 
-# Columns that must NEVER become model predictors through this config,
-# regardless of experiment. This includes the targets themselves, raw
-# salary/target-construction leakage fields, split/lineage metadata, and
-# free-text/date metadata. See spec section 31.
 PROTECTED_NON_PREDICTOR_COLUMNS: FrozenSet[str] = frozenset(
     {
         # targets
@@ -271,9 +240,7 @@ class SalaryExperimentConfig:
             ) from exc
 
         if not all(isinstance(key, str) for key in model_params_copy):
-            raise ValueError(
-                "All model_params keys must be strings."
-            )
+            raise ValueError("All model_params keys must be strings.")
 
         object.__setattr__(
             self,
@@ -335,9 +302,13 @@ class SalaryExperimentConfig:
 
         # No duplicate feature names within a single group.
         if len(set(self.categorical_features)) != len(self.categorical_features):
-            raise ValueError(f"Duplicate entries in categorical_features: {self.categorical_features}")
+            raise ValueError(
+                f"Duplicate entries in categorical_features: {self.categorical_features}"
+            )
         if len(set(self.numeric_features)) != len(self.numeric_features):
-            raise ValueError(f"Duplicate entries in numeric_features: {self.numeric_features}")
+            raise ValueError(
+                f"Duplicate entries in numeric_features: {self.numeric_features}"
+            )
 
         # A feature cannot be both categorical and numeric.
         overlap = set(self.categorical_features) & set(self.numeric_features)
@@ -349,8 +320,6 @@ class SalaryExperimentConfig:
 
         combined = set(self.categorical_features) | set(self.numeric_features)
 
-        # Text features are controlled ONLY via use_title / skill_encoding,
-        # never smuggled into the structured feature lists.
         text_leak = combined & {TEXT_FEATURE_TITLE, TEXT_FEATURE_SKILL_LIST}
         if text_leak:
             raise ValueError(
@@ -359,11 +328,13 @@ class SalaryExperimentConfig:
                 "numeric_features."
             )
 
-        # Every declared feature must come from a known, named feature group
-        # — catches typos and prevents silently-inert features.
-        unknown_categorical = set(self.categorical_features) - ALL_KNOWN_CATEGORICAL_FEATURES
+        unknown_categorical = (
+            set(self.categorical_features) - ALL_KNOWN_CATEGORICAL_FEATURES
+        )
         if unknown_categorical:
-            raise ValueError(f"Unknown categorical_features: {sorted(unknown_categorical)}")
+            raise ValueError(
+                f"Unknown categorical_features: {sorted(unknown_categorical)}"
+            )
         unknown_numeric = set(self.numeric_features) - ALL_KNOWN_NUMERIC_FEATURES
         if unknown_numeric:
             raise ValueError(f"Unknown numeric_features: {sorted(unknown_numeric)}")
@@ -383,7 +354,9 @@ class SalaryExperimentConfig:
 
         if self.skill_encoding in (SkillEncoding.NONE, SkillEncoding.MULTIHOT):
             if self.skill_tfidf is not None:
-                raise ValueError(f"skill_tfidf MUST be None when skill_encoding is {self.skill_encoding.value}.")
+                raise ValueError(
+                    f"skill_tfidf MUST be None when skill_encoding is {self.skill_encoding.value}."
+                )
         elif self.skill_encoding == SkillEncoding.TFIDF:
             if self.skill_tfidf is None:
                 object.__setattr__(self, "skill_tfidf", TfidfConfig())
@@ -415,7 +388,11 @@ class SalaryExperimentConfig:
         (title, then skill_list), then categorical, then numeric — in the
         order each group was declared. Never derived from an unordered set.
         """
-        return self.active_text_features + self.active_categorical_features + self.active_numeric_features
+        return (
+            self.active_text_features
+            + self.active_categorical_features
+            + self.active_numeric_features
+        )
 
     @property
     def has_text_features(self) -> bool:
@@ -427,7 +404,9 @@ class SalaryExperimentConfig:
 
     @property
     def uses_optional_features(self) -> bool:
-        optional_categorical = set(self.categorical_features) & set(OPTIONAL_CATEGORICAL_FEATURES)
+        optional_categorical = set(self.categorical_features) & set(
+            OPTIONAL_CATEGORICAL_FEATURES
+        )
         optional_numeric = set(self.numeric_features) & set(OPTIONAL_NUMERIC_FEATURES)
         return bool(optional_categorical or optional_numeric)
 
@@ -450,9 +429,13 @@ class SalaryExperimentConfig:
             "training_target_col": self.training_target_col,
             "annual_target_col": self.annual_target_col,
             "use_title": self.use_title,
-            "title_tfidf": self.title_tfidf.to_dict() if self.title_tfidf is not None else None,
+            "title_tfidf": (
+                self.title_tfidf.to_dict() if self.title_tfidf is not None else None
+            ),
             "skill_encoding": self.skill_encoding.value,
-            "skill_tfidf": self.skill_tfidf.to_dict() if self.skill_tfidf is not None else None,
+            "skill_tfidf": (
+                self.skill_tfidf.to_dict() if self.skill_tfidf is not None else None
+            ),
             "categorical_features": list(self.categorical_features),
             "numeric_features": list(self.numeric_features),
             "active_predictor_features": list(self.active_predictor_features),
@@ -472,7 +455,11 @@ class SalaryExperimentConfig:
             "training_target_col": self.training_target_col,
             "annual_target_col": self.annual_target_col,
             "use_title": self.use_title,
-            "title_tfidf": self.title_tfidf.to_dict() if (self.use_title and self.title_tfidf) else None,
+            "title_tfidf": (
+                self.title_tfidf.to_dict()
+                if (self.use_title and self.title_tfidf)
+                else None
+            ),
             "skill_encoding": self.skill_encoding.value,
             "skill_tfidf": (
                 self.skill_tfidf.to_dict()
@@ -490,7 +477,9 @@ class SalaryExperimentConfig:
         behavior. No timestamps, no paths, no runtime-specific data —
         same behavior-affecting config always produces the same signature.
         """
-        canonical = json.dumps(self._signature_payload(), sort_keys=True, separators=(",", ":"))
+        canonical = json.dumps(
+            self._signature_payload(), sort_keys=True, separators=(",", ":")
+        )
         return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
@@ -512,9 +501,6 @@ def _append_unique(base: Tuple[str, ...], additions: Iterable[str]) -> Tuple[str
 # ======================================================================
 # PREDEFINED (INITIAL) EXPERIMENT BUILDERS — E0 through E3B
 # ======================================================================
-#
-# These are the only experiments whose architecture is knowable up front.
-# They do not depend on any prior experiment's results.
 
 
 def build_e0_config() -> SalaryExperimentConfig:
@@ -603,13 +589,6 @@ def build_e4_config(
     experiment_id: str = "E4",
     experiment_name: str = "optional_feature_expansion",
 ) -> SalaryExperimentConfig:
-    """
-    Add the optional feature expansion (work type, company size, log
-    employee count) on top of whichever architecture won E3A vs E3B.
-    Preserves the base's model family, model params, TF-IDF settings, and
-    skill encoding untouched — only the feature set changes, so any
-    metric delta can be attributed to these features alone.
-    """
     return replace(
         selected_base,
         experiment_id=experiment_id,
@@ -619,8 +598,12 @@ def build_e4_config(
             "plus optional feature expansion (work type, company size, "
             "log employee count)."
         ),
-        categorical_features=_append_unique(selected_base.categorical_features, OPTIONAL_CATEGORICAL_FEATURES),
-        numeric_features=_append_unique(selected_base.numeric_features, OPTIONAL_NUMERIC_FEATURES),
+        categorical_features=_append_unique(
+            selected_base.categorical_features, OPTIONAL_CATEGORICAL_FEATURES
+        ),
+        numeric_features=_append_unique(
+            selected_base.numeric_features, OPTIONAL_NUMERIC_FEATURES
+        ),
     )
 
 
@@ -642,7 +625,9 @@ def build_e5_config(
             f"{selected_base.experiment_id} ({selected_base.experiment_name}) "
             "plus top_skill ablation."
         ),
-        categorical_features=_append_unique(selected_base.categorical_features, ABLATION_CATEGORICAL_FEATURES),
+        categorical_features=_append_unique(
+            selected_base.categorical_features, ABLATION_CATEGORICAL_FEATURES
+        ),
     )
 
 
@@ -666,7 +651,9 @@ def build_e6_config(
             f"{selected_base.experiment_id} ({selected_base.experiment_name}) "
             "plus log_company_follower_count ablation."
         ),
-        numeric_features=_append_unique(selected_base.numeric_features, EXPERIMENTAL_NUMERIC_FEATURES),
+        numeric_features=_append_unique(
+            selected_base.numeric_features, EXPERIMENTAL_NUMERIC_FEATURES
+        ),
     )
 
 
@@ -684,12 +671,7 @@ _INITIAL_EXPERIMENT_BUILDERS: Dict[str, Callable[[], SalaryExperimentConfig]] = 
 
 
 def get_initial_experiment_configs() -> Tuple[SalaryExperimentConfig, ...]:
-    """
-    The full set of experiments whose architecture is knowable without
-    any prior result: E0 through E3B. E4/E5/E6 are intentionally absent —
-    build them with build_e4_config()/build_e5_config()/build_e6_config()
-    once a winning base architecture has actually been selected.
-    """
+
     return tuple(builder() for builder in _INITIAL_EXPERIMENT_BUILDERS.values())
 
 
