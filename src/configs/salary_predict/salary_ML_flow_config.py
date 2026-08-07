@@ -25,15 +25,17 @@ def _project_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
-def _local_path_to_tracking_uri(path: Path) -> str:
-    return path.resolve().as_uri()
+# def _local_path_to_tracking_uri(path: Path) -> str:
+#     return path.resolve().as_uri()
 
 
 def _default_tracking_uri() -> str:
     env_value = os.environ.get(ENV_TRACKING_URI)
     if env_value:
         return env_value
-    return _local_path_to_tracking_uri(_project_root() / "mlruns")
+
+    db_path = (_project_root() / "mlflow.db").resolve()
+    return f"sqlite:///{db_path.as_posix()}"
 
 
 def _default_experiment_name() -> str:
@@ -93,12 +95,12 @@ class SalaryMLflowConfig:
             raise TypeError(
                 f"tracking_uri must be a string, got {type(self.tracking_uri).__name__}."
             )
-            
+
         if _is_malformed_tracking_uri(self.tracking_uri):
             raise ValueError(
                 f"tracking_uri is empty or malformed: {self.tracking_uri!r}"
             )
-            
+
         if _is_blank(self.experiment_name):
             raise ValueError("experiment_name must not be empty.")
         if _is_blank(self.project_name):
@@ -109,7 +111,7 @@ class SalaryMLflowConfig:
             raise ValueError("run_name_prefix must not be empty.")
         if _is_blank(self.registered_model_name):
             raise ValueError("registered_model_name must not be empty.")
-            
+
         # --- Validate artifact_location type first ---
         if self.artifact_location is not None:
             if not isinstance(self.artifact_location, str):
@@ -120,12 +122,12 @@ class SalaryMLflowConfig:
                 raise ValueError(
                     "artifact_location must be either None or a non-empty string."
                 )
-            
+
         if not isinstance(self.tracking_enabled, bool):
             raise TypeError(
                 f"tracking_enabled must be a bool, got {type(self.tracking_enabled).__name__}."
             )
-            
+
         # --- Validate max_parameter_length type first ---
         if not isinstance(self.max_parameter_length, int):
             raise TypeError(

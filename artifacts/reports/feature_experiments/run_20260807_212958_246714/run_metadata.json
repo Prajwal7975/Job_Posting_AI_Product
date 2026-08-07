@@ -1,0 +1,10 @@
+{
+  "timestamp": "20260807_212958_246714",
+  "winner_experiment": "E3B",
+  "ranking_metric": "annual_r2",
+  "winner_model": "ridge",
+  "winner_score": 0.5268790684895941,
+  "total_experiments": 5,
+  "successful_experiments": 5,
+  "failed_experiments": 0
+}

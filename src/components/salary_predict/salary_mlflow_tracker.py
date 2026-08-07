@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from mlflow.tracking import MlflowClient
 import json
 import os
 import platform
@@ -12,18 +12,21 @@ from dataclasses import asdict, dataclass, is_dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional, TypeVar
-
+import shutil
+from types import MappingProxyType
 import numpy as np
 import mlflow
 import mlflow.sklearn
 from mlflow.exceptions import MlflowException
 from mlflow.tracking import MlflowClient
-
+from contextlib import contextmanager
 from src.logger import logging
 from src.exception import CustomException
 from src.configs.salary_predict.salary_experiment_config import SalaryExperimentConfig
 from src.configs.salary_predict.salary_ML_flow_config import SalaryMLflowConfig
-from src.components.salary_predict.salary_training_runner import SalaryTrainingResult
+from src.components.salary_predict.salary_single_experiment_runner import (
+    SalaryTrainingResult,
+)
 
 T = TypeVar("T")
 
@@ -31,6 +34,7 @@ T = TypeVar("T")
 # ======================================================================
 # RUN INFO
 # ======================================================================
+
 
 @dataclass(frozen=True)
 class SalaryMLflowRunInfo:
@@ -49,6 +53,7 @@ class SalaryMLflowRunInfo:
 # ======================================================================
 # TRACKER
 # ======================================================================
+
 
 class SalaryMLflowTracker:
 
@@ -154,7 +159,9 @@ class SalaryMLflowTracker:
                 if overflow_features:
                     self._log_overflow_features_artifact(overflow_features)
 
-                if (log_model or register_model) and training_result.fitted_workflow is not None:
+                if (
+                    log_model or register_model
+                ) and training_result.fitted_workflow is not None:
                     registered_name = (
                         f"{self.config.registered_model_name}_{experiment_config.model_name}"
                         if register_model
@@ -167,7 +174,7 @@ class SalaryMLflowTracker:
 
                 ended_at_timestamp = time.time()
                 ended_at_perf = time.perf_counter()
-                
+
                 run_info = SalaryMLflowRunInfo(
                     run_id=active_run.info.run_id,
                     mlflow_experiment_id=active_run.info.experiment_id,
@@ -201,7 +208,10 @@ class SalaryMLflowTracker:
     # Tracking infrastructure
     # ------------------------------------------------------------------
     def _ensure_tracking_uri(self) -> None:
-        if self.config.is_local_tracking and self.config.local_tracking_path is not None:
+        if (
+            self.config.is_local_tracking
+            and self.config.local_tracking_path is not None
+        ):
             Path(self.config.local_tracking_path).mkdir(parents=True, exist_ok=True)
         mlflow.set_tracking_uri(self.config.tracking_uri)
 
@@ -242,14 +252,18 @@ class SalaryMLflowTracker:
     ) -> tuple[Dict[str, str], Dict[str, Any]]:
         params: Dict[str, str] = {}
         params.update(self._build_model_params(experiment_config))
-        
-        feature_params, overflow_features = self._build_feature_params(experiment_config)
+
+        feature_params, overflow_features = self._build_feature_params(
+            experiment_config
+        )
         params.update(feature_params)
-        
+
         params.update(self._build_dataset_params(experiment_config))
         return params, overflow_features
 
-    def _build_model_params(self, experiment_config: SalaryExperimentConfig) -> Dict[str, str]:
+    def _build_model_params(
+        self, experiment_config: SalaryExperimentConfig
+    ) -> Dict[str, str]:
         params: Dict[str, str] = {
             "experiment_id": experiment_config.experiment_id,
             "model.name": experiment_config.model_name,
@@ -283,7 +297,9 @@ class SalaryMLflowTracker:
         return params, overflow_features
 
     @staticmethod
-    def _build_dataset_params(experiment_config: SalaryExperimentConfig) -> Dict[str, str]:
+    def _build_dataset_params(
+        experiment_config: SalaryExperimentConfig,
+    ) -> Dict[str, str]:
         return {
             "training_target_col": experiment_config.training_target_col,
             "annual_target_col": experiment_config.annual_target_col,
@@ -324,7 +340,9 @@ class SalaryMLflowTracker:
             "data.raw_feature_count": training_result.raw_feature_count,
         }
         if training_result.transformed_feature_count is not None:
-            raw_metrics["data.transformed_feature_count"] = training_result.transformed_feature_count
+            raw_metrics["data.transformed_feature_count"] = (
+                training_result.transformed_feature_count
+            )
 
         metrics: Dict[str, float] = {}
         for name, value in raw_metrics.items():
@@ -332,7 +350,9 @@ class SalaryMLflowTracker:
                 continue
             numeric_value = float(value)
             if not np.isfinite(numeric_value):
-                logging.warning(f"Skipping non-finite metric '{name}'={numeric_value!r}; not logged to MLflow.")
+                logging.warning(
+                    f"Skipping non-finite metric '{name}'={numeric_value!r}; not logged to MLflow."
+                )
                 continue
             metrics[name] = numeric_value
         return metrics
@@ -349,11 +369,15 @@ class SalaryMLflowTracker:
                 with open(config_path, "w", encoding="utf-8") as f:
                     json.dump(config_dict, f, indent=2, default=str)
                 mlflow.log_artifact(str(config_path), artifact_path="config")
-                logging.info("Logged experiment configuration to 'config/experiment_config.json'.")
+                logging.info(
+                    "Logged experiment configuration to 'config/experiment_config.json'."
+                )
         except Exception as e:
             logging.warning(f"Could not log config artifact (non-fatal): {e}")
 
-    def _log_overflow_features_artifact(self, overflow_features: Dict[str, Any]) -> None:
+    def _log_overflow_features_artifact(
+        self, overflow_features: Dict[str, Any]
+    ) -> None:
         """Dumps truncated long feature parameters as an artifact."""
         try:
             with tempfile.TemporaryDirectory() as tmp_dir:
@@ -361,7 +385,9 @@ class SalaryMLflowTracker:
                 with open(feat_path, "w", encoding="utf-8") as f:
                     json.dump(overflow_features, f, indent=2, default=str)
                 mlflow.log_artifact(str(feat_path), artifact_path="config")
-                logging.info("Logged overflow feature lists to 'config/feature_lists.json'.")
+                logging.info(
+                    "Logged overflow feature lists to 'config/feature_lists.json'."
+                )
         except Exception as e:
             logging.warning(f"Could not log feature list artifact (non-fatal): {e}")
 
@@ -375,7 +401,9 @@ class SalaryMLflowTracker:
                 artifact_path="model",
                 registered_model_name=registered_model_name,
             )
-            logging.info("Logged fitted pipeline as MLflow model artifact under 'model/'.")
+            logging.info(
+                "Logged fitted pipeline as MLflow model artifact under 'model/'."
+            )
             if registered_model_name:
                 logging.info(f"Registered model as '{registered_model_name}'.")
         except Exception as e:
@@ -387,33 +415,57 @@ class SalaryMLflowTracker:
     @staticmethod
     def _fetch_git_commit() -> Optional[str]:
         try:
-            return subprocess.check_output(
-                ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
-            ).decode("ascii").strip()
+            return (
+                subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
+                )
+                .decode("ascii")
+                .strip()
+            )
         except Exception:
             return None
 
     @staticmethod
     def _fetch_git_branch() -> Optional[str]:
         try:
-            return subprocess.check_output(
-                ["git", "rev-parse", "--abbrev-ref", "HEAD"], stderr=subprocess.DEVNULL
-            ).decode("ascii").strip()
+            return (
+                subprocess.check_output(
+                    ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                    stderr=subprocess.DEVNULL,
+                )
+                .decode("ascii")
+                .strip()
+            )
         except Exception:
             return None
 
     @staticmethod
     def _dataclass_to_dict(obj: Any) -> Any:
         if is_dataclass(obj):
-            return {k: SalaryMLflowTracker._dataclass_to_dict(v) for k, v in asdict(obj).items()}
+            return {
+                field.name: SalaryMLflowTracker._dataclass_to_dict(
+                    getattr(obj, field.name)
+                )
+                for field in obj.__dataclass_fields__.values()
+            }
+
         if isinstance(obj, Enum):
             return obj.value
+
         if isinstance(obj, Path):
             return str(obj)
+
+        if isinstance(obj, MappingProxyType):
+            return dict(obj)
+
         if isinstance(obj, (list, tuple)):
             return [SalaryMLflowTracker._dataclass_to_dict(v) for v in obj]
+
         if isinstance(obj, dict):
-            return {k: SalaryMLflowTracker._dataclass_to_dict(v) for k, v in obj.items()}
+            return {
+                k: SalaryMLflowTracker._dataclass_to_dict(v) for k, v in obj.items()
+            }
+
         return obj
 
     @staticmethod
@@ -434,10 +486,240 @@ class SalaryMLflowTracker:
                     time.sleep(delay)
                     delay *= 2.0
                 else:
-                    logging.error(f"MLflow operation failed after {max_retries} attempts.")
+                    logging.error(
+                        f"MLflow operation failed after {max_retries} attempts."
+                    )
             except (TypeError, ValueError) as e:
                 # Instantly raise deterministic coding/typing errors without retrying
                 raise e
         if last_exception:
             raise last_exception
         raise RuntimeError("Retry operation failed without recording exception.")
+
+    # ------------------------------------------------------------------
+    # Generic Artifact Logging API
+    # ------------------------------------------------------------------
+
+    def log_artifact(
+        self, artifact_path: str | Path, artifact_folder: str | None = None
+    ) -> None:
+
+        artifact_path = Path(artifact_path)
+
+        if not artifact_path.exists():
+            raise FileNotFoundError(f"Artifact not found: {artifact_path}")
+
+        active_run = mlflow.active_run()
+
+        if active_run is None:
+            logging.warning(
+                "No active MLflow run. Skipping artifact logging "
+                f"for '{artifact_path.name}'."
+            )
+            return
+
+        self._execute_with_retry(
+            lambda: mlflow.log_artifact(
+                local_path=str(artifact_path),
+                artifact_path=artifact_folder,
+            )
+        )
+
+        logging.info(
+            f"Logged artifact '{artifact_path.name}' " f"to '{artifact_folder or '/'}'."
+        )
+
+    def log_artifacts(
+        self,
+        directory: str | Path,
+        artifact_folder: str | None = None,
+    ) -> None:
+
+        directory = Path(directory)
+
+        if not directory.exists():
+            raise FileNotFoundError(f"Directory not found: {directory}")
+
+        active_run = mlflow.active_run()
+
+        if active_run is None:
+            logging.warning(
+                "No active MLflow run. "
+                f"Skipping directory logging for '{directory.name}'."
+            )
+            return
+
+        self._execute_with_retry(
+            lambda: mlflow.log_artifacts(
+                local_dir=str(directory),
+                artifact_path=artifact_folder,
+            )
+        )
+
+        logging.info(f"Logged artifact directory '{directory.name}'.")
+
+    def log_dict(
+        self,
+        data: Dict[str, Any],
+        filename: str,
+        artifact_folder: str | None = None,
+    ) -> None:
+
+        with tempfile.TemporaryDirectory() as tmp:
+            file_path = Path(tmp) / filename
+
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(
+                    data,
+                    f,
+                    indent=2,
+                    default=str,
+                )
+
+            self.log_artifact(
+                file_path,
+                artifact_folder,
+            )
+
+    def log_text(
+        self,
+        text: str,
+        filename: str,
+        artifact_folder: str | None = None,
+    ) -> None:
+
+        with tempfile.TemporaryDirectory() as tmp:
+
+            file_path = Path(tmp) / filename
+
+            file_path.write_text(
+                text,
+                encoding="utf-8",
+            )
+
+            self.log_artifact(
+                file_path,
+                artifact_folder,
+            )
+
+    def log_directory_copy(
+        self,
+        source_dir: str | Path,
+        artifact_folder: str | None = None,
+    ) -> None:
+
+        source_dir = Path(source_dir)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            destination = Path(tmp) / source_dir.name
+
+            shutil.copytree(
+                source_dir,
+                destination,
+            )
+
+            self.log_artifacts(
+                destination,
+                artifact_folder,
+            )
+
+    @contextmanager
+    def start_run(self, run_name: str):
+
+        self._ensure_tracking_uri()
+
+        experiment = self._get_or_create_experiment()
+
+        with mlflow.start_run(
+            experiment_id=experiment.experiment_id, run_name=run_name
+        ) as run:
+            mlflow.set_tags(self.config.default_tags())
+            logging.info("Started MLflow run '%s'", run.info.run_id)
+
+            try:
+                yield run
+
+            finally:
+                logging.info(
+                    "Finished MLflow run '%s'",
+                    run.info.run_id,
+                )
+
+    def _get_or_create_experiment(self):
+        client = MlflowClient(tracking_uri=self.config.tracking_uri)
+
+        experiment = client.get_experiment_by_name(self.config.experiment_name)
+
+        if experiment is None:
+            experiment_id = client.create_experiment(self.config.experiment_name)
+            experiment = client.get_experiment(experiment_id)
+
+        return experiment
+
+    def log_tags(self, tags: Dict[str, Any]) -> None:
+
+        active_run = mlflow.active_run()
+
+        if active_run is None:
+            logging.warning("No active MLflow run. Skipping tag logging.")
+            return
+
+        cleaned = {str(k): str(v) for k, v in tags.items() if v is not None}
+
+        self._execute_with_retry(lambda: mlflow.set_tags(cleaned))
+
+        logging.info("Logged %d MLflow tags.", len(cleaned))
+
+    def log_metrics(self, metrics: Dict[str, Any]) -> None:
+
+        active_run = mlflow.active_run()
+
+        if active_run is None:
+            logging.warning("No active MLflow run. Skipping metric logging.")
+            return
+
+        cleaned_metrics: Dict[str, float] = {}
+
+        for key, value in metrics.items():
+
+            if value is None:
+                continue
+
+            numeric_value = float(value)
+
+            if not np.isfinite(numeric_value):
+                continue
+
+            cleaned_metrics[str(key)] = numeric_value
+
+        if not cleaned_metrics:
+            logging.warning("No valid metrics to log.")
+            return
+
+        self._execute_with_retry(lambda: mlflow.log_metrics(cleaned_metrics))
+
+        logging.info(
+            "Logged %d MLflow metrics.",
+            len(cleaned_metrics),
+        )
+
+    def log_params(self, params: Dict[str, Any]) -> None:
+        active_run = mlflow.active_run()
+
+        if active_run is None:
+            logging.warning("No active MLflow run. Skipping parameter logging.")
+            return
+
+        cleaned = {
+            str(k): self._safe_param_value(v)
+            for k, v in params.items()
+            if v is not None
+        }
+
+        if not cleaned:
+            logging.warning("No valid parameters to log.")
+            return
+
+        self._execute_with_retry(lambda: mlflow.log_params(cleaned))
+
+        logging.info("Logged %d MLflow parameters.", len(cleaned))

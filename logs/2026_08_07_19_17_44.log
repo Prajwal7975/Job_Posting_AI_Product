@@ -1,0 +1,584 @@
+[2026-08-07 19:17:47,303] 357 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:47,304] 358 src.logger - INFO - FEATURE EXPERIMENT RUNNER STARTED
+[2026-08-07 19:17:47,304] 359 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:47,304] 360 src.logger - INFO - Experiments queued : ['E0', 'E1', 'E2', 'E3A', 'E3B']
+[2026-08-07 19:17:47,304] 361 src.logger - INFO - Ranking metric     : annual_r2
+[2026-08-07 19:17:47,304] 477 src.logger - INFO - 
+[2026-08-07 19:17:47,304] 478 src.logger - INFO - Running Experiment E0
+[2026-08-07 19:17:47,304] 200 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:47,304] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 19:17:47,304] 202 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:47,304] 204 src.logger - INFO - Experiment ID   : E0
+[2026-08-07 19:17:47,304] 205 src.logger - INFO - Experiment Name : dummy_median_baseline
+[2026-08-07 19:17:47,304] 206 src.logger - INFO - Model           : dummy
+[2026-08-07 19:17:47,305] 207 src.logger - INFO - Config Signature: 64fee8a8654d710d7faeecc918fc1d376987127da469b63f7152a9554d91c903
+[2026-08-07 19:17:47,306] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 19:17:47,306] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 19:17:49,139] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 19:17:49,139] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 19:17:49,140] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 19:17:49,140] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 19:17:49,140] 318 src.logger - INFO - Building preprocessor for experiment_id='E0' (dummy_median_baseline)...
+[2026-08-07 19:17:49,140] 325 src.logger - INFO - Dummy baseline model requires no feature preprocessor. Returning None.
+[2026-08-07 19:17:49,140] 32 src.logger - INFO - Building salary estimator for experiment_id='E0'...
+[2026-08-07 19:17:49,140] 37 src.logger - INFO - Model family: dummy
+[2026-08-07 19:17:49,140] 39 src.logger - INFO - Model parameters: {'strategy': 'median'}
+[2026-08-07 19:17:49,140] 46 src.logger - INFO - Successfully constructed unfitted DummyRegressor estimator.
+[2026-08-07 19:17:49,141] 277 src.logger - INFO - Required raw features: (none - dummy baseline)
+[2026-08-07 19:17:49,141] 304 src.logger - INFO - No preprocessor required (dummy baseline).
+[2026-08-07 19:17:49,141] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 19:17:49,141] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 19:17:49,141] 318 src.logger - INFO - Training started...
+[2026-08-07 19:17:49,161] 325 src.logger - INFO - Training completed in 0.0203 sec
+[2026-08-07 19:17:49,162] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 19:17:49,162] 341 src.logger - INFO - Validation prediction completed in 0.0001 sec
+[2026-08-07 19:17:49,164] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:49,164] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 19:17:49,164] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:49,164] 419 src.logger - INFO - Log MAE       : 0.465512
+[2026-08-07 19:17:49,164] 424 src.logger - INFO - Log RMSE      : 0.564650
+[2026-08-07 19:17:49,164] 429 src.logger - INFO - Log R2        : -0.000351
+[2026-08-07 19:17:49,164] 434 src.logger - INFO - Annual MAE    : 42435.59
+[2026-08-07 19:17:49,164] 439 src.logger - INFO - Annual RMSE   : 63041.68
+[2026-08-07 19:17:49,164] 444 src.logger - INFO - Annual R2     : -0.048378
+[2026-08-07 19:17:49,164] 453 src.logger - INFO - Median APE    : 39.17%
+[2026-08-07 19:17:49,164] 492 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,165] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 19:17:49,165] 494 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,181] 199 src.logger - ERROR - MLflow tracking failed for experiment_id=E0: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+[2026-08-07 19:17:49,351] 495 src.logger - ERROR - Experiment E0 FAILED: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_allFeatures_exp_runner.py", line 483, in _run_single_experiment
+    self.mlflow_tracker.track_training_result(experiment_config=config, training_result=result)
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 204, in track_training_result
+    raise CustomException(e, sys) from e
+src.exception.CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+[2026-08-07 19:17:49,353] 499 src.logger - WARNING - Failed to log failed run status to MLflow: 'SalaryMLflowTracker' object has no attribute 'track_failed_run'
+[2026-08-07 19:17:49,353] 477 src.logger - INFO - 
+[2026-08-07 19:17:49,353] 478 src.logger - INFO - Running Experiment E1
+[2026-08-07 19:17:49,353] 200 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,353] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 19:17:49,353] 202 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,353] 204 src.logger - INFO - Experiment ID   : E1
+[2026-08-07 19:17:49,353] 205 src.logger - INFO - Experiment Name : structured_ridge
+[2026-08-07 19:17:49,353] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 19:17:49,353] 207 src.logger - INFO - Config Signature: 54d2a22a539637d331826c9b4adf88916f71fb1948f2329f8993001117ece08e
+[2026-08-07 19:17:49,354] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 19:17:49,354] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 19:17:49,422] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 19:17:49,422] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 19:17:49,423] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 19:17:49,423] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 19:17:49,423] 318 src.logger - INFO - Building preprocessor for experiment_id='E1' (structured_ridge)...
+[2026-08-07 19:17:49,423] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E1' with 2 branch(es): ['categorical', 'numeric'].
+[2026-08-07 19:17:49,423] 32 src.logger - INFO - Building salary estimator for experiment_id='E1'...
+[2026-08-07 19:17:49,423] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 19:17:49,423] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 19:17:49,424] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 19:17:49,436] 270 src.logger - INFO - Required raw features: ['formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 19:17:49,436] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 19:17:49,436] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 19:17:49,436] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 19:17:49,436] 318 src.logger - INFO - Training started...
+[2026-08-07 19:17:49,639] 325 src.logger - INFO - Training completed in 0.2024 sec
+[2026-08-07 19:17:49,639] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 19:17:49,653] 341 src.logger - INFO - Validation prediction completed in 0.0144 sec
+[2026-08-07 19:17:49,656] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:49,656] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 19:17:49,656] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:49,656] 419 src.logger - INFO - Log MAE       : 0.347525
+[2026-08-07 19:17:49,656] 424 src.logger - INFO - Log RMSE      : 0.447149
+[2026-08-07 19:17:49,656] 429 src.logger - INFO - Log R2        : 0.372666
+[2026-08-07 19:17:49,656] 434 src.logger - INFO - Annual MAE    : 32488.93
+[2026-08-07 19:17:49,656] 439 src.logger - INFO - Annual RMSE   : 52486.36
+[2026-08-07 19:17:49,656] 444 src.logger - INFO - Annual R2     : 0.273300
+[2026-08-07 19:17:49,656] 453 src.logger - INFO - Median APE    : 27.74%
+[2026-08-07 19:17:49,656] 460 src.logger - INFO - Transformed Features: 725
+[2026-08-07 19:17:49,657] 492 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,657] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 19:17:49,657] 494 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,663] 199 src.logger - ERROR - MLflow tracking failed for experiment_id=E1: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+[2026-08-07 19:17:49,665] 495 src.logger - ERROR - Experiment E1 FAILED: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_allFeatures_exp_runner.py", line 483, in _run_single_experiment
+    self.mlflow_tracker.track_training_result(experiment_config=config, training_result=result)
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 204, in track_training_result
+    raise CustomException(e, sys) from e
+src.exception.CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+[2026-08-07 19:17:49,666] 499 src.logger - WARNING - Failed to log failed run status to MLflow: 'SalaryMLflowTracker' object has no attribute 'track_failed_run'
+[2026-08-07 19:17:49,667] 477 src.logger - INFO - 
+[2026-08-07 19:17:49,667] 478 src.logger - INFO - Running Experiment E2
+[2026-08-07 19:17:49,667] 200 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,667] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 19:17:49,667] 202 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:49,667] 204 src.logger - INFO - Experiment ID   : E2
+[2026-08-07 19:17:49,667] 205 src.logger - INFO - Experiment Name : title_tfidf_ridge
+[2026-08-07 19:17:49,667] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 19:17:49,667] 207 src.logger - INFO - Config Signature: 732b6cf8f6fdc08e498df683f7dd4267437f1091fe588c03955ca6bced1f18a2
+[2026-08-07 19:17:49,667] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 19:17:49,667] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 19:17:49,727] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 19:17:49,727] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 19:17:49,728] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 19:17:49,728] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 19:17:49,728] 318 src.logger - INFO - Building preprocessor for experiment_id='E2' (title_tfidf_ridge)...
+[2026-08-07 19:17:49,728] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E2' with 3 branch(es): ['title_tfidf', 'categorical', 'numeric'].
+[2026-08-07 19:17:49,728] 32 src.logger - INFO - Building salary estimator for experiment_id='E2'...
+[2026-08-07 19:17:49,728] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 19:17:49,728] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 19:17:49,728] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 19:17:49,732] 270 src.logger - INFO - Required raw features: ['title', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 19:17:49,732] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 19:17:49,732] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 19:17:49,732] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 19:17:49,732] 318 src.logger - INFO - Training started...
+[2026-08-07 19:17:50,344] 325 src.logger - INFO - Training completed in 0.6117 sec
+[2026-08-07 19:17:50,344] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 19:17:50,397] 341 src.logger - INFO - Validation prediction completed in 0.0527 sec
+[2026-08-07 19:17:50,406] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:50,406] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 19:17:50,406] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:50,406] 419 src.logger - INFO - Log MAE       : 0.240691
+[2026-08-07 19:17:50,406] 424 src.logger - INFO - Log RMSE      : 0.330623
+[2026-08-07 19:17:50,406] 429 src.logger - INFO - Log R2        : 0.657027
+[2026-08-07 19:17:50,406] 434 src.logger - INFO - Annual MAE    : 23449.26
+[2026-08-07 19:17:50,406] 439 src.logger - INFO - Annual RMSE   : 42492.93
+[2026-08-07 19:17:50,406] 444 src.logger - INFO - Annual R2     : 0.523683
+[2026-08-07 19:17:50,406] 453 src.logger - INFO - Median APE    : 18.15%
+[2026-08-07 19:17:50,406] 460 src.logger - INFO - Transformed Features: 5847
+[2026-08-07 19:17:50,406] 492 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:50,406] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 19:17:50,406] 494 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:50,413] 199 src.logger - ERROR - MLflow tracking failed for experiment_id=E2: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+[2026-08-07 19:17:50,414] 495 src.logger - ERROR - Experiment E2 FAILED: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_allFeatures_exp_runner.py", line 483, in _run_single_experiment
+    self.mlflow_tracker.track_training_result(experiment_config=config, training_result=result)
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 204, in track_training_result
+    raise CustomException(e, sys) from e
+src.exception.CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+[2026-08-07 19:17:50,416] 499 src.logger - WARNING - Failed to log failed run status to MLflow: 'SalaryMLflowTracker' object has no attribute 'track_failed_run'
+[2026-08-07 19:17:50,417] 477 src.logger - INFO - 
+[2026-08-07 19:17:50,417] 478 src.logger - INFO - Running Experiment E3A
+[2026-08-07 19:17:50,417] 200 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:50,417] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 19:17:50,417] 202 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:50,417] 204 src.logger - INFO - Experiment ID   : E3A
+[2026-08-07 19:17:50,417] 205 src.logger - INFO - Experiment Name : title_skills_tfidf_ridge
+[2026-08-07 19:17:50,417] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 19:17:50,417] 207 src.logger - INFO - Config Signature: c441717f2c7f095d5d9f481ce974a03b7e099392bbfcfaace3a08c3c0bb91fe5
+[2026-08-07 19:17:50,417] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 19:17:50,417] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 19:17:50,472] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 19:17:50,472] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 19:17:50,473] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 19:17:50,473] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 19:17:50,473] 318 src.logger - INFO - Building preprocessor for experiment_id='E3A' (title_skills_tfidf_ridge)...
+[2026-08-07 19:17:50,473] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E3A' with 4 branch(es): ['title_tfidf', 'skills_tfidf', 'categorical', 'numeric'].
+[2026-08-07 19:17:50,473] 32 src.logger - INFO - Building salary estimator for experiment_id='E3A'...
+[2026-08-07 19:17:50,473] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 19:17:50,473] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 19:17:50,473] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 19:17:50,479] 270 src.logger - INFO - Required raw features: ['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 19:17:50,479] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 19:17:50,479] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 19:17:50,479] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 19:17:50,479] 318 src.logger - INFO - Training started...
+[2026-08-07 19:17:51,186] 325 src.logger - INFO - Training completed in 0.7075 sec
+[2026-08-07 19:17:51,186] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 19:17:51,260] 341 src.logger - INFO - Validation prediction completed in 0.0728 sec
+[2026-08-07 19:17:51,364] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:51,364] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 19:17:51,364] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:51,364] 419 src.logger - INFO - Log MAE       : 0.239405
+[2026-08-07 19:17:51,364] 424 src.logger - INFO - Log RMSE      : 0.329286
+[2026-08-07 19:17:51,364] 429 src.logger - INFO - Log R2        : 0.659795
+[2026-08-07 19:17:51,364] 434 src.logger - INFO - Annual MAE    : 23355.37
+[2026-08-07 19:17:51,364] 439 src.logger - INFO - Annual RMSE   : 42356.84
+[2026-08-07 19:17:51,364] 444 src.logger - INFO - Annual R2     : 0.526729
+[2026-08-07 19:17:51,364] 453 src.logger - INFO - Median APE    : 17.77%
+[2026-08-07 19:17:51,364] 460 src.logger - INFO - Transformed Features: 6189
+[2026-08-07 19:17:51,365] 492 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:51,365] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 19:17:51,365] 494 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:51,373] 199 src.logger - ERROR - MLflow tracking failed for experiment_id=E3A: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+[2026-08-07 19:17:51,374] 495 src.logger - ERROR - Experiment E3A FAILED: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_allFeatures_exp_runner.py", line 483, in _run_single_experiment
+    self.mlflow_tracker.track_training_result(experiment_config=config, training_result=result)
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 204, in track_training_result
+    raise CustomException(e, sys) from e
+src.exception.CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+[2026-08-07 19:17:51,375] 499 src.logger - WARNING - Failed to log failed run status to MLflow: 'SalaryMLflowTracker' object has no attribute 'track_failed_run'
+[2026-08-07 19:17:51,376] 477 src.logger - INFO - 
+[2026-08-07 19:17:51,376] 478 src.logger - INFO - Running Experiment E3B
+[2026-08-07 19:17:51,376] 200 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:51,376] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 19:17:51,376] 202 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:51,376] 204 src.logger - INFO - Experiment ID   : E3B
+[2026-08-07 19:17:51,376] 205 src.logger - INFO - Experiment Name : title_skills_multihot_ridge
+[2026-08-07 19:17:51,376] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 19:17:51,376] 207 src.logger - INFO - Config Signature: 8257cabbe5f2d7fa15b13df6392c2a73e1383e834a8c8609c0a7c1bf6770d84d
+[2026-08-07 19:17:51,376] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 19:17:51,376] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 19:17:51,439] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 19:17:51,439] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 19:17:51,439] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 19:17:51,439] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 19:17:51,439] 318 src.logger - INFO - Building preprocessor for experiment_id='E3B' (title_skills_multihot_ridge)...
+[2026-08-07 19:17:51,439] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E3B' with 4 branch(es): ['title_tfidf', 'skills_multihot', 'categorical', 'numeric'].
+[2026-08-07 19:17:51,439] 32 src.logger - INFO - Building salary estimator for experiment_id='E3B'...
+[2026-08-07 19:17:51,439] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 19:17:51,439] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 19:17:51,439] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 19:17:51,445] 270 src.logger - INFO - Required raw features: ['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 19:17:51,445] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 19:17:51,445] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 19:17:51,445] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 19:17:51,445] 318 src.logger - INFO - Training started...
+[2026-08-07 19:17:52,388] 325 src.logger - INFO - Training completed in 0.9420 sec
+[2026-08-07 19:17:52,388] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 19:17:52,453] 341 src.logger - INFO - Validation prediction completed in 0.0643 sec
+[2026-08-07 19:17:52,463] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:52,463] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 19:17:52,463] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 19:17:52,463] 419 src.logger - INFO - Log MAE       : 0.239776
+[2026-08-07 19:17:52,463] 424 src.logger - INFO - Log RMSE      : 0.329601
+[2026-08-07 19:17:52,463] 429 src.logger - INFO - Log R2        : 0.659143
+[2026-08-07 19:17:52,463] 434 src.logger - INFO - Annual MAE    : 23357.10
+[2026-08-07 19:17:52,463] 439 src.logger - INFO - Annual RMSE   : 42350.15
+[2026-08-07 19:17:52,463] 444 src.logger - INFO - Annual R2     : 0.526879
+[2026-08-07 19:17:52,463] 453 src.logger - INFO - Median APE    : 17.84%
+[2026-08-07 19:17:52,463] 460 src.logger - INFO - Transformed Features: 5882
+[2026-08-07 19:17:52,464] 492 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:52,464] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 19:17:52,464] 494 src.logger - INFO - ======================================================================
+[2026-08-07 19:17:52,472] 199 src.logger - ERROR - MLflow tracking failed for experiment_id=E3B: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+[2026-08-07 19:17:52,473] 495 src.logger - ERROR - Experiment E3B FAILED: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 120, in track_training_result
+    mlflow_experiment_id = self._resolve_experiment_id()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 218, in _resolve_experiment_id
+    client = MlflowClient(tracking_uri=self.config.tracking_uri)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\client.py", line 248, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 98, in __init__
+    self.store
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 270, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\tracking\_tracking_service\utils.py", line 184, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_allFeatures_exp_runner.py", line 483, in _run_single_experiment
+    self.mlflow_tracker.track_training_result(experiment_config=config, training_result=result)
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py", line 204, in track_training_result
+    raise CustomException(e, sys) from e
+src.exception.CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]
+[2026-08-07 19:17:52,473] 499 src.logger - WARNING - Failed to log failed run status to MLflow: 'SalaryMLflowTracker' object has no attribute 'track_failed_run'
+[2026-08-07 19:17:52,474] 429 src.logger - ERROR - Feature experiment run failed: All 5 feature experiments failed. Failures: {'E0': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E1': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E2': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E3A': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E3B': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]"}
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_allFeatures_exp_runner.py", line 369, in run
+    raise RuntimeError(
+RuntimeError: All 5 feature experiments failed. Failures: {'E0': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E1': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E2': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E3A': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]", 'E3B': "Error occurred in script: [C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\src\\components\\salary_predict\\salary_mlflow_tracker.py] at line: [120] Error message: [The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.]"}

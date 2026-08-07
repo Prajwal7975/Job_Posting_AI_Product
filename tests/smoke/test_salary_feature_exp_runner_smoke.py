@@ -52,7 +52,7 @@ from src.configs.salary_predict.salary_experiment_config import (
     get_experiment_config,
 )
 
-from src.components.salary_predict.salary_training_runner import (
+from components.salary_predict.salary_feature_experiment_runner import (
     SalaryTrainingRunner,
     SalaryTrainingResult,
 )

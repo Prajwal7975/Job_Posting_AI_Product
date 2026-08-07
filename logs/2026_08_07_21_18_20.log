@@ -1,0 +1,349 @@
+[2026-08-07 21:18:22,364] 454 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:22,365] 455 src.logger - INFO - FEATURE EXPERIMENT RUNNER STARTED
+[2026-08-07 21:18:22,365] 456 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:22,365] 457 src.logger - INFO - Experiments queued : ['E0', 'E1', 'E2', 'E3A', 'E3B']
+[2026-08-07 21:18:22,365] 458 src.logger - INFO - Ranking metric     : annual_r2
+[2026-08-07 21:18:22,365] 608 src.logger - INFO - 
+[2026-08-07 21:18:22,365] 609 src.logger - INFO - Running Experiment E0
+[2026-08-07 21:18:22,365] 200 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:22,365] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 21:18:22,365] 202 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:22,365] 204 src.logger - INFO - Experiment ID   : E0
+[2026-08-07 21:18:22,365] 205 src.logger - INFO - Experiment Name : dummy_median_baseline
+[2026-08-07 21:18:22,365] 206 src.logger - INFO - Model           : dummy
+[2026-08-07 21:18:22,366] 207 src.logger - INFO - Config Signature: 64fee8a8654d710d7faeecc918fc1d376987127da469b63f7152a9554d91c903
+[2026-08-07 21:18:22,366] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 21:18:22,366] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 21:18:22,577] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 21:18:22,577] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 21:18:22,579] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 21:18:22,579] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 21:18:22,579] 318 src.logger - INFO - Building preprocessor for experiment_id='E0' (dummy_median_baseline)...
+[2026-08-07 21:18:22,579] 325 src.logger - INFO - Dummy baseline model requires no feature preprocessor. Returning None.
+[2026-08-07 21:18:22,579] 32 src.logger - INFO - Building salary estimator for experiment_id='E0'...
+[2026-08-07 21:18:22,579] 37 src.logger - INFO - Model family: dummy
+[2026-08-07 21:18:22,579] 39 src.logger - INFO - Model parameters: {'strategy': 'median'}
+[2026-08-07 21:18:22,579] 46 src.logger - INFO - Successfully constructed unfitted DummyRegressor estimator.
+[2026-08-07 21:18:22,579] 277 src.logger - INFO - Required raw features: (none - dummy baseline)
+[2026-08-07 21:18:22,579] 304 src.logger - INFO - No preprocessor required (dummy baseline).
+[2026-08-07 21:18:22,579] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 21:18:22,579] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 21:18:22,579] 318 src.logger - INFO - Training started...
+[2026-08-07 21:18:22,600] 325 src.logger - INFO - Training completed in 0.0198 sec
+[2026-08-07 21:18:22,600] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 21:18:22,600] 341 src.logger - INFO - Validation prediction completed in 0.0001 sec
+[2026-08-07 21:18:22,602] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:22,603] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 21:18:22,603] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:22,603] 419 src.logger - INFO - Log MAE       : 0.465512
+[2026-08-07 21:18:22,603] 424 src.logger - INFO - Log RMSE      : 0.564650
+[2026-08-07 21:18:22,603] 429 src.logger - INFO - Log R2        : -0.000351
+[2026-08-07 21:18:22,603] 434 src.logger - INFO - Annual MAE    : 42435.59
+[2026-08-07 21:18:22,603] 439 src.logger - INFO - Annual RMSE   : 63041.68
+[2026-08-07 21:18:22,603] 444 src.logger - INFO - Annual R2     : -0.048378
+[2026-08-07 21:18:22,603] 453 src.logger - INFO - Median APE    : 39.17%
+[2026-08-07 21:18:22,603] 492 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:22,603] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 21:18:22,603] 494 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:23,859] 127 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:23,859] 128 src.logger - INFO - MLFLOW TRACKING STARTED
+[2026-08-07 21:18:23,859] 129 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:23,859] 130 src.logger - INFO - Experiment ID    : E0
+[2026-08-07 21:18:23,859] 131 src.logger - INFO - MLflow experiment: salary_prediction
+[2026-08-07 21:18:23,859] 132 src.logger - INFO - Run name         : salary-E0
+[2026-08-07 21:18:23,859] 133 src.logger - INFO - Model family     : dummy
+[2026-08-07 21:18:23,859] 134 src.logger - INFO - Tracking URI     : sqlite:///C:/Users/lenovo/OneDrive/Desktop/job_postings_project/mlflow.db
+[2026-08-07 21:18:23,859] 135 src.logger - INFO - Prepared 7 parameters, 12 metrics, 12 tags.
+[2026-08-07 21:18:24,208] 151 src.logger - INFO - Logged parameters : 7
+[2026-08-07 21:18:24,225] 154 src.logger - INFO - Logged metrics    : 12
+[2026-08-07 21:18:24,227] 376 src.logger - WARNING - Could not log config artifact (non-fatal): cannot pickle 'mappingproxy' object
+[2026-08-07 21:18:24,238] 189 src.logger - INFO - MLflow Run ID     : 95cd8e83153f4a519bfd53a7b6acca5d
+[2026-08-07 21:18:24,238] 190 src.logger - INFO - Run Duration      : 1.62s
+[2026-08-07 21:18:24,238] 191 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,238] 192 src.logger - INFO - MLFLOW TRACKING COMPLETED
+[2026-08-07 21:18:24,238] 193 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,238] 618 src.logger - INFO - Completed
+[2026-08-07 21:18:24,238] 619 src.logger - INFO - R²=-0.0484 | MAE=42435.59 | RMSE=63041.68
+[2026-08-07 21:18:24,238] 608 src.logger - INFO - 
+[2026-08-07 21:18:24,239] 609 src.logger - INFO - Running Experiment E1
+[2026-08-07 21:18:24,239] 200 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,239] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 21:18:24,239] 202 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,239] 204 src.logger - INFO - Experiment ID   : E1
+[2026-08-07 21:18:24,239] 205 src.logger - INFO - Experiment Name : structured_ridge
+[2026-08-07 21:18:24,239] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 21:18:24,239] 207 src.logger - INFO - Config Signature: 54d2a22a539637d331826c9b4adf88916f71fb1948f2329f8993001117ece08e
+[2026-08-07 21:18:24,239] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 21:18:24,239] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 21:18:24,305] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 21:18:24,305] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 21:18:24,305] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 21:18:24,305] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 21:18:24,305] 318 src.logger - INFO - Building preprocessor for experiment_id='E1' (structured_ridge)...
+[2026-08-07 21:18:24,305] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E1' with 2 branch(es): ['categorical', 'numeric'].
+[2026-08-07 21:18:24,306] 32 src.logger - INFO - Building salary estimator for experiment_id='E1'...
+[2026-08-07 21:18:24,306] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 21:18:24,306] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 21:18:24,306] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 21:18:24,315] 270 src.logger - INFO - Required raw features: ['formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 21:18:24,316] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 21:18:24,316] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 21:18:24,316] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 21:18:24,316] 318 src.logger - INFO - Training started...
+[2026-08-07 21:18:24,472] 325 src.logger - INFO - Training completed in 0.1570 sec
+[2026-08-07 21:18:24,474] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 21:18:24,488] 341 src.logger - INFO - Validation prediction completed in 0.0142 sec
+[2026-08-07 21:18:24,491] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:24,491] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 21:18:24,491] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:24,491] 419 src.logger - INFO - Log MAE       : 0.347525
+[2026-08-07 21:18:24,492] 424 src.logger - INFO - Log RMSE      : 0.447149
+[2026-08-07 21:18:24,492] 429 src.logger - INFO - Log R2        : 0.372666
+[2026-08-07 21:18:24,492] 434 src.logger - INFO - Annual MAE    : 32488.93
+[2026-08-07 21:18:24,492] 439 src.logger - INFO - Annual RMSE   : 52486.36
+[2026-08-07 21:18:24,492] 444 src.logger - INFO - Annual R2     : 0.273300
+[2026-08-07 21:18:24,492] 453 src.logger - INFO - Median APE    : 27.74%
+[2026-08-07 21:18:24,492] 460 src.logger - INFO - Transformed Features: 725
+[2026-08-07 21:18:24,492] 492 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,492] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 21:18:24,492] 494 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,503] 127 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,503] 128 src.logger - INFO - MLFLOW TRACKING STARTED
+[2026-08-07 21:18:24,503] 129 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,503] 130 src.logger - INFO - Experiment ID    : E1
+[2026-08-07 21:18:24,503] 131 src.logger - INFO - MLflow experiment: salary_prediction
+[2026-08-07 21:18:24,503] 132 src.logger - INFO - Run name         : salary-E1
+[2026-08-07 21:18:24,503] 133 src.logger - INFO - Model family     : ridge
+[2026-08-07 21:18:24,503] 134 src.logger - INFO - Tracking URI     : sqlite:///C:/Users/lenovo/OneDrive/Desktop/job_postings_project/mlflow.db
+[2026-08-07 21:18:24,503] 135 src.logger - INFO - Prepared 9 parameters, 13 metrics, 12 tags.
+[2026-08-07 21:18:24,538] 151 src.logger - INFO - Logged parameters : 9
+[2026-08-07 21:18:24,553] 154 src.logger - INFO - Logged metrics    : 13
+[2026-08-07 21:18:24,554] 376 src.logger - WARNING - Could not log config artifact (non-fatal): cannot pickle 'mappingproxy' object
+[2026-08-07 21:18:24,564] 189 src.logger - INFO - MLflow Run ID     : ac0e72d17c974a71abc4dd9dd420eaca
+[2026-08-07 21:18:24,564] 190 src.logger - INFO - Run Duration      : 0.06s
+[2026-08-07 21:18:24,564] 191 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,564] 192 src.logger - INFO - MLFLOW TRACKING COMPLETED
+[2026-08-07 21:18:24,564] 193 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,564] 618 src.logger - INFO - Completed
+[2026-08-07 21:18:24,564] 619 src.logger - INFO - R²=0.2733 | MAE=32488.93 | RMSE=52486.36
+[2026-08-07 21:18:24,564] 608 src.logger - INFO - 
+[2026-08-07 21:18:24,564] 609 src.logger - INFO - Running Experiment E2
+[2026-08-07 21:18:24,564] 200 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,564] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 21:18:24,564] 202 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:24,564] 204 src.logger - INFO - Experiment ID   : E2
+[2026-08-07 21:18:24,564] 205 src.logger - INFO - Experiment Name : title_tfidf_ridge
+[2026-08-07 21:18:24,564] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 21:18:24,564] 207 src.logger - INFO - Config Signature: 732b6cf8f6fdc08e498df683f7dd4267437f1091fe588c03955ca6bced1f18a2
+[2026-08-07 21:18:24,565] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 21:18:24,565] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 21:18:24,633] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 21:18:24,633] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 21:18:24,634] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 21:18:24,634] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 21:18:24,634] 318 src.logger - INFO - Building preprocessor for experiment_id='E2' (title_tfidf_ridge)...
+[2026-08-07 21:18:24,634] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E2' with 3 branch(es): ['title_tfidf', 'categorical', 'numeric'].
+[2026-08-07 21:18:24,634] 32 src.logger - INFO - Building salary estimator for experiment_id='E2'...
+[2026-08-07 21:18:24,634] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 21:18:24,634] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 21:18:24,634] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 21:18:24,638] 270 src.logger - INFO - Required raw features: ['title', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 21:18:24,638] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 21:18:24,638] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 21:18:24,638] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 21:18:24,638] 318 src.logger - INFO - Training started...
+[2026-08-07 21:18:25,169] 325 src.logger - INFO - Training completed in 0.5310 sec
+[2026-08-07 21:18:25,169] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 21:18:25,216] 341 src.logger - INFO - Validation prediction completed in 0.0475 sec
+[2026-08-07 21:18:25,227] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:25,227] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 21:18:25,227] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:25,227] 419 src.logger - INFO - Log MAE       : 0.240691
+[2026-08-07 21:18:25,227] 424 src.logger - INFO - Log RMSE      : 0.330623
+[2026-08-07 21:18:25,227] 429 src.logger - INFO - Log R2        : 0.657027
+[2026-08-07 21:18:25,227] 434 src.logger - INFO - Annual MAE    : 23449.26
+[2026-08-07 21:18:25,227] 439 src.logger - INFO - Annual RMSE   : 42492.93
+[2026-08-07 21:18:25,227] 444 src.logger - INFO - Annual R2     : 0.523683
+[2026-08-07 21:18:25,227] 453 src.logger - INFO - Median APE    : 18.15%
+[2026-08-07 21:18:25,227] 460 src.logger - INFO - Transformed Features: 5847
+[2026-08-07 21:18:25,228] 492 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,228] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 21:18:25,228] 494 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,239] 127 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,239] 128 src.logger - INFO - MLFLOW TRACKING STARTED
+[2026-08-07 21:18:25,239] 129 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,239] 130 src.logger - INFO - Experiment ID    : E2
+[2026-08-07 21:18:25,239] 131 src.logger - INFO - MLflow experiment: salary_prediction
+[2026-08-07 21:18:25,239] 132 src.logger - INFO - Run name         : salary-E2
+[2026-08-07 21:18:25,239] 133 src.logger - INFO - Model family     : ridge
+[2026-08-07 21:18:25,239] 134 src.logger - INFO - Tracking URI     : sqlite:///C:/Users/lenovo/OneDrive/Desktop/job_postings_project/mlflow.db
+[2026-08-07 21:18:25,239] 135 src.logger - INFO - Prepared 9 parameters, 13 metrics, 12 tags.
+[2026-08-07 21:18:25,270] 151 src.logger - INFO - Logged parameters : 9
+[2026-08-07 21:18:25,283] 154 src.logger - INFO - Logged metrics    : 13
+[2026-08-07 21:18:25,283] 376 src.logger - WARNING - Could not log config artifact (non-fatal): cannot pickle 'mappingproxy' object
+[2026-08-07 21:18:25,292] 189 src.logger - INFO - MLflow Run ID     : c874fecad69143d78ba891ca7760db1b
+[2026-08-07 21:18:25,292] 190 src.logger - INFO - Run Duration      : 0.05s
+[2026-08-07 21:18:25,292] 191 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,292] 192 src.logger - INFO - MLFLOW TRACKING COMPLETED
+[2026-08-07 21:18:25,292] 193 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,292] 618 src.logger - INFO - Completed
+[2026-08-07 21:18:25,292] 619 src.logger - INFO - R²=0.5237 | MAE=23449.26 | RMSE=42492.93
+[2026-08-07 21:18:25,292] 608 src.logger - INFO - 
+[2026-08-07 21:18:25,292] 609 src.logger - INFO - Running Experiment E3A
+[2026-08-07 21:18:25,292] 200 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,292] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 21:18:25,292] 202 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:25,292] 204 src.logger - INFO - Experiment ID   : E3A
+[2026-08-07 21:18:25,292] 205 src.logger - INFO - Experiment Name : title_skills_tfidf_ridge
+[2026-08-07 21:18:25,292] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 21:18:25,293] 207 src.logger - INFO - Config Signature: c441717f2c7f095d5d9f481ce974a03b7e099392bbfcfaace3a08c3c0bb91fe5
+[2026-08-07 21:18:25,293] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 21:18:25,293] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 21:18:25,350] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 21:18:25,350] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 21:18:25,350] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 21:18:25,350] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 21:18:25,350] 318 src.logger - INFO - Building preprocessor for experiment_id='E3A' (title_skills_tfidf_ridge)...
+[2026-08-07 21:18:25,350] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E3A' with 4 branch(es): ['title_tfidf', 'skills_tfidf', 'categorical', 'numeric'].
+[2026-08-07 21:18:25,350] 32 src.logger - INFO - Building salary estimator for experiment_id='E3A'...
+[2026-08-07 21:18:25,350] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 21:18:25,350] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 21:18:25,350] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 21:18:25,355] 270 src.logger - INFO - Required raw features: ['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 21:18:25,356] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 21:18:25,356] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 21:18:25,356] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 21:18:25,356] 318 src.logger - INFO - Training started...
+[2026-08-07 21:18:26,033] 325 src.logger - INFO - Training completed in 0.6773 sec
+[2026-08-07 21:18:26,033] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 21:18:26,095] 341 src.logger - INFO - Validation prediction completed in 0.0616 sec
+[2026-08-07 21:18:26,104] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:26,104] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 21:18:26,104] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:26,104] 419 src.logger - INFO - Log MAE       : 0.239405
+[2026-08-07 21:18:26,104] 424 src.logger - INFO - Log RMSE      : 0.329286
+[2026-08-07 21:18:26,104] 429 src.logger - INFO - Log R2        : 0.659795
+[2026-08-07 21:18:26,104] 434 src.logger - INFO - Annual MAE    : 23355.37
+[2026-08-07 21:18:26,104] 439 src.logger - INFO - Annual RMSE   : 42356.84
+[2026-08-07 21:18:26,104] 444 src.logger - INFO - Annual R2     : 0.526729
+[2026-08-07 21:18:26,104] 453 src.logger - INFO - Median APE    : 17.77%
+[2026-08-07 21:18:26,104] 460 src.logger - INFO - Transformed Features: 6189
+[2026-08-07 21:18:26,104] 492 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,105] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 21:18:26,105] 494 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,115] 127 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,115] 128 src.logger - INFO - MLFLOW TRACKING STARTED
+[2026-08-07 21:18:26,115] 129 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,115] 130 src.logger - INFO - Experiment ID    : E3A
+[2026-08-07 21:18:26,115] 131 src.logger - INFO - MLflow experiment: salary_prediction
+[2026-08-07 21:18:26,115] 132 src.logger - INFO - Run name         : salary-E3A
+[2026-08-07 21:18:26,115] 133 src.logger - INFO - Model family     : ridge
+[2026-08-07 21:18:26,115] 134 src.logger - INFO - Tracking URI     : sqlite:///C:/Users/lenovo/OneDrive/Desktop/job_postings_project/mlflow.db
+[2026-08-07 21:18:26,115] 135 src.logger - INFO - Prepared 9 parameters, 13 metrics, 12 tags.
+[2026-08-07 21:18:26,145] 151 src.logger - INFO - Logged parameters : 9
+[2026-08-07 21:18:26,158] 154 src.logger - INFO - Logged metrics    : 13
+[2026-08-07 21:18:26,159] 376 src.logger - WARNING - Could not log config artifact (non-fatal): cannot pickle 'mappingproxy' object
+[2026-08-07 21:18:26,166] 189 src.logger - INFO - MLflow Run ID     : 7e241cd32cb740bc9b85f446264b90d0
+[2026-08-07 21:18:26,166] 190 src.logger - INFO - Run Duration      : 0.05s
+[2026-08-07 21:18:26,166] 191 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,166] 192 src.logger - INFO - MLFLOW TRACKING COMPLETED
+[2026-08-07 21:18:26,166] 193 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,166] 618 src.logger - INFO - Completed
+[2026-08-07 21:18:26,166] 619 src.logger - INFO - R²=0.5267 | MAE=23355.37 | RMSE=42356.84
+[2026-08-07 21:18:26,166] 608 src.logger - INFO - 
+[2026-08-07 21:18:26,166] 609 src.logger - INFO - Running Experiment E3B
+[2026-08-07 21:18:26,166] 200 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,166] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 21:18:26,166] 202 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,167] 204 src.logger - INFO - Experiment ID   : E3B
+[2026-08-07 21:18:26,167] 205 src.logger - INFO - Experiment Name : title_skills_multihot_ridge
+[2026-08-07 21:18:26,167] 206 src.logger - INFO - Model           : ridge
+[2026-08-07 21:18:26,167] 207 src.logger - INFO - Config Signature: 8257cabbe5f2d7fa15b13df6392c2a73e1383e834a8c8609c0a7c1bf6770d84d
+[2026-08-07 21:18:26,167] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 21:18:26,167] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 21:18:26,222] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 21:18:26,222] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 21:18:26,223] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 21:18:26,223] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 21:18:26,223] 318 src.logger - INFO - Building preprocessor for experiment_id='E3B' (title_skills_multihot_ridge)...
+[2026-08-07 21:18:26,223] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E3B' with 4 branch(es): ['title_tfidf', 'skills_multihot', 'categorical', 'numeric'].
+[2026-08-07 21:18:26,223] 32 src.logger - INFO - Building salary estimator for experiment_id='E3B'...
+[2026-08-07 21:18:26,223] 37 src.logger - INFO - Model family: ridge
+[2026-08-07 21:18:26,223] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-07 21:18:26,223] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-07 21:18:26,228] 270 src.logger - INFO - Required raw features: ['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 21:18:26,228] 308 src.logger - INFO - Preprocessor constructed.
+[2026-08-07 21:18:26,228] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 21:18:26,228] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 21:18:26,228] 318 src.logger - INFO - Training started...
+[2026-08-07 21:18:26,850] 325 src.logger - INFO - Training completed in 0.6218 sec
+[2026-08-07 21:18:26,850] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 21:18:26,903] 341 src.logger - INFO - Validation prediction completed in 0.0521 sec
+[2026-08-07 21:18:26,913] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:26,913] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 21:18:26,913] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:26,913] 419 src.logger - INFO - Log MAE       : 0.239776
+[2026-08-07 21:18:26,913] 424 src.logger - INFO - Log RMSE      : 0.329601
+[2026-08-07 21:18:26,913] 429 src.logger - INFO - Log R2        : 0.659143
+[2026-08-07 21:18:26,913] 434 src.logger - INFO - Annual MAE    : 23357.10
+[2026-08-07 21:18:26,913] 439 src.logger - INFO - Annual RMSE   : 42350.15
+[2026-08-07 21:18:26,913] 444 src.logger - INFO - Annual R2     : 0.526879
+[2026-08-07 21:18:26,914] 453 src.logger - INFO - Median APE    : 17.84%
+[2026-08-07 21:18:26,914] 460 src.logger - INFO - Transformed Features: 5882
+[2026-08-07 21:18:26,914] 492 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,914] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 21:18:26,914] 494 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,926] 127 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,926] 128 src.logger - INFO - MLFLOW TRACKING STARTED
+[2026-08-07 21:18:26,926] 129 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,926] 130 src.logger - INFO - Experiment ID    : E3B
+[2026-08-07 21:18:26,926] 131 src.logger - INFO - MLflow experiment: salary_prediction
+[2026-08-07 21:18:26,926] 132 src.logger - INFO - Run name         : salary-E3B
+[2026-08-07 21:18:26,926] 133 src.logger - INFO - Model family     : ridge
+[2026-08-07 21:18:26,926] 134 src.logger - INFO - Tracking URI     : sqlite:///C:/Users/lenovo/OneDrive/Desktop/job_postings_project/mlflow.db
+[2026-08-07 21:18:26,926] 135 src.logger - INFO - Prepared 9 parameters, 13 metrics, 12 tags.
+[2026-08-07 21:18:26,961] 151 src.logger - INFO - Logged parameters : 9
+[2026-08-07 21:18:26,974] 154 src.logger - INFO - Logged metrics    : 13
+[2026-08-07 21:18:26,974] 376 src.logger - WARNING - Could not log config artifact (non-fatal): cannot pickle 'mappingproxy' object
+[2026-08-07 21:18:26,983] 189 src.logger - INFO - MLflow Run ID     : 5a0d13ca8e0a439298f4888a9d570ebb
+[2026-08-07 21:18:26,983] 190 src.logger - INFO - Run Duration      : 0.05s
+[2026-08-07 21:18:26,983] 191 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,983] 192 src.logger - INFO - MLFLOW TRACKING COMPLETED
+[2026-08-07 21:18:26,983] 193 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,983] 618 src.logger - INFO - Completed
+[2026-08-07 21:18:26,983] 619 src.logger - INFO - R²=0.5269 | MAE=23357.10 | RMSE=42350.15
+[2026-08-07 21:18:26,983] 681 src.logger - INFO - Ranking metric : annual_r2
+[2026-08-07 21:18:26,984] 753 src.logger - INFO - 
+[2026-08-07 21:18:26,984] 754 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,984] 755 src.logger - INFO - FEATURE EXPERIMENT SUMMARY
+[2026-08-07 21:18:26,984] 756 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,984] 757 src.logger - INFO - Rank   Experiment   R2         AnnualMAE      AnnualRMSE     MedianAPE   
+[2026-08-07 21:18:26,984] 766 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 21:18:26,984] 774 src.logger - INFO - 1      E3B          0.5269     23357.10       42350.15       17.84       
+[2026-08-07 21:18:26,984] 774 src.logger - INFO - 2      E3A          0.5267     23355.37       42356.84       17.77       
+[2026-08-07 21:18:26,984] 774 src.logger - INFO - 3      E2           0.5237     23449.26       42492.93       18.15       
+[2026-08-07 21:18:26,984] 774 src.logger - INFO - 4      E1           0.2733     32488.93       52486.36       27.74       
+[2026-08-07 21:18:26,984] 774 src.logger - INFO - 5      E0           -0.0484    42435.59       63041.68       39.17       
+[2026-08-07 21:18:26,984] 783 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:26,984] 784 src.logger - INFO - WINNER
+[2026-08-07 21:18:26,984] 785 src.logger - INFO - Experiment            : E3B (rank 1)
+[2026-08-07 21:18:26,984] 786 src.logger - INFO - Model                 : ridge
+[2026-08-07 21:18:26,984] 787 src.logger - INFO - Config Signature      : 8257cabbe5f2d7fa15b13df6392c2a73e1383e834a8c8609c0a7c1bf6770d84d
+[2026-08-07 21:18:26,984] 788 src.logger - INFO - Annual R2             : 0.5269
+[2026-08-07 21:18:26,984] 789 src.logger - INFO - Annual MAE            : 23357.10
+[2026-08-07 21:18:26,984] 790 src.logger - INFO - Annual RMSE           : 42350.15
+[2026-08-07 21:18:26,984] 793 src.logger - INFO - Median APE            : 17.84%
+[2026-08-07 21:18:26,984] 794 src.logger - INFO - Training Time         : 0.6218 sec
+[2026-08-07 21:18:26,984] 795 src.logger - INFO - Feature Count         : 7
+[2026-08-07 21:18:26,984] 796 src.logger - INFO - Feature Columns       : ['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-07 21:18:26,984] 797 src.logger - INFO - Transformation Count  : 5882
+[2026-08-07 21:18:26,984] 798 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:27,000] 359 src.logger - INFO - Reports saved under:
+  C:\Users\lenovo\OneDrive\Desktop\job_postings_project\artifacts\reports\feature_experiments\run_20260807_211826_985063
+[2026-08-07 21:18:27,000] 543 src.logger - WARNING - No active MLflow run. Skipping directory logging for 'run_20260807_211826_985063'.
+[2026-08-07 21:18:27,000] 388 src.logger - WARNING - Failed to log MLflow tags: 'SalaryMLflowTracker' object has no attribute 'log_tags'
+[2026-08-07 21:18:27,045] 556 src.logger - INFO - Logged artifact directory 'run_20260807_211826_985063'.
+[2026-08-07 21:18:27,054] 539 src.logger - WARNING - Failed to upload reports to MLflow: 'SalaryMLflowTracker' object has no attribute 'log_tags'
+[2026-08-07 21:18:27,054] 541 src.logger - INFO - ======================================================================
+[2026-08-07 21:18:27,054] 542 src.logger - INFO - FEATURE EXPERIMENT RUNNER COMPLETED
+[2026-08-07 21:18:27,054] 543 src.logger - INFO - ======================================================================
