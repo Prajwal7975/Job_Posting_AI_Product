@@ -1,0 +1,48 @@
+[2026-08-07 01:43:32,748] 549 src.logger - INFO - 
+[2026-08-07 01:43:32,749] 550 src.logger - INFO - ######################################################################
+[2026-08-07 01:43:32,749] 551 src.logger - INFO - SALARY TRAINING RUNNER SMOKE TEST STARTED
+[2026-08-07 01:43:32,749] 554 src.logger - INFO - ######################################################################
+[2026-08-07 01:43:32,750] 428 src.logger - INFO - 
+[2026-08-07 01:43:32,750] 429 src.logger - INFO - ======================================================================
+[2026-08-07 01:43:32,750] 430 src.logger - INFO - SMOKE TESTING EXPERIMENT E0
+[2026-08-07 01:43:32,750] 434 src.logger - INFO - ======================================================================
+[2026-08-07 01:43:32,751] 200 src.logger - INFO - ======================================================================
+[2026-08-07 01:43:32,751] 201 src.logger - INFO - SALARY EXPERIMENT TRAINING STARTED
+[2026-08-07 01:43:32,751] 202 src.logger - INFO - ======================================================================
+[2026-08-07 01:43:32,751] 204 src.logger - INFO - Experiment ID   : E0
+[2026-08-07 01:43:32,751] 205 src.logger - INFO - Experiment Name : dummy_median_baseline
+[2026-08-07 01:43:32,751] 206 src.logger - INFO - Model           : dummy
+[2026-08-07 01:43:32,753] 207 src.logger - INFO - Config Signature: 64fee8a8654d710d7faeecc918fc1d376987127da469b63f7152a9554d91c903
+[2026-08-07 01:43:32,754] 547 src.logger - INFO - Train path      : artifacts\salary_dataset_splits\latest\train.parquet
+[2026-08-07 01:43:32,754] 549 src.logger - INFO - Validation path : artifacts\salary_dataset_splits\latest\validation.parquet
+[2026-08-07 01:43:33,689] 563 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-07 01:43:33,689] 565 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-07 01:43:33,691] 242 src.logger - INFO - Train rows      : 33,708
+[2026-08-07 01:43:33,691] 243 src.logger - INFO - Validation rows : 4,809
+[2026-08-07 01:43:33,691] 318 src.logger - INFO - Building preprocessor for experiment_id='E0' (dummy_median_baseline)...
+[2026-08-07 01:43:33,691] 325 src.logger - INFO - Dummy baseline model requires no feature preprocessor. Returning None.
+[2026-08-07 01:43:33,691] 32 src.logger - INFO - Building salary estimator for experiment_id='E0'...
+[2026-08-07 01:43:33,691] 37 src.logger - INFO - Model family: dummy
+[2026-08-07 01:43:33,691] 39 src.logger - INFO - Model parameters: {'strategy': 'median'}
+[2026-08-07 01:43:33,691] 46 src.logger - INFO - Successfully constructed unfitted DummyRegressor estimator.
+[2026-08-07 01:43:33,691] 277 src.logger - INFO - Required raw features: (none - dummy baseline)
+[2026-08-07 01:43:33,691] 304 src.logger - INFO - No preprocessor required (dummy baseline).
+[2026-08-07 01:43:33,691] 310 src.logger - INFO - Estimator constructed.
+[2026-08-07 01:43:33,691] 312 src.logger - INFO - Training workflow assembled.
+[2026-08-07 01:43:33,691] 318 src.logger - INFO - Training started...
+[2026-08-07 01:43:34,546] 325 src.logger - INFO - Training completed in 0.8546 sec
+[2026-08-07 01:43:34,546] 331 src.logger - INFO - Validation prediction started...
+[2026-08-07 01:43:34,546] 341 src.logger - INFO - Validation prediction completed in 0.0001 sec
+[2026-08-07 01:43:34,551] 415 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 01:43:34,551] 416 src.logger - INFO - VALIDATION METRICS
+[2026-08-07 01:43:34,552] 417 src.logger - INFO - ----------------------------------------------------------------------
+[2026-08-07 01:43:34,552] 419 src.logger - INFO - Log MAE       : 0.465512
+[2026-08-07 01:43:34,552] 424 src.logger - INFO - Log RMSE      : 0.564650
+[2026-08-07 01:43:34,552] 429 src.logger - INFO - Log R2        : -0.000351
+[2026-08-07 01:43:34,552] 434 src.logger - INFO - Annual MAE    : 42435.59
+[2026-08-07 01:43:34,552] 439 src.logger - INFO - Annual RMSE   : 63041.68
+[2026-08-07 01:43:34,552] 444 src.logger - INFO - Annual R2     : -0.048378
+[2026-08-07 01:43:34,552] 453 src.logger - INFO - Median APE    : 39.17%
+[2026-08-07 01:43:34,552] 492 src.logger - INFO - ======================================================================
+[2026-08-07 01:43:34,552] 493 src.logger - INFO - SALARY EXPERIMENT TRAINING COMPLETED
+[2026-08-07 01:43:34,552] 494 src.logger - INFO - ======================================================================

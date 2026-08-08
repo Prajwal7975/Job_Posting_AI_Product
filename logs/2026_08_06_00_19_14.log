@@ -1,0 +1,70 @@
+[2026-08-06 00:19:16,652] 48 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,652] 49 src.logger - INFO - SALARY PREPROCESSOR SMOKE TEST
+[2026-08-06 00:19:16,652] 50 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,652] 52 src.logger - INFO - Train shape      : (33708, 23)
+[2026-08-06 00:19:16,653] 53 src.logger - INFO - Validation shape : (4809, 23)
+[2026-08-06 00:19:16,653] 57 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,653] 58 src.logger - INFO - TESTING E0
+[2026-08-06 00:19:16,653] 59 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,653] 318 src.logger - INFO - Building preprocessor for experiment_id='E0' (dummy_median_baseline)...
+[2026-08-06 00:19:16,653] 325 src.logger - INFO - Dummy baseline model requires no feature preprocessor. Returning None.
+[2026-08-06 00:19:16,653] 88 src.logger - INFO - E0 PASS - Dummy baseline correctly returned None.
+[2026-08-06 00:19:16,653] 57 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,653] 58 src.logger - INFO - TESTING E1
+[2026-08-06 00:19:16,653] 59 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,653] 318 src.logger - INFO - Building preprocessor for experiment_id='E1' (structured_ridge)...
+[2026-08-06 00:19:16,653] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E1' with 2 branch(es): ['categorical', 'numeric'].
+[2026-08-06 00:19:16,815] 110 src.logger - INFO - E1 PASS
+[2026-08-06 00:19:16,815] 111 src.logger - INFO - Train matrix      : (5000, 389)
+[2026-08-06 00:19:16,815] 112 src.logger - INFO - Validation matrix : (1000, 389)
+[2026-08-06 00:19:16,815] 113 src.logger - INFO - Train type        : csr_matrix
+[2026-08-06 00:19:16,815] 114 src.logger - INFO - Validation type   : csr_matrix
+[2026-08-06 00:19:16,815] 115 src.logger - INFO - Train sparse      : True
+[2026-08-06 00:19:16,815] 116 src.logger - INFO - Validation sparse : True
+[2026-08-06 00:19:16,815] 117 src.logger - INFO - Generated features: 389
+[2026-08-06 00:19:16,815] 118 src.logger - INFO - First features    : ['categorical__formatted_experience_level_associate', 'categorical__formatted_experience_level_director', 'categorical__formatted_experience_level_entry level', 'categorical__formatted_experience_level_executive', 'categorical__formatted_experience_level_internship', 'categorical__formatted_experience_level_mid-senior level', 'categorical__formatted_experience_level_unknown', 'categorical__company_state_0', 'categorical__company_state_01824', 'categorical__company_state_8810']
+[2026-08-06 00:19:16,815] 57 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,815] 58 src.logger - INFO - TESTING E2
+[2026-08-06 00:19:16,815] 59 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,815] 318 src.logger - INFO - Building preprocessor for experiment_id='E2' (title_tfidf_ridge)...
+[2026-08-06 00:19:16,816] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E2' with 3 branch(es): ['title_tfidf', 'categorical', 'numeric'].
+[2026-08-06 00:19:16,932] 110 src.logger - INFO - E2 PASS
+[2026-08-06 00:19:16,932] 111 src.logger - INFO - Train matrix      : (5000, 1393)
+[2026-08-06 00:19:16,933] 112 src.logger - INFO - Validation matrix : (1000, 1393)
+[2026-08-06 00:19:16,933] 113 src.logger - INFO - Train type        : csr_matrix
+[2026-08-06 00:19:16,933] 114 src.logger - INFO - Validation type   : csr_matrix
+[2026-08-06 00:19:16,933] 115 src.logger - INFO - Train sparse      : True
+[2026-08-06 00:19:16,933] 116 src.logger - INFO - Validation sparse : True
+[2026-08-06 00:19:16,933] 117 src.logger - INFO - Generated features: 1,393
+[2026-08-06 00:19:16,933] 118 src.logger - INFO - First features    : ['title_tfidf__000', 'title_tfidf__000 sign', 'title_tfidf__100', 'title_tfidf__100 remote', 'title_tfidf__12', 'title_tfidf__1st', 'title_tfidf__1st shift', 'title_tfidf__2024', 'title_tfidf__2025', 'title_tfidf__23']
+[2026-08-06 00:19:16,933] 57 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,933] 58 src.logger - INFO - TESTING E3A
+[2026-08-06 00:19:16,933] 59 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:16,933] 318 src.logger - INFO - Building preprocessor for experiment_id='E3A' (title_skills_tfidf_ridge)...
+[2026-08-06 00:19:16,933] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E3A' with 4 branch(es): ['title_tfidf', 'skills_tfidf', 'categorical', 'numeric'].
+[2026-08-06 00:19:17,155] 110 src.logger - INFO - E3A PASS
+[2026-08-06 00:19:17,156] 111 src.logger - INFO - Train matrix      : (5000, 1515)
+[2026-08-06 00:19:17,156] 112 src.logger - INFO - Validation matrix : (1000, 1515)
+[2026-08-06 00:19:17,156] 113 src.logger - INFO - Train type        : csr_matrix
+[2026-08-06 00:19:17,156] 114 src.logger - INFO - Validation type   : csr_matrix
+[2026-08-06 00:19:17,156] 115 src.logger - INFO - Train sparse      : True
+[2026-08-06 00:19:17,156] 116 src.logger - INFO - Validation sparse : True
+[2026-08-06 00:19:17,156] 117 src.logger - INFO - Generated features: 1,515
+[2026-08-06 00:19:17,156] 118 src.logger - INFO - First features    : ['title_tfidf__000', 'title_tfidf__000 sign', 'title_tfidf__100', 'title_tfidf__100 remote', 'title_tfidf__12', 'title_tfidf__1st', 'title_tfidf__1st shift', 'title_tfidf__2024', 'title_tfidf__2025', 'title_tfidf__23']
+[2026-08-06 00:19:17,156] 57 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:17,156] 58 src.logger - INFO - TESTING E3B
+[2026-08-06 00:19:17,156] 59 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:17,156] 318 src.logger - INFO - Building preprocessor for experiment_id='E3B' (title_skills_multihot_ridge)...
+[2026-08-06 00:19:17,156] 407 src.logger - INFO - Successfully constructed unfitted ColumnTransformer for 'E3B' with 4 branch(es): ['title_tfidf', 'skills_multihot', 'categorical', 'numeric'].
+[2026-08-06 00:19:17,263] 110 src.logger - INFO - E3B PASS
+[2026-08-06 00:19:17,263] 111 src.logger - INFO - Train matrix      : (5000, 1428)
+[2026-08-06 00:19:17,263] 112 src.logger - INFO - Validation matrix : (1000, 1428)
+[2026-08-06 00:19:17,263] 113 src.logger - INFO - Train type        : csr_matrix
+[2026-08-06 00:19:17,263] 114 src.logger - INFO - Validation type   : csr_matrix
+[2026-08-06 00:19:17,263] 115 src.logger - INFO - Train sparse      : True
+[2026-08-06 00:19:17,263] 116 src.logger - INFO - Validation sparse : True
+[2026-08-06 00:19:17,263] 117 src.logger - INFO - Generated features: 1,428
+[2026-08-06 00:19:17,263] 118 src.logger - INFO - First features    : ['title_tfidf__000', 'title_tfidf__000 sign', 'title_tfidf__100', 'title_tfidf__100 remote', 'title_tfidf__12', 'title_tfidf__1st', 'title_tfidf__1st shift', 'title_tfidf__2024', 'title_tfidf__2025', 'title_tfidf__23']
+[2026-08-06 00:19:17,263] 120 src.logger - INFO - ======================================================================
+[2026-08-06 00:19:17,263] 121 src.logger - INFO - ALL SALARY PREPROCESSOR SMOKE TESTS PASSED
+[2026-08-06 00:19:17,263] 122 src.logger - INFO - ======================================================================

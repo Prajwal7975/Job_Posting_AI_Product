@@ -1,0 +1,91 @@
+{
+  "report_version": 1,
+  "winner": "E3B",
+  "winner_rank": 1,
+  "ranking_metric": "annual_r2",
+  "winner_score": 0.5268790684895941,
+  "winner_metrics": {
+    "mae": 23357.10115830947,
+    "rmse": 42350.14529109917,
+    "r2": 0.5268790684895941,
+    "median_ape": 17.837983314302626
+  },
+  "generated_at": "2026-08-07T16:46:52.352725+00:00",
+  "experiment_count": 5,
+  "execution_seconds": 4.9735,
+  "ranked_experiment_ids": [
+    "E3B",
+    "E3A",
+    "E2",
+    "E1",
+    "E0"
+  ],
+  "experiments": [
+    {
+      "rank": 1,
+      "experiment_id": "E3B",
+      "model_name": "ridge",
+      "annual_mae": 23357.10115830947,
+      "annual_rmse": 42350.14529109917,
+      "annual_r2": 0.5268790684895941,
+      "median_ape": 17.837983314302626,
+      "training_seconds": 0.6124,
+      "elapsed_seconds": 0.8140810000040801,
+      "raw_feature_count": 7,
+      "transformed_feature_count": 5882
+    },
+    {
+      "rank": 2,
+      "experiment_id": "E3A",
+      "model_name": "ridge",
+      "annual_mae": 23355.37146194366,
+      "annual_rmse": 42356.84223653305,
+      "annual_r2": 0.5267294248196971,
+      "median_ape": 17.773072050983327,
+      "training_seconds": 0.6416,
+      "elapsed_seconds": 0.852874399999564,
+      "raw_feature_count": 7,
+      "transformed_feature_count": 6189
+    },
+    {
+      "rank": 3,
+      "experiment_id": "E2",
+      "model_name": "ridge",
+      "annual_mae": 23449.263090227134,
+      "annual_rmse": 42492.92724813223,
+      "annual_r2": 0.5236834710010878,
+      "median_ape": 18.153389426655377,
+      "training_seconds": 0.5138,
+      "elapsed_seconds": 0.7139242999983253,
+      "raw_feature_count": 6,
+      "transformed_feature_count": 5847
+    },
+    {
+      "rank": 4,
+      "experiment_id": "E1",
+      "model_name": "ridge",
+      "annual_mae": 32488.929144293175,
+      "annual_rmse": 52486.360459680574,
+      "annual_r2": 0.273299815513829,
+      "median_ape": 27.744099543199834,
+      "training_seconds": 0.1987,
+      "elapsed_seconds": 0.4423204999984591,
+      "raw_feature_count": 5,
+      "transformed_feature_count": 725
+    },
+    {
+      "rank": 5,
+      "experiment_id": "E0",
+      "model_name": "dummy",
+      "annual_mae": 42435.58986899564,
+      "annual_rmse": 63041.68498818388,
+      "annual_r2": -0.04837819143356281,
+      "median_ape": 39.17004048582998,
+      "training_seconds": 0.0246,
+      "elapsed_seconds": 2.1482055000014952,
+      "raw_feature_count": 0,
+      "transformed_feature_count": null
+    }
+  ],
+  "failures": {}
+}

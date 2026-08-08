@@ -1,0 +1,54 @@
+[2026-08-06 15:06:12,625] 159 src.logger - INFO - ======================================================================
+[2026-08-06 15:06:12,626] 160 src.logger - INFO - SALARY MODEL FACTORY SMOKE TEST STARTED
+[2026-08-06 15:06:12,626] 161 src.logger - INFO - ======================================================================
+[2026-08-06 15:06:12,626] 32 src.logger - INFO - Building salary estimator for experiment_id='E0'...
+[2026-08-06 15:06:12,626] 37 src.logger - INFO - Model family: dummy
+[2026-08-06 15:06:12,626] 39 src.logger - INFO - Model parameters: {'strategy': 'median'}
+[2026-08-06 15:06:12,627] 46 src.logger - INFO - Successfully constructed unfitted DummyRegressor estimator.
+[2026-08-06 15:06:12,627] 93 src.logger - INFO - [SMOKE] E0: built DummyRegressor with params={'strategy': 'median'} — OK
+[2026-08-06 15:06:12,627] 32 src.logger - INFO - Building salary estimator for experiment_id='E1'...
+[2026-08-06 15:06:12,627] 37 src.logger - INFO - Model family: ridge
+[2026-08-06 15:06:12,628] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-06 15:06:12,628] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-06 15:06:12,628] 93 src.logger - INFO - [SMOKE] E1: built Ridge with params={'alpha': 1.0} — OK
+[2026-08-06 15:06:12,629] 32 src.logger - INFO - Building salary estimator for experiment_id='E2'...
+[2026-08-06 15:06:12,629] 37 src.logger - INFO - Model family: ridge
+[2026-08-06 15:06:12,629] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-06 15:06:12,629] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-06 15:06:12,629] 93 src.logger - INFO - [SMOKE] E2: built Ridge with params={'alpha': 1.0} — OK
+[2026-08-06 15:06:12,629] 32 src.logger - INFO - Building salary estimator for experiment_id='E3A'...
+[2026-08-06 15:06:12,630] 37 src.logger - INFO - Model family: ridge
+[2026-08-06 15:06:12,630] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-06 15:06:12,630] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-06 15:06:12,632] 93 src.logger - INFO - [SMOKE] E3A: built Ridge with params={'alpha': 1.0} — OK
+[2026-08-06 15:06:12,632] 32 src.logger - INFO - Building salary estimator for experiment_id='E3B'...
+[2026-08-06 15:06:12,632] 37 src.logger - INFO - Model family: ridge
+[2026-08-06 15:06:12,632] 39 src.logger - INFO - Model parameters: {'alpha': 1.0}
+[2026-08-06 15:06:12,632] 46 src.logger - INFO - Successfully constructed unfitted Ridge estimator.
+[2026-08-06 15:06:12,633] 93 src.logger - INFO - [SMOKE] E3B: built Ridge with params={'alpha': 1.0} — OK
+[2026-08-06 15:06:12,633] 155 src.logger - INFO - [SMOKE] supported-model helper methods — OK
+[2026-08-06 15:06:12,633] 55 src.logger - ERROR - Failed to build salary estimator: SalaryModelFactory.build() expects a SalaryExperimentConfig, got str.
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_model_factory.py", line 25, in build
+    self._validate_config_type(config)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_model_factory.py", line 68, in _validate_config_type
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: SalaryModelFactory.build() expects a SalaryExperimentConfig, got str.
+[2026-08-06 15:06:12,638] 106 src.logger - INFO - [SMOKE] wrong config type correctly rejected through CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_model_factory.py] at line: [25] Error message: [SalaryModelFactory.build() expects a SalaryExperimentConfig, got str.]
+[2026-08-06 15:06:12,638] 55 src.logger - ERROR - Failed to build salary estimator: Unsupported salary model family 'xgboost'. Supported families: ['dummy', 'ridge']
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_model_factory.py", line 28, in build
+    self._validate_supported(model_name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_model_factory.py", line 83, in _validate_supported
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Unsupported salary model family 'xgboost'. Supported families: ['dummy', 'ridge']
+[2026-08-06 15:06:12,649] 126 src.logger - INFO - [SMOKE] unsupported model_name correctly rejected through CustomException: Error occurred in script: [C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\components\salary_predict\salary_model_factory.py] at line: [28] Error message: [Unsupported salary model family 'xgboost'. Supported families: ['dummy', 'ridge']]
+[2026-08-06 15:06:12,649] 168 src.logger - INFO - ======================================================================
+[2026-08-06 15:06:12,663] 169 src.logger - INFO - SALARY MODEL FACTORY SMOKE TEST PASSED
+[2026-08-06 15:06:12,663] 170 src.logger - INFO - ======================================================================
