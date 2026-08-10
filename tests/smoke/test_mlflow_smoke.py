@@ -25,7 +25,7 @@ from src.configs.salary_predict.salary_experiment_config import (
     get_experiment_config,
 )
 from src.components.salary_predict.salary_mlflow_tracker import SalaryMLflowTracker
-from components.salary_predict.salary_single_experiment_runner import SalaryTrainingResult
+from src.components.salary_predict.salary_single_experiment_runner import SalaryTrainingResult
 
 
 def _make_result(
