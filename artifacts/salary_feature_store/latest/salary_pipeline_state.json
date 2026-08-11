@@ -1,4 +1,0 @@
-{
-  "input_feature_store_fingerprint": "79c3e0ae9b207df46ed1d91939c90d9a4cadbd9f27046e9b2198eb55b42a37b7",
-  "salary_modeling_dataset_path": "artifacts\\salary_feature_store\\latest\\salary_modeling_dataset.parquet"
-}
