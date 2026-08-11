@@ -94,6 +94,9 @@ class SalaryFinalModelResult:
     # MLflow lineage
     # --------------------------------------------------------------
     mlflow_run_id: Optional[str] = None
+    registered_model_name: Optional[str] = None
+    registered_model_version: Optional[str] = None
+    registered_model_uri: Optional[str] = None
 
     # --------------------------------------------------------------
     # Timestamp
@@ -155,6 +158,9 @@ class SalaryFinalModelResult:
             "artifact_directory": self.artifact_directory,
 
             "mlflow_run_id": self.mlflow_run_id,
+            "registered_model_name": self.registered_model_name,
+            "registered_model_version": self.registered_model_version,
+            "registered_model_uri": self.registered_model_uri,
 
             "generated_at": self.generated_at,
         }

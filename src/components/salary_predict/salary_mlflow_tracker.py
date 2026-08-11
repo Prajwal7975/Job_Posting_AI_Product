@@ -18,7 +18,6 @@ import numpy as np
 import mlflow
 import mlflow.sklearn
 from mlflow.exceptions import MlflowException
-from mlflow.tracking import MlflowClient
 from contextlib import contextmanager
 from src.logger import logging
 from src.exception import CustomException
@@ -626,20 +625,34 @@ class SalaryMLflowTracker:
     @contextmanager
     def start_run(self, run_name: str):
 
+        if not self.config.is_tracking_enabled:
+
+            logging.info("MLflow tracking disabled. " "No MLflow run will be started.")
+
+            yield None
+            return
+
         self._ensure_tracking_uri()
 
         experiment = self._get_or_create_experiment()
 
         with mlflow.start_run(
-            experiment_id=experiment.experiment_id, run_name=run_name
+            experiment_id=experiment.experiment_id,
+            run_name=run_name,
         ) as run:
+
             mlflow.set_tags(self.config.default_tags())
-            logging.info("Started MLflow run '%s'", run.info.run_id)
+
+            logging.info(
+                "Started MLflow run '%s'",
+                run.info.run_id,
+            )
 
             try:
                 yield run
 
             finally:
+
                 logging.info(
                     "Finished MLflow run '%s'",
                     run.info.run_id,
@@ -723,3 +736,110 @@ class SalaryMLflowTracker:
         self._execute_with_retry(lambda: mlflow.log_params(cleaned))
 
         logging.info("Logged %d MLflow parameters.", len(cleaned))
+
+    def log_final_model(
+        self,
+        fitted_workflow: Any,
+        registered_model_name: Optional[str] = None,
+    ) -> Optional[str]:
+
+        if fitted_workflow is None:
+            raise ValueError("fitted_workflow must not be None.")
+
+        if not self.config.is_tracking_enabled:
+            logging.info(
+                "MLflow tracking disabled. Final model will not be registered."
+            )
+            return None
+
+        model_name = registered_model_name or self.config.registered_model_name
+
+        if not model_name or not model_name.strip():
+            raise ValueError("registered_model_name must not be empty.")
+
+        try:
+
+            logging.info("Logging final sklearn Pipeline to MLflow.")
+
+            logging.info("Registering model as: %s", model_name)
+
+            model_info = mlflow.sklearn.log_model(
+                sk_model=fitted_workflow,
+                name="final_model",
+                registered_model_name=model_name,
+                skops_trusted_types=[
+                    "numpy.dtype",
+                    "src.components.salary_predict.salary_preprocessor_builder.SafeCategoricalTransformer",
+                    "src.components.salary_predict.salary_preprocessor_builder.SafeTextTransformer",
+                ],
+            )
+
+            model_uri = model_info.model_uri
+
+            logging.info("Final model logged successfully.")
+
+            logging.info("MLflow model URI: %s", model_uri)
+
+            logging.info(
+                "Model registered successfully: %s",
+                model_name,
+            )
+
+            return model_uri
+
+        except Exception as e:
+
+            logging.error(
+                "Failed to log/register final model: %s",
+                e,
+                exc_info=True,
+            )
+
+            raise
+
+    def get_latest_model_version(
+        self,
+        registered_model_name: Optional[str] = None,
+    ) -> Optional[str]:
+
+        if not self.config.is_tracking_enabled:
+            return None
+
+        model_name = registered_model_name or self.config.registered_model_name
+
+        if not model_name or not model_name.strip():
+            raise ValueError("registered_model_name must not be empty.")
+
+        try:
+
+            client = MlflowClient(tracking_uri=self.config.tracking_uri)
+
+            versions = client.search_model_versions(f"name='{model_name}'")
+
+            if not versions:
+                logging.warning(
+                    "No registered versions found for model '%s'.",
+                    model_name,
+                )
+                return None
+
+            latest_version = max(versions, key=lambda item: int(item.version))
+
+            logging.info(
+                "Latest registered model version | " "name=%s | version=%s",
+                model_name,
+                latest_version.version,
+            )
+
+            return str(latest_version.version)
+
+        except Exception as e:
+
+            logging.error(
+                "Failed to retrieve latest model version " "for '%s': %s",
+                model_name,
+                e,
+                exc_info=True,
+            )
+
+            raise

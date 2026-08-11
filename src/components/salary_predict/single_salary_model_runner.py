@@ -108,18 +108,57 @@ class SalarySingleModelExperimentRunner:
                         self.mlflow_tracker.log_params(result.model_params)
 
                     # Data Validation Guardrails
+
+                    # -------------------------------------------------------------
+                    # Data Validation Guardrails
+                    # Supports both pandas DataFrames and scipy sparse matrices.
+                    # -------------------------------------------------------------
+
                     if X_train is None or y_train is None:
                         raise ValueError("Training data cannot be None.")
+
                     if X_test is None or y_test is None:
                         raise ValueError("Test data cannot be None.")
-                    if len(X_train) != len(y_train):
+
+                    def _n_rows(data: Any) -> int:
+
+                        if not hasattr(data, "shape"):
+                            raise TypeError(
+                                f"Unsupported data object. "
+                                f"Expected an object with a shape attribute, "
+                                f"got {type(data).__name__}."
+                            )
+
+                        if len(data.shape) == 0:
+                            raise ValueError(
+                                "Input data must have at least one dimension."
+                            )
+
+                        return int(data.shape[0])
+
+                    train_rows = _n_rows(X_train)
+                    train_target_rows = _n_rows(y_train)
+
+                    test_rows = _n_rows(X_test)
+                    test_target_rows = _n_rows(y_test)
+
+                    if train_rows != train_target_rows:
                         raise ValueError(
-                            f"Training feature/target length mismatch: {len(X_train)} != {len(y_train)}"
+                            "Training feature/target length mismatch: "
+                            f"{train_rows} != {train_target_rows}"
                         )
-                    if len(X_test) != len(y_test):
+
+                    if test_rows != test_target_rows:
                         raise ValueError(
-                            f"Test feature/target length mismatch: {len(X_test)} != {len(y_test)}"
+                            "Test feature/target length mismatch: "
+                            f"{test_rows} != {test_target_rows}"
                         )
+
+                    if train_rows == 0:
+                        raise ValueError("X_train must not be empty.")
+
+                    if test_rows == 0:
+                        raise ValueError("X_test must not be empty.")
 
                     # 3. Build Estimator & Log Class Name
                     model = self.factory.build(config)
