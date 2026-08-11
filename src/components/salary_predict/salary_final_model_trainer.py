@@ -1,52 +1,3 @@
-"""
-src/components/salary_predict/salary_final_model_trainer.py
-
-Final Model Trainer.
-
-Consumes already-decided inputs:
-
-    1. Winning feature configuration
-    2. Winning model-family summary
-    3. Hyperparameter tuning summary
-
-Produces one fitted production-candidate sklearn Pipeline:
-
-    Pipeline(
-        preprocessor -> trained model
-    )
-
-The fitted pipeline is persisted as:
-
-    final_model.joblib
-
-This component DOES NOT:
-
-    - select the model family
-    - perform hyperparameter tuning
-    - modify the test set
-    - orchestrate the complete ML pipeline
-    - deploy the model
-
-Those responsibilities belong to other stages / the future
-master pipeline orchestrator.
-
-The trainer integrates existing project components:
-
-    SalaryPreprocessorBuilder
-    SalaryModelFactory
-    SalaryMLflowTracker
-
-through dependency injection.
-
-The final artifact contains BOTH:
-
-    preprocessing
-    +
-    trained model
-
-inside one sklearn Pipeline.
-"""
-
 from __future__ import annotations
 
 import json
@@ -59,11 +10,13 @@ from typing import Any, Dict, Optional
 
 import joblib
 import numpy as np
+
 from sklearn.metrics import (
     mean_absolute_error,
     mean_squared_error,
     r2_score,
 )
+
 from sklearn.pipeline import Pipeline
 
 from src.logger import logging
@@ -88,14 +41,6 @@ from src.entity.salary_predict.salary_final_model_trainer_entity import (
 
 @dataclass(frozen=True)
 class _FinalModelConfigView:
-    """
-    Minimal configuration contract required by SalaryModelFactory.
-
-    This is NOT another model configuration registry.
-
-    It simply adapts the already-decided tuning result to the
-    SalaryModelFactory.build() interface.
-    """
 
     model_experiment_id: str
     model_name: str
@@ -110,21 +55,6 @@ class _FinalModelConfigView:
 class SalaryFinalModelTrainer:
     """
     Train and package the final production-candidate salary model.
-
-    Responsibilities
-    ----------------
-    1. Validate upstream lineage.
-    2. Build the existing preprocessor.
-    3. Build the already-selected model using preferred parameters.
-    4. Combine them into one sklearn Pipeline.
-    5. Train on training data.
-    6. Evaluate on validation data.
-    7. Apply configured quality gate.
-    8. Save the complete pipeline as joblib.
-    9. Save metadata/artifacts.
-    10. Track the run through SalaryMLflowTracker.
-
-    This is NOT the master pipeline orchestrator.
     """
 
     def __init__(
@@ -170,23 +100,23 @@ class SalaryFinalModelTrainer:
             logging.info("=" * 70)
 
             # ----------------------------------------------------------
-            # Validate input data
+            # Validate data
             # ----------------------------------------------------------
 
             self._validate_inputs(
-                X_train,
-                y_train,
-                X_validation,
-                y_validation,
+                X_train=X_train,
+                y_train=y_train,
+                X_validation=X_validation,
+                y_validation=y_validation,
             )
 
             # ----------------------------------------------------------
-            # Validate upstream experiment lineage
+            # Validate upstream lineage
             # ----------------------------------------------------------
 
             self._validate_lineage(
-                model_family_summary,
-                tuning_summary,
+                model_family_summary=model_family_summary,
+                tuning_summary=tuning_summary,
             )
 
             # ----------------------------------------------------------
@@ -230,15 +160,15 @@ class SalaryFinalModelTrainer:
             result = SalaryFinalModelResult(
                 success=False,
                 model_name=model_name,
-                feature_experiment_id=feature_experiment_id,
-                feature_config_signature=feature_config_signature,
-                model_experiment_id=model_experiment_id,
-                model_config_signature=model_config_signature,
-                tuning_config_signature=tuning_config_signature,
-                preferred_params=preferred_params,
-                validation_metric=self.config.validation_metric,
-                validation_direction=self.config.validation_direction,
-                validation_threshold=self.config.validation_threshold,
+                feature_experiment_id=(feature_experiment_id),
+                feature_config_signature=(feature_config_signature),
+                model_experiment_id=(model_experiment_id),
+                model_config_signature=(model_config_signature),
+                tuning_config_signature=(tuning_config_signature),
+                preferred_params=(preferred_params),
+                validation_metric=(self.config.validation_metric),
+                validation_direction=(self.config.validation_direction),
+                validation_threshold=(self.config.validation_threshold),
                 validation_threshold_configured=(
                     self.config.validation_threshold is not None
                 ),
@@ -254,11 +184,14 @@ class SalaryFinalModelTrainer:
 
             run_name = f"final_salary_model_{model_name}"
 
-            # ----------------------------------------------------------
-            # MLflow tracked execution
-            # ----------------------------------------------------------
+            # ==========================================================
+            # MLFLOW TRACKED EXECUTION
+            # ==========================================================
 
-            if self.mlflow_tracker is not None:
+            if (
+                self.mlflow_tracker is not None
+                and self.mlflow_tracker.config.is_tracking_enabled
+            ):
 
                 logging.info("MLflow tracking enabled.")
 
@@ -268,7 +201,7 @@ class SalaryFinalModelTrainer:
 
                     self._track_start(
                         model_name=model_name,
-                        preferred_params=preferred_params,
+                        preferred_params=(preferred_params),
                         feature_experiment_id=(feature_experiment_id),
                         feature_config_signature=(feature_config_signature),
                         model_experiment_id=(model_experiment_id),
@@ -279,21 +212,21 @@ class SalaryFinalModelTrainer:
                         result=result,
                         feature_config=feature_config,
                         model_name=model_name,
-                        preferred_params=preferred_params,
+                        preferred_params=(preferred_params),
                         X_train=X_train,
                         y_train=y_train,
                         X_validation=X_validation,
                         y_validation=y_validation,
                         run_dir=run_dir,
-                        model_family_summary=model_family_summary,
+                        model_family_summary=(model_family_summary),
                         tuning_summary=tuning_summary,
                     )
 
                     self._track_completion(result)
 
-            # ----------------------------------------------------------
-            # Non-MLflow execution
-            # ----------------------------------------------------------
+            # ==========================================================
+            # NON-MLFLOW EXECUTION
+            # ==========================================================
 
             else:
 
@@ -306,13 +239,13 @@ class SalaryFinalModelTrainer:
                     result=result,
                     feature_config=feature_config,
                     model_name=model_name,
-                    preferred_params=preferred_params,
+                    preferred_params=(preferred_params),
                     X_train=X_train,
                     y_train=y_train,
                     X_validation=X_validation,
                     y_validation=y_validation,
                     run_dir=run_dir,
-                    model_family_summary=model_family_summary,
+                    model_family_summary=(model_family_summary),
                     tuning_summary=tuning_summary,
                 )
 
@@ -323,8 +256,17 @@ class SalaryFinalModelTrainer:
             logging.info("=" * 70)
             logging.info(
                 "FINAL MODEL TRAINING COMPLETED | "
-                f"success={result.success} | "
-                f"validation_passed={result.validation_passed}"
+                "success=%s | validation_passed=%s | "
+                "registered=%s",
+                result.success,
+                result.validation_passed,
+                bool(
+                    getattr(
+                        result,
+                        "registered_model_version",
+                        None,
+                    )
+                ),
             )
             logging.info("=" * 70)
 
@@ -366,7 +308,9 @@ class SalaryFinalModelTrainer:
 
         if len(X_train) != len(y_train):
             raise ValueError(
-                "Training data length mismatch: " f"{len(X_train)} != {len(y_train)}"
+                "Training data length mismatch: "
+                f"{len(X_train)} != "
+                f"{len(y_train)}"
             )
 
         if len(X_validation) != len(y_validation):
@@ -408,9 +352,11 @@ class SalaryFinalModelTrainer:
         ]
 
         if missing_family:
+
             raise ValueError(
                 "model_family_summary is missing "
-                f"required attributes: {missing_family}"
+                f"required attributes: "
+                f"{missing_family}"
             )
 
         tuning_required = (
@@ -429,14 +375,19 @@ class SalaryFinalModelTrainer:
         ]
 
         if missing_tuning:
+
             raise ValueError(
-                "tuning_summary is missing " f"required attributes: {missing_tuning}"
+                "tuning_summary is missing "
+                f"required attributes: "
+                f"{missing_tuning}"
             )
 
         if tuning_summary.model_name != model_family_summary.winner_model_name:
+
             raise ValueError(
                 "Model lineage mismatch. "
-                f"Tuning model='{tuning_summary.model_name}' "
+                f"Tuning model="
+                f"'{tuning_summary.model_name}' "
                 f"but model-family winner="
                 f"'{model_family_summary.winner_model_name}'."
             )
@@ -460,17 +411,17 @@ class SalaryFinalModelTrainer:
         tuning_summary: Any,
     ) -> None:
 
-        # --------------------------------------------------------------
-        # Build preprocessing
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 1. BUILD PREPROCESSOR
+        # ==============================================================
 
-        logging.info("BUILDING PREPROCESSOR")
+        logging.info("BUILDING FINAL PREPROCESSOR")
 
         preprocessor = self.preprocessor_builder.build(feature_config)
 
-        # --------------------------------------------------------------
-        # Build selected model
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 2. BUILD SELECTED MODEL
+        # ==============================================================
 
         logging.info("BUILDING FINAL MODEL")
 
@@ -484,13 +435,16 @@ class SalaryFinalModelTrainer:
 
         result.model_class_name = type(model).__name__
 
-        # --------------------------------------------------------------
-        # Create ONE production pipeline
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 3. CREATE SINGLE SERVING PIPELINE
+        # ==============================================================
 
         if preprocessor is None:
+
             pipeline = model
+
         else:
+
             pipeline = Pipeline(
                 steps=[
                     (
@@ -504,9 +458,11 @@ class SalaryFinalModelTrainer:
                 ]
             )
 
-        # --------------------------------------------------------------
-        # Train
-        # --------------------------------------------------------------
+        logging.info("Final pipeline created: " "preprocessor -> model")
+
+        # ==============================================================
+        # 4. TRAIN
+        # ==============================================================
 
         logging.info("FINAL MODEL TRAINING START")
 
@@ -522,11 +478,14 @@ class SalaryFinalModelTrainer:
             4,
         )
 
-        logging.info("FINAL MODEL TRAINING COMPLETE | " f"{result.training_seconds}s")
+        logging.info(
+            "FINAL MODEL TRAINING COMPLETE | " "%ss",
+            result.training_seconds,
+        )
 
-        # --------------------------------------------------------------
-        # Validation
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 5. VALIDATION
+        # ==============================================================
 
         logging.info("FINAL MODEL VALIDATION START")
 
@@ -544,15 +503,15 @@ class SalaryFinalModelTrainer:
             validation_metrics,
         )
 
-        # --------------------------------------------------------------
-        # Quality gate
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 6. QUALITY GATE
+        # ==============================================================
 
         result.validation_passed = self._apply_quality_gate(validation_metrics)
 
-        # --------------------------------------------------------------
-        # Persist complete pipeline
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 7. SAVE COMPLETE JOBLIB PIPELINE
+        # ==============================================================
 
         model_path = run_dir / self.config.model_filename
 
@@ -562,6 +521,7 @@ class SalaryFinalModelTrainer:
         )
 
         if not model_path.exists():
+
             raise RuntimeError("Final model artifact was not created: " f"{model_path}")
 
         result.model_artifact_path = str(model_path)
@@ -571,44 +531,112 @@ class SalaryFinalModelTrainer:
             model_path,
         )
 
-        # --------------------------------------------------------------
-        # Metadata
-        # --------------------------------------------------------------
+        # ==============================================================
+        # 8. WRITE METADATA
+        # ==============================================================
 
         self._write_metadata(
             run_dir=run_dir,
             result=result,
             feature_config=feature_config,
-            model_family_summary=model_family_summary,
+            model_family_summary=(model_family_summary),
             tuning_summary=tuning_summary,
         )
 
+        # ==============================================================
+        # 9. MLFLOW TRACKING
+        # ==============================================================
+
+        if self.mlflow_tracker is None:
+
+            result.success = True
+
+            logging.info("MLflow tracker unavailable. " "Skipping MLflow registration.")
+
+            logging.info("FINAL MODEL TRAINING COMPONENT COMPLETED")
+
+            return
+
         # --------------------------------------------------------------
-        # MLflow
+        # Log metrics
         # --------------------------------------------------------------
 
-        if self.mlflow_tracker is not None:
+        self.mlflow_tracker.log_metrics(
+            {
+                "validation_MAE": (validation_metrics["MAE"]),
+                "validation_RMSE": (validation_metrics["RMSE"]),
+                "validation_R2": (validation_metrics["R2"]),
+                "training_time_seconds": (result.training_seconds),
+                "validation_passed": int(result.validation_passed),
+            }
+        )
 
-            self.mlflow_tracker.log_metrics(
-                {
-                    "validation_MAE": (validation_metrics["MAE"]),
-                    "validation_RMSE": (validation_metrics["RMSE"]),
-                    "validation_R2": (validation_metrics["R2"]),
-                    "training_time_seconds": (result.training_seconds),
-                    "validation_passed": (int(result.validation_passed)),
-                }
+        # --------------------------------------------------------------
+        # Log local artifact files
+        # --------------------------------------------------------------
+
+        self.mlflow_tracker.log_artifacts(
+            str(run_dir),
+            artifact_folder="final_model",
+        )
+
+        logging.info("FINAL MODEL ARTIFACTS LOGGED TO MLFLOW")
+
+        # ==============================================================
+        # 10. REGISTER MODEL ONLY AFTER QUALITY GATE
+        # ==============================================================
+
+        if result.validation_passed:
+
+            registered_model_name = self.mlflow_tracker.config.registered_model_name
+
+            logging.info("QUALITY GATE PASSED.")
+
+            logging.info(
+                "REGISTERING FINAL MODEL: %s",
+                registered_model_name,
             )
 
-            self.mlflow_tracker.log_artifacts(
-                str(run_dir),
-                artifact_folder="final_model",
+            model_uri = self.mlflow_tracker.log_final_model(
+                fitted_workflow=pipeline,
+                registered_model_name=(registered_model_name),
             )
 
-            logging.info("FINAL MODEL ARTIFACTS LOGGED TO MLFLOW")
+            result.registered_model_name = registered_model_name
 
-        # --------------------------------------------------------------
-        # Technical training succeeded
-        # --------------------------------------------------------------
+            result.registered_model_uri = model_uri
+
+            # ----------------------------------------------------------
+            # Get created model version
+            # ----------------------------------------------------------
+
+            if hasattr(
+                self.mlflow_tracker,
+                "get_latest_model_version",
+            ):
+
+                version = self.mlflow_tracker.get_latest_model_version(
+                    registered_model_name
+                )
+
+                result.registered_model_version = version
+
+            logging.info(
+                "MODEL REGISTRATION COMPLETE | " "name=%s | version=%s | uri=%s",
+                result.registered_model_name,
+                result.registered_model_version,
+                result.registered_model_uri,
+            )
+
+        else:
+
+            logging.warning("QUALITY GATE FAILED.")
+
+            logging.warning("Model saved locally but " "WILL NOT be registered.")
+
+        # ==============================================================
+        # 11. TECHNICAL SUCCESS
+        # ==============================================================
 
         result.success = True
 
@@ -664,45 +692,35 @@ class SalaryFinalModelTrainer:
 
         threshold = self.config.validation_threshold
 
-        # --------------------------------------------------------------
-        # No explicit threshold
-        # --------------------------------------------------------------
-
         if threshold is None:
 
             logging.info(
                 "No explicit quality threshold "
-                f"configured for {metric}. "
+                "configured for %s. "
                 "Validation considered successful "
-                "because metric calculation succeeded."
+                "because metric calculation succeeded.",
+                metric,
             )
 
             return True
 
-        # --------------------------------------------------------------
-        # Minimize metrics
-        # --------------------------------------------------------------
-
         if self.config.validation_direction == "minimize":
 
             passed = score <= threshold
-
-        # --------------------------------------------------------------
-        # Maximize metrics
-        # --------------------------------------------------------------
 
         else:
 
             passed = score >= threshold
 
         logging.info(
-            "QUALITY GATE | metric=%s | score=%.6f | "
-            "threshold=%.6f | direction=%s | result=%s",
+            "QUALITY GATE | metric=%s | "
+            "score=%.6f | threshold=%.6f | "
+            "direction=%s | result=%s",
             metric,
             score,
             threshold,
             self.config.validation_direction,
-            "PASSED" if passed else "FAILED",
+            ("PASSED" if passed else "FAILED"),
         )
 
         return passed
@@ -719,9 +737,6 @@ class SalaryFinalModelTrainer:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
 
         run_dir = Path(self.config.artifact_dir) / f"run_{timestamp}_{model_name}"
-
-        # Historical experiment runs should not overwrite
-        # each other.
 
         run_dir.mkdir(
             parents=True,
@@ -743,14 +758,10 @@ class SalaryFinalModelTrainer:
         tuning_summary: Any,
     ) -> None:
 
-        # --------------------------------------------------------------
-        # Main model metadata
-        # --------------------------------------------------------------
-
         model_metadata = {
-            "stage": "final_model_training",
-            "model_name": result.model_name,
-            "model_class_name": result.model_class_name,
+            "stage": ("final_model_training"),
+            "model_name": (result.model_name),
+            "model_class_name": (result.model_class_name),
             "preferred_params": (result.preferred_params),
             "feature_experiment_id": (result.feature_experiment_id),
             "feature_config_signature": (result.feature_config_signature),
@@ -767,7 +778,28 @@ class SalaryFinalModelTrainer:
             "production_approved": (result.validation_passed),
             "model_artifact_path": (result.model_artifact_path),
             "mlflow_run_id": (result.mlflow_run_id),
-            "generated_at": result.generated_at,
+            "registered_model_name": (
+                getattr(
+                    result,
+                    "registered_model_name",
+                    None,
+                )
+            ),
+            "registered_model_version": (
+                getattr(
+                    result,
+                    "registered_model_version",
+                    None,
+                )
+            ),
+            "registered_model_uri": (
+                getattr(
+                    result,
+                    "registered_model_uri",
+                    None,
+                )
+            ),
+            "generated_at": (result.generated_at),
         }
 
         self._write_json(
@@ -803,11 +835,11 @@ class SalaryFinalModelTrainer:
         # --------------------------------------------------------------
 
         model_config_dict = {
-            "model_name": result.model_name,
-            "model_class_name": result.model_class_name,
-            "model_params": result.preferred_params,
-            "model_experiment_id": result.model_experiment_id,
-            "model_config_signature": result.model_config_signature,
+            "model_name": (result.model_name),
+            "model_class_name": (result.model_class_name),
+            "model_params": (result.preferred_params),
+            "model_experiment_id": (result.model_experiment_id),
+            "model_config_signature": (result.model_config_signature),
         }
 
         self._write_json(
@@ -841,7 +873,7 @@ class SalaryFinalModelTrainer:
 
             tuning_json = json.dumps(
                 {
-                    "model_name": result.model_name,
+                    "model_name": (result.model_name),
                     "preferred_params": (result.preferred_params),
                     "preferred_config_signature": (result.tuning_config_signature),
                 },
@@ -868,11 +900,32 @@ class SalaryFinalModelTrainer:
         # --------------------------------------------------------------
 
         run_metadata = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "stage": "final_model_training",
+            "timestamp": (datetime.now(timezone.utc).isoformat()),
+            "stage": ("final_model_training"),
             "artifact_directory": (str(run_dir)),
             "model_artifact_path": (result.model_artifact_path),
             "mlflow_run_id": (result.mlflow_run_id),
+            "registered_model_name": (
+                getattr(
+                    result,
+                    "registered_model_name",
+                    None,
+                )
+            ),
+            "registered_model_version": (
+                getattr(
+                    result,
+                    "registered_model_version",
+                    None,
+                )
+            ),
+            "registered_model_uri": (
+                getattr(
+                    result,
+                    "registered_model_uri",
+                    None,
+                )
+            ),
             "feature_experiment_id": (result.feature_experiment_id),
             "feature_config_signature": (result.feature_config_signature),
             "model_experiment_id": (result.model_experiment_id),
@@ -911,7 +964,7 @@ class SalaryFinalModelTrainer:
         )
 
     # ==================================================================
-    # MLFLOW
+    # MLFLOW START
     # ==================================================================
 
     def _track_start(
@@ -925,11 +978,11 @@ class SalaryFinalModelTrainer:
     ) -> None:
 
         tags = {
-            "stage": "final_model_training",
+            "stage": ("final_model_training"),
             "model_name": model_name,
             "feature_experiment_id": (feature_experiment_id),
             "model_experiment_id": (model_experiment_id),
-            "tuning_stage": "completed",
+            "tuning_stage": ("completed"),
         }
 
         self.mlflow_tracker.log_tags(tags)
@@ -962,5 +1015,14 @@ class SalaryFinalModelTrainer:
                 "status": ("success" if result.success else "failed"),
                 "validation_passed": str(result.validation_passed),
                 "production_approved": str(result.validation_passed),
+                "model_registered": str(
+                    bool(
+                        getattr(
+                            result,
+                            "registered_model_version",
+                            None,
+                        )
+                    )
+                ),
             }
         )

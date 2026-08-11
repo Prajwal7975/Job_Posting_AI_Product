@@ -1,0 +1,309 @@
+[2026-08-11 03:32:44,457] 232 src.logger - INFO - 
+[2026-08-11 03:32:44,458] 233 src.logger - INFO - ##########################################################################################
+[2026-08-11 03:32:44,458] 234 src.logger - INFO - MASTER AI/ML PIPELINE STARTED
+[2026-08-11 03:32:44,458] 235 src.logger - INFO - ##########################################################################################
+[2026-08-11 03:32:44,458] 243 src.logger - INFO - 
+[2026-08-11 03:32:44,458] 244 src.logger - INFO - ==========================================================================================
+[2026-08-11 03:32:44,459] 245 src.logger - INFO - MASTER STAGE 1 - DATA PIPELINE
+[2026-08-11 03:32:44,459] 246 src.logger - INFO - ==========================================================================================
+[2026-08-11 03:32:44,459] 366 src.logger - INFO - ===========================================================================
+[2026-08-11 03:32:44,459] 367 src.logger - INFO - STATE-AWARE DATA PIPELINE STARTED
+[2026-08-11 03:32:44,459] 368 src.logger - INFO - ===========================================================================
+[2026-08-11 03:32:45,646] 423 src.logger - INFO - [RUN] Data Ingestion
+[2026-08-11 03:32:45,646] 154 src.logger - INFO - ======================================================================
+[2026-08-11 03:32:45,646] 155 src.logger - INFO - DATA INGESTION STARTED
+[2026-08-11 03:32:45,646] 156 src.logger - INFO - ======================================================================
+[2026-08-11 03:32:45,647] 164 src.logger - INFO - Versions Found: Version_9, Version_13
+[2026-08-11 03:32:45,647] 171 src.logger - INFO - Loading Version_9
+[2026-08-11 03:32:47,605] 101 src.logger - INFO - [Version_9] Loaded job_postings.csv as 'postings' (33246 rows)
+[2026-08-11 03:32:47,762] 101 src.logger - INFO - [Version_9] Loaded companies.csv as 'companies' (11361 rows)
+[2026-08-11 03:32:47,764] 101 src.logger - INFO - [Version_9] Loaded industries.csv as 'industries' (229 rows)
+[2026-08-11 03:32:47,775] 101 src.logger - INFO - [Version_9] Loaded job_industries.csv as 'job_industries' (44091 rows)
+[2026-08-11 03:32:47,786] 142 src.logger - INFO - [Version_9] Loaded benefits.csv as 'benefits' (29325 rows)
+[2026-08-11 03:32:47,823] 142 src.logger - INFO - [Version_9] Loaded company_specialities.csv as 'company_specialities' (78405 rows)
+[2026-08-11 03:32:47,832] 142 src.logger - INFO - [Version_9] Loaded employee_counts.csv as 'employee_counts' (14275 rows)
+[2026-08-11 03:32:47,845] 142 src.logger - INFO - [Version_9] Loaded job_skills.csv as 'job_skills' (56591 rows)
+[2026-08-11 03:32:47,846] 142 src.logger - INFO - [Version_9] Loaded skills.csv as 'skills' (35 rows)
+[2026-08-11 03:32:47,858] 142 src.logger - INFO - [Version_9] Loaded salaries.csv as 'salaries' (13352 rows)
+[2026-08-11 03:32:47,858] 171 src.logger - INFO - Loading Version_13
+[2026-08-11 03:32:55,372] 101 src.logger - INFO - [Version_13] Loaded postings.csv as 'postings' (123849 rows)
+[2026-08-11 03:32:55,772] 101 src.logger - INFO - [Version_13] Loaded companies.csv as 'companies' (24473 rows)
+[2026-08-11 03:32:55,775] 101 src.logger - INFO - [Version_13] Loaded industries.csv as 'industries' (422 rows)
+[2026-08-11 03:32:55,810] 101 src.logger - INFO - [Version_13] Loaded job_industries.csv as 'job_industries' (164808 rows)
+[2026-08-11 03:32:55,837] 142 src.logger - INFO - [Version_13] Loaded benefits.csv as 'benefits' (67943 rows)
+[2026-08-11 03:32:55,930] 142 src.logger - INFO - [Version_13] Loaded company_specialities.csv as 'company_specialities' (169387 rows)
+[2026-08-11 03:32:55,946] 142 src.logger - INFO - [Version_13] Loaded employee_counts.csv as 'employee_counts' (35787 rows)
+[2026-08-11 03:32:55,995] 142 src.logger - INFO - [Version_13] Loaded job_skills.csv as 'job_skills' (213768 rows)
+[2026-08-11 03:32:55,997] 142 src.logger - INFO - [Version_13] Loaded skills.csv as 'skills' (35 rows)
+[2026-08-11 03:32:56,029] 142 src.logger - INFO - [Version_13] Loaded salaries.csv as 'salaries' (40785 rows)
+[2026-08-11 03:32:56,030] 178 src.logger - INFO - ======================================================================
+[2026-08-11 03:32:56,030] 179 src.logger - INFO - Loaded 2 dataset version(s).
+[2026-08-11 03:32:56,036] 183 src.logger - INFO - DATA INGESTION COMPLETED
+[2026-08-11 03:32:56,036] 184 src.logger - INFO - ======================================================================
+[2026-08-11 03:32:58,432] 232 src.logger - INFO - Saved stage cache: artifacts\pipeline_cache\data_ingestion.joblib
+[2026-08-11 03:32:59,897] 508 src.logger - INFO - [RUN] Schema Alignment
+[2026-08-11 03:32:59,898] 328 src.logger - INFO - ======================================================================
+[2026-08-11 03:32:59,898] 329 src.logger - INFO - SCHEMA ALIGNMENT STARTED
+[2026-08-11 03:32:59,898] 330 src.logger - INFO - ======================================================================
+[2026-08-11 03:32:59,898] 339 src.logger - INFO - Aligning Version_9
+[2026-08-11 03:33:00,024] 275 src.logger - WARNING - [Version_9/postings] Columns not found in source, created empty: ('normalized_salary', 'zip_code', 'fips')
+[2026-08-11 03:33:00,025] 290 src.logger - WARNING - [Version_9/postings] 6 unmapped source column(s) preserved (prefixed): ('job_posting_url', 'application_url', 'application_type', 'skills_desc', 'posting_domain', 'scraped')
+[2026-08-11 03:33:00,025] 297 src.logger - INFO - [Version_9/postings] Alignment complete -> 31 columns, 33246 rows.
+[2026-08-11 03:33:00,037] 297 src.logger - INFO - [Version_9/companies] Alignment complete -> 10 columns, 11361 rows.
+[2026-08-11 03:33:00,039] 297 src.logger - INFO - [Version_9/industries] Alignment complete -> 2 columns, 229 rows.
+[2026-08-11 03:33:00,040] 297 src.logger - INFO - [Version_9/job_industries] Alignment complete -> 2 columns, 44091 rows.
+[2026-08-11 03:33:00,041] 297 src.logger - INFO - [Version_9/benefits] Alignment complete -> 3 columns, 29325 rows.
+[2026-08-11 03:33:00,044] 297 src.logger - INFO - [Version_9/company_specialities] Alignment complete -> 2 columns, 78405 rows.
+[2026-08-11 03:33:00,046] 297 src.logger - INFO - [Version_9/employee_counts] Alignment complete -> 4 columns, 14275 rows.
+[2026-08-11 03:33:00,048] 297 src.logger - INFO - [Version_9/job_skills] Alignment complete -> 2 columns, 56591 rows.
+[2026-08-11 03:33:00,049] 297 src.logger - INFO - [Version_9/skills] Alignment complete -> 2 columns, 35 rows.
+[2026-08-11 03:33:00,050] 297 src.logger - INFO - [Version_9/salaries] Alignment complete -> 8 columns, 13352 rows.
+[2026-08-11 03:33:00,050] 339 src.logger - INFO - Aligning Version_13
+[2026-08-11 03:33:00,150] 290 src.logger - WARNING - [Version_13/postings] 6 unmapped source column(s) preserved (prefixed): ('company_name', 'job_posting_url', 'application_url', 'application_type', 'skills_desc', 'posting_domain')
+[2026-08-11 03:33:00,150] 297 src.logger - INFO - [Version_13/postings] Alignment complete -> 31 columns, 123849 rows.
+[2026-08-11 03:33:00,164] 297 src.logger - INFO - [Version_13/companies] Alignment complete -> 10 columns, 24473 rows.
+[2026-08-11 03:33:00,164] 297 src.logger - INFO - [Version_13/industries] Alignment complete -> 2 columns, 422 rows.
+[2026-08-11 03:33:00,166] 297 src.logger - INFO - [Version_13/job_industries] Alignment complete -> 2 columns, 164808 rows.
+[2026-08-11 03:33:00,167] 297 src.logger - INFO - [Version_13/benefits] Alignment complete -> 3 columns, 67943 rows.
+[2026-08-11 03:33:00,169] 297 src.logger - INFO - [Version_13/company_specialities] Alignment complete -> 2 columns, 169387 rows.
+[2026-08-11 03:33:00,171] 297 src.logger - INFO - [Version_13/employee_counts] Alignment complete -> 4 columns, 35787 rows.
+[2026-08-11 03:33:00,173] 297 src.logger - INFO - [Version_13/job_skills] Alignment complete -> 2 columns, 213768 rows.
+[2026-08-11 03:33:00,173] 297 src.logger - INFO - [Version_13/skills] Alignment complete -> 2 columns, 35 rows.
+[2026-08-11 03:33:00,175] 297 src.logger - INFO - [Version_13/salaries] Alignment complete -> 8 columns, 40785 rows.
+[2026-08-11 03:33:00,177] 353 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:00,177] 354 src.logger - INFO - Alignment summary: {'versions_processed': 2, 'tables_processed': 20, 'columns_renamed': 0, 'columns_missing': 3, 'columns_preserved': 12, 'columns_dropped': 0, 'tables_with_empty_required': 0, 'tables_with_structural_issues': 1, 'execution_time_seconds': 0.2769}
+[2026-08-11 03:33:00,177] 355 src.logger - INFO - SCHEMA ALIGNMENT COMPLETED
+[2026-08-11 03:33:00,177] 356 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:02,614] 232 src.logger - INFO - Saved stage cache: artifacts\pipeline_cache\schema_alignment.joblib
+[2026-08-11 03:33:03,322] 597 src.logger - INFO - [RUN] Data Validation
+[2026-08-11 03:33:03,322] 454 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:03,322] 455 src.logger - INFO - DATA VALIDATION STARTED
+[2026-08-11 03:33:03,322] 456 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:03,323] 464 src.logger - INFO - Validating Version_9
+[2026-08-11 03:33:03,425] 393 src.logger - WARNING - [Version_9/postings] Null violations: {'company_id': 654}
+[2026-08-11 03:33:03,425] 418 src.logger - WARNING - [Version_9/postings] Broken relationships (orphan foreign keys): {'company_id': 47}
+[2026-08-11 03:33:03,426] 423 src.logger - INFO - [Version_9/postings] Validation complete -> 33246 row(s), passed: False
+[2026-08-11 03:33:03,432] 393 src.logger - WARNING - [Version_9/companies] Null violations: {'name': 1}
+[2026-08-11 03:33:03,432] 423 src.logger - INFO - [Version_9/companies] Validation complete -> 11361 row(s), passed: False
+[2026-08-11 03:33:03,434] 393 src.logger - WARNING - [Version_9/industries] Null violations: {'industry_name': 17}
+[2026-08-11 03:33:03,434] 423 src.logger - INFO - [Version_9/industries] Validation complete -> 229 row(s), passed: False
+[2026-08-11 03:33:03,456] 418 src.logger - WARNING - [Version_9/job_industries] Broken relationships (orphan foreign keys): {'job_id': 1040}
+[2026-08-11 03:33:03,456] 423 src.logger - INFO - [Version_9/job_industries] Validation complete -> 44091 row(s), passed: False
+[2026-08-11 03:33:03,468] 423 src.logger - INFO - [Version_9/benefits] Validation complete -> 29325 row(s), passed: True
+[2026-08-11 03:33:03,475] 418 src.logger - WARNING - [Version_9/company_specialities] Broken relationships (orphan foreign keys): {'company_id': 335}
+[2026-08-11 03:33:03,476] 423 src.logger - INFO - [Version_9/company_specialities] Validation complete -> 78405 row(s), passed: False
+[2026-08-11 03:33:03,481] 418 src.logger - WARNING - [Version_9/employee_counts] Broken relationships (orphan foreign keys): {'company_id': 45}
+[2026-08-11 03:33:03,481] 423 src.logger - INFO - [Version_9/employee_counts] Validation complete -> 14275 row(s), passed: False
+[2026-08-11 03:33:03,500] 418 src.logger - WARNING - [Version_9/job_skills] Broken relationships (orphan foreign keys): {'job_id': 932}
+[2026-08-11 03:33:03,500] 423 src.logger - INFO - [Version_9/job_skills] Validation complete -> 56591 row(s), passed: False
+[2026-08-11 03:33:03,502] 423 src.logger - INFO - [Version_9/skills] Validation complete -> 35 row(s), passed: True
+[2026-08-11 03:33:03,534] 423 src.logger - INFO - [Version_9/salaries] Validation complete -> 13352 row(s), passed: True
+[2026-08-11 03:33:03,534] 464 src.logger - INFO - Validating Version_13
+[2026-08-11 03:33:03,669] 393 src.logger - WARNING - [Version_13/postings] Null violations: {'company_id': 1717}
+[2026-08-11 03:33:03,669] 418 src.logger - WARNING - [Version_13/postings] Broken relationships (orphan foreign keys): {'company_id': 1}
+[2026-08-11 03:33:03,669] 423 src.logger - INFO - [Version_13/postings] Validation complete -> 123849 row(s), passed: False
+[2026-08-11 03:33:03,681] 393 src.logger - WARNING - [Version_13/companies] Null violations: {'name': 1}
+[2026-08-11 03:33:03,681] 423 src.logger - INFO - [Version_13/companies] Validation complete -> 24473 row(s), passed: False
+[2026-08-11 03:33:03,683] 393 src.logger - WARNING - [Version_13/industries] Null violations: {'industry_name': 34}
+[2026-08-11 03:33:03,683] 423 src.logger - INFO - [Version_13/industries] Validation complete -> 422 row(s), passed: False
+[2026-08-11 03:33:03,753] 418 src.logger - WARNING - [Version_13/job_industries] Broken relationships (orphan foreign keys): {'job_id': 5845}
+[2026-08-11 03:33:03,754] 423 src.logger - INFO - [Version_13/job_industries] Validation complete -> 164808 row(s), passed: False
+[2026-08-11 03:33:03,801] 418 src.logger - WARNING - [Version_13/benefits] Broken relationships (orphan foreign keys): {'job_id': 2550}
+[2026-08-11 03:33:03,801] 423 src.logger - INFO - [Version_13/benefits] Validation complete -> 67943 row(s), passed: False
+[2026-08-11 03:33:04,367] 423 src.logger - INFO - [Version_13/company_specialities] Validation complete -> 169387 row(s), passed: True
+[2026-08-11 03:33:04,377] 423 src.logger - INFO - [Version_13/employee_counts] Validation complete -> 35787 row(s), passed: True
+[2026-08-11 03:33:04,459] 418 src.logger - WARNING - [Version_13/job_skills] Broken relationships (orphan foreign keys): {'job_id': 7990}
+[2026-08-11 03:33:04,459] 423 src.logger - INFO - [Version_13/job_skills] Validation complete -> 213768 row(s), passed: False
+[2026-08-11 03:33:04,460] 423 src.logger - INFO - [Version_13/skills] Validation complete -> 35 row(s), passed: True
+[2026-08-11 03:33:04,516] 418 src.logger - WARNING - [Version_13/salaries] Broken relationships (orphan foreign keys): {'job_id': 4712}
+[2026-08-11 03:33:04,516] 423 src.logger - INFO - [Version_13/salaries] Validation complete -> 40785 row(s), passed: False
+[2026-08-11 03:33:04,516] 473 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:04,516] 474 src.logger - INFO - Validation summary: {'versions_processed': 2, 'tables_processed': 20, 'tables_passed': 6, 'tables_failed': 14, 'tables_skipped_no_rules': 0, 'total_structural_issues': 0, 'total_null_violations': 2424, 'total_duplicate_key_rows': 0, 'total_invalid_values': 0, 'total_dtype_conformance_issues': 0, 'total_broken_relationships': 23497, 'execution_time_seconds': 1.1936, 'passed': False}
+[2026-08-11 03:33:04,516] 475 src.logger - INFO - DATA VALIDATION COMPLETED
+[2026-08-11 03:33:04,516] 476 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:05,811] 232 src.logger - INFO - Saved stage cache: artifacts\pipeline_cache\data_validation.joblib
+[2026-08-11 03:33:06,431] 686 src.logger - INFO - [RUN] Data Cleaning
+[2026-08-11 03:33:06,431] 237 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:06,431] 238 src.logger - INFO - DATA CLEANING STARTED
+[2026-08-11 03:33:06,431] 239 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:06,433] 256 src.logger - INFO - Cleaning Version_9 (10 tables detected)
+[2026-08-11 03:33:06,914] 321 src.logger - INFO - [Version_9/companies] Cleaned: 11361 -> 11361 rows (Strings modified: 9301, Nulls filled: 1, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:11,748] 321 src.logger - INFO - [Version_9/postings] Cleaned: 33246 -> 32545 rows (Strings modified: 33004, Nulls filled: 0, Dtype conversions: 5, Invalids: 0, Duplicates: 0, Orphans: 47)
+[2026-08-11 03:33:11,752] 321 src.logger - INFO - [Version_9/industries] Cleaned: 229 -> 229 rows (Strings modified: 212, Nulls filled: 17, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:11,754] 321 src.logger - INFO - [Version_9/skills] Cleaned: 35 -> 35 rows (Strings modified: 35, Nulls filled: 0, Dtype conversions: 0, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:11,775] 321 src.logger - INFO - [Version_9/job_industries] Cleaned: 44091 -> 42769 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 1322)
+[2026-08-11 03:33:11,844] 321 src.logger - INFO - [Version_9/benefits] Cleaned: 29325 -> 28621 rows (Strings modified: 19842, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 704)
+[2026-08-11 03:33:12,060] 321 src.logger - INFO - [Version_9/company_specialities] Cleaned: 78405 -> 77978 rows (Strings modified: 66650, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 92, Orphans: 335)
+[2026-08-11 03:33:12,069] 321 src.logger - INFO - [Version_9/employee_counts] Cleaned: 14275 -> 14230 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 3, Invalids: 0, Duplicates: 0, Orphans: 45)
+[2026-08-11 03:33:12,173] 321 src.logger - INFO - [Version_9/job_skills] Cleaned: 56591 -> 54760 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 1831)
+[2026-08-11 03:33:12,261] 321 src.logger - INFO - [Version_9/salaries] Cleaned: 13352 -> 13116 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 236)
+[2026-08-11 03:33:12,261] 256 src.logger - INFO - Cleaning Version_13 (10 tables detected)
+[2026-08-11 03:33:13,326] 321 src.logger - INFO - [Version_13/companies] Cleaned: 24473 -> 24473 rows (Strings modified: 20092, Nulls filled: 1, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:35,200] 321 src.logger - INFO - [Version_13/postings] Cleaned: 123849 -> 122131 rows (Strings modified: 124674, Nulls filled: 0, Dtype conversions: 6, Invalids: 0, Duplicates: 0, Orphans: 1)
+[2026-08-11 03:33:35,221] 321 src.logger - INFO - [Version_13/industries] Cleaned: 422 -> 422 rows (Strings modified: 388, Nulls filled: 34, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:35,227] 321 src.logger - INFO - [Version_13/skills] Cleaned: 35 -> 35 rows (Strings modified: 35, Nulls filled: 0, Dtype conversions: 0, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:35,322] 321 src.logger - INFO - [Version_13/job_industries] Cleaned: 164808 -> 158355 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 6453)
+[2026-08-11 03:33:35,519] 321 src.logger - INFO - [Version_13/benefits] Cleaned: 67943 -> 64802 rows (Strings modified: 43712, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 3141)
+[2026-08-11 03:33:36,033] 321 src.logger - INFO - [Version_13/company_specialities] Cleaned: 169387 -> 169213 rows (Strings modified: 143019, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 174, Orphans: 0)
+[2026-08-11 03:33:36,061] 321 src.logger - INFO - [Version_13/employee_counts] Cleaned: 35787 -> 35787 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 4, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-11 03:33:36,446] 321 src.logger - INFO - [Version_13/job_skills] Cleaned: 213768 -> 203167 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 10601)
+[2026-08-11 03:33:36,712] 321 src.logger - INFO - [Version_13/salaries] Cleaned: 40785 -> 35563 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 5222)
+[2026-08-11 03:33:36,713] 360 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:36,713] 361 src.logger - INFO - Cleaning summary: 20/20 tables succeeded. Total rows removed: 32575 (2.9%). Orphans: 29938, Nulls filled: 53, Invalids: 0, Conversions: 38.
+[2026-08-11 03:33:36,713] 367 src.logger - INFO - DATA CLEANING COMPLETED
+[2026-08-11 03:33:36,713] 368 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:40,386] 232 src.logger - INFO - Saved stage cache: artifacts\pipeline_cache\data_cleaning.joblib
+[2026-08-11 03:33:41,157] 775 src.logger - INFO - [RUN] Master Dataset Builder
+[2026-08-11 03:33:41,159] 774 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:41,159] 775 src.logger - INFO - MASTER DATASET BUILD STARTED
+[2026-08-11 03:33:41,159] 776 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:41,159] 785 src.logger - INFO - Building Version_9
+[2026-08-11 03:33:41,425] 400 src.logger - INFO - Snapshot table 'employee_counts': reduced 14230 row(s) to 11278 (one per 'company_id').
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] dimension join 'companies' matched 32545/32545 rows (100.0%)
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] snapshot join 'employee_counts' matched 32545/32545 rows (100.0%)
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] snapshot join 'salaries' matched 13116/32545 rows (40.3%)
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] bridge join 'job_industries' matched 32505/32545 rows (99.9%)
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] bridge join 'job_skills' matched 31529/32545 rows (96.9%)
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] bridge join 'benefits' matched 11446/32545 rows (35.2%)
+[2026-08-11 03:33:43,986] 708 src.logger - INFO - [Version_9] bridge join 'company_specialities' matched 25936/32545 rows (79.7%)
+[2026-08-11 03:33:43,986] 713 src.logger - INFO - [Version_9] Build complete -> 32545 row(s), 7 table(s) joined, 31 new column(s), integrity_passed: True
+[2026-08-11 03:33:44,015] 785 src.logger - INFO - Building Version_13
+[2026-08-11 03:33:44,368] 400 src.logger - INFO - Snapshot table 'employee_counts': reduced 35787 row(s) to 24473 (one per 'company_id').
+[2026-08-11 03:33:51,073] 708 src.logger - INFO - [Version_13] dimension join 'companies' matched 122131/122131 rows (100.0%)
+[2026-08-11 03:33:51,074] 708 src.logger - INFO - [Version_13] snapshot join 'employee_counts' matched 122131/122131 rows (100.0%)
+[2026-08-11 03:33:51,074] 708 src.logger - INFO - [Version_13] snapshot join 'salaries' matched 35563/122131 rows (29.1%)
+[2026-08-11 03:33:51,074] 708 src.logger - INFO - [Version_13] bridge join 'job_industries' matched 122038/122131 rows (99.9%)
+[2026-08-11 03:33:51,074] 708 src.logger - INFO - [Version_13] bridge join 'job_skills' matched 120590/122131 rows (98.7%)
+[2026-08-11 03:33:51,074] 708 src.logger - INFO - [Version_13] bridge join 'benefits' matched 28528/122131 rows (23.4%)
+[2026-08-11 03:33:51,074] 708 src.logger - INFO - [Version_13] bridge join 'company_specialities' matched 96006/122131 rows (78.6%)
+[2026-08-11 03:33:51,074] 713 src.logger - INFO - [Version_13] Build complete -> 122131 row(s), 7 table(s) joined, 31 new column(s), integrity_passed: True
+[2026-08-11 03:33:52,027] 809 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:52,027] 810 src.logger - INFO - Build summary: {'versions_processed': 2, 'tables_processed': 14, 'rows_processed': 154676, 'successful_merges': 14, 'failed_merges': 0, 'new_columns': 31, 'memory_usage_mb': 2159.0966, 'execution_time_seconds': 10.1011, 'dataset_id': 'ds_20260810_220351', 'schema_hash': '37e6148dfa3bd02bede6ad4dc3b8447071b23ac5e1df05b9968c33e4a20836fa', 'integrity_passed': True}
+[2026-08-11 03:33:52,027] 811 src.logger - INFO - MASTER DATASET BUILD COMPLETED
+[2026-08-11 03:33:52,027] 812 src.logger - INFO - ======================================================================
+[2026-08-11 03:33:59,287] 944 src.logger - INFO - Saved master dataset build output: {'dataset': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\latest\\master_dataset.parquet', 'metadata': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\latest\\master_dataset_metadata.json', 'schema_fingerprint': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\latest\\schema_fingerprint.json', 'report': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\latest\\master_dataset_report.json', 'archive_dataset': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\archive\\ds_20260810_220351\\master_dataset.parquet', 'archive_metadata': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\archive\\ds_20260810_220351\\master_dataset_metadata.json', 'archive_schema_fingerprint': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\archive\\ds_20260810_220351\\schema_fingerprint.json', 'archive_report': 'C:\\Users\\lenovo\\OneDrive\\Desktop\\job_postings_project\\artifacts\\master_dataset\\archive\\ds_20260810_220351\\master_dataset_report.json'}
+[2026-08-11 03:34:03,811] 232 src.logger - INFO - Saved stage cache: artifacts\pipeline_cache\master_dataset.joblib
+[2026-08-11 03:34:05,572] 123 src.logger - INFO - CommonFeatureEngineeringConfig initialized successfully.
+[2026-08-11 03:34:05,576] 880 src.logger - INFO - [RUN] Common Feature Engineering
+[2026-08-11 03:34:05,576] 91 src.logger - INFO - ======================================================================
+[2026-08-11 03:34:05,576] 92 src.logger - INFO - COMMON FEATURE ENGINEERING STARTED
+[2026-08-11 03:34:05,576] 93 src.logger - INFO - ======================================================================
+[2026-08-11 03:34:12,262] 171 src.logger - INFO - Loaded master dataset from 'artifacts\master_dataset\latest\master_dataset.parquet' -> 154676 rows, 64 columns
+[2026-08-11 03:34:12,716] 184 src.logger - INFO - [dtype_standardization] START
+[2026-08-11 03:34:12,716] 196 src.logger - INFO - [dtype_standardization] END - Converted 0 column(s) to numeric.
+[2026-08-11 03:34:12,717] 216 src.logger - INFO - [identifier_handling] START
+[2026-08-11 03:34:12,854] 229 src.logger - INFO - [identifier_handling] END - Dropped identifier column(s): ['job_id', 'company_id', 'salary_id']
+[2026-08-11 03:34:12,934] 246 src.logger - INFO - [datetime_standardization] START
+[2026-08-11 03:34:13,080] 269 src.logger - INFO - [datetime_standardization] END - Standardized column(s): ['listed_time', 'original_listed_time', 'expiry', 'closed_time']
+[2026-08-11 03:34:13,081] 287 src.logger - INFO - [missing_value_handling] START
+[2026-08-11 03:34:13,107] 310 src.logger - INFO - [missing_value_handling] Column='description' Missing=7 Strategy=mode
+[2026-08-11 03:34:13,467] 337 src.logger - WARNING - [missing_value_handling] Column 'description' has high cardinality (134851 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,499] 310 src.logger - INFO - [missing_value_handling] Column='pay_period' Missing=105997 Strategy=mode
+[2026-08-11 03:34:13,532] 310 src.logger - INFO - [missing_value_handling] Column='currency' Missing=105997 Strategy=mode
+[2026-08-11 03:34:13,562] 310 src.logger - INFO - [missing_value_handling] Column='compensation_type' Missing=105997 Strategy=mode
+[2026-08-11 03:34:13,596] 310 src.logger - INFO - [missing_value_handling] Column='remote_allowed' Missing=135197 Strategy=median
+[2026-08-11 03:34:13,624] 310 src.logger - INFO - [missing_value_handling] Column='closed_time' Missing=152471 Strategy=mode
+[2026-08-11 03:34:13,627] 337 src.logger - WARNING - [missing_value_handling] Column 'closed_time' has high cardinality (684 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,647] 310 src.logger - INFO - [missing_value_handling] Column='unmapped__application_url' Missing=46650 Strategy=mode
+[2026-08-11 03:34:13,695] 337 src.logger - WARNING - [missing_value_handling] Column 'unmapped__application_url' has high cardinality (104565 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,704] 310 src.logger - INFO - [missing_value_handling] Column='unmapped__skills_desc' Missing=151904 Strategy=mode
+[2026-08-11 03:34:13,721] 337 src.logger - WARNING - [missing_value_handling] Column 'unmapped__skills_desc' has high cardinality (2506 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,727] 310 src.logger - INFO - [missing_value_handling] Column='unmapped__posting_domain' Missing=51112 Strategy=mode
+[2026-08-11 03:34:13,742] 337 src.logger - WARNING - [missing_value_handling] Column 'unmapped__posting_domain' has high cardinality (5117 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,743] 310 src.logger - INFO - [missing_value_handling] Column='unmapped__scraped' Missing=122131 Strategy=median
+[2026-08-11 03:34:13,772] 310 src.logger - INFO - [missing_value_handling] Column='company_description' Missing=1233 Strategy=mode
+[2026-08-11 03:34:13,879] 337 src.logger - WARNING - [missing_value_handling] Column 'company_description' has high cardinality (31038 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,914] 310 src.logger - INFO - [missing_value_handling] Column='company_state' Missing=50 Strategy=mode
+[2026-08-11 03:34:13,923] 337 src.logger - WARNING - [missing_value_handling] Column 'company_state' has high cardinality (803 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,932] 310 src.logger - INFO - [missing_value_handling] Column='company_city' Missing=3 Strategy=mode
+[2026-08-11 03:34:13,943] 337 src.logger - WARNING - [missing_value_handling] Column 'company_city' has high cardinality (4473 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,948] 310 src.logger - INFO - [missing_value_handling] Column='company_zip_code' Missing=282 Strategy=mode
+[2026-08-11 03:34:13,961] 337 src.logger - WARNING - [missing_value_handling] Column 'company_zip_code' has high cardinality (8797 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,966] 310 src.logger - INFO - [missing_value_handling] Column='company_address' Missing=68 Strategy=mode
+[2026-08-11 03:34:13,985] 337 src.logger - WARNING - [missing_value_handling] Column 'company_address' has high cardinality (23938 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:13,995] 310 src.logger - INFO - [missing_value_handling] Column='listed_max_salary' Missing=114433 Strategy=median
+[2026-08-11 03:34:14,001] 310 src.logger - INFO - [missing_value_handling] Column='listed_med_salary' Missing=146240 Strategy=median
+[2026-08-11 03:34:14,005] 310 src.logger - INFO - [missing_value_handling] Column='listed_min_salary' Missing=114433 Strategy=median
+[2026-08-11 03:34:14,014] 310 src.logger - INFO - [missing_value_handling] Column='listed_pay_period' Missing=105997 Strategy=mode
+[2026-08-11 03:34:14,052] 310 src.logger - INFO - [missing_value_handling] Column='listed_currency' Missing=105997 Strategy=mode
+[2026-08-11 03:34:14,081] 310 src.logger - INFO - [missing_value_handling] Column='listed_compensation_type' Missing=105997 Strategy=mode
+[2026-08-11 03:34:14,113] 310 src.logger - INFO - [missing_value_handling] Column='top_industry' Missing=133 Strategy=mode
+[2026-08-11 03:34:14,124] 337 src.logger - WARNING - [missing_value_handling] Column 'top_industry' has high cardinality (380 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:14,132] 310 src.logger - INFO - [missing_value_handling] Column='industry_list' Missing=133 Strategy=mode
+[2026-08-11 03:34:14,132] 318 src.logger - INFO - [missing_value_handling] Skipping list column 'industry_list'.
+[2026-08-11 03:34:14,139] 310 src.logger - INFO - [missing_value_handling] Column='top_skill' Missing=2557 Strategy=mode
+[2026-08-11 03:34:14,185] 310 src.logger - INFO - [missing_value_handling] Column='skill_list' Missing=2557 Strategy=mode
+[2026-08-11 03:34:14,185] 318 src.logger - INFO - [missing_value_handling] Skipping list column 'skill_list'.
+[2026-08-11 03:34:14,188] 310 src.logger - INFO - [missing_value_handling] Column='top_benefit' Missing=114702 Strategy=mode
+[2026-08-11 03:34:14,221] 310 src.logger - INFO - [missing_value_handling] Column='benefit_list' Missing=114702 Strategy=mode
+[2026-08-11 03:34:14,221] 318 src.logger - INFO - [missing_value_handling] Skipping list column 'benefit_list'.
+[2026-08-11 03:34:14,225] 310 src.logger - INFO - [missing_value_handling] Column='top_speciality' Missing=32734 Strategy=mode
+[2026-08-11 03:34:14,239] 337 src.logger - WARNING - [missing_value_handling] Column 'top_speciality' has high cardinality (11748 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:14,243] 310 src.logger - INFO - [missing_value_handling] Column='speciality_list' Missing=32734 Strategy=mode
+[2026-08-11 03:34:14,243] 318 src.logger - INFO - [missing_value_handling] Skipping list column 'speciality_list'.
+[2026-08-11 03:34:14,250] 310 src.logger - INFO - [missing_value_handling] Column='unmapped__company_name' Missing=32546 Strategy=mode
+[2026-08-11 03:34:14,267] 337 src.logger - WARNING - [missing_value_handling] Column 'unmapped__company_name' has high cardinality (24423 unique). Skipping 'mode' strategy to prevent pipeline freeze.
+[2026-08-11 03:34:14,267] 375 src.logger - INFO - [missing_value_handling] END - Filled 1553440 null value(s) across 17 column(s).
+[2026-08-11 03:34:14,267] 396 src.logger - INFO - [boolean_standardization] START
+[2026-08-11 03:34:14,426] 410 src.logger - INFO - [boolean_standardization] END - Standardized column(s): ['remote_allowed', 'sponsored']
+[2026-08-11 03:34:14,427] 428 src.logger - INFO - [categorical_cleanup] START
+[2026-08-11 03:34:15,600] 451 src.logger - INFO - [categorical_cleanup] END - Normalized column(s): ['formatted_work_type', 'work_type', 'formatted_experience_level', 'pay_period', 'compensation_type', 'currency', 'company_size', 'company_state', 'company_country', 'company_city']
+[2026-08-11 03:34:15,601] 469 src.logger - INFO - [text_cleanup] START
+[2026-08-11 03:34:15,601] 479 src.logger - INFO - [text_cleanup] Processing heavy text column: 'title'
+[2026-08-11 03:34:15,907] 479 src.logger - INFO - [text_cleanup] Processing heavy text column: 'description'
+[2026-08-11 03:34:38,195] 479 src.logger - INFO - [text_cleanup] Processing heavy text column: 'company_name'
+[2026-08-11 03:34:38,508] 479 src.logger - INFO - [text_cleanup] Processing heavy text column: 'company_description'
+[2026-08-11 03:34:43,711] 479 src.logger - INFO - [text_cleanup] Processing heavy text column: 'location'
+[2026-08-11 03:34:43,944] 479 src.logger - INFO - [text_cleanup] Processing heavy text column: 'company_address'
+[2026-08-11 03:34:44,207] 485 src.logger - INFO - [text_cleanup] END - Lightweight-cleaned column(s): ['title', 'description', 'company_name', 'company_description', 'location', 'company_address']
+[2026-08-11 03:34:44,211] 503 src.logger - INFO - [list_column_standardization] START
+[2026-08-11 03:34:48,441] 520 src.logger - INFO - [list_column_standardization] END - Standardized column(s): ['skill_list', 'benefit_list', 'industry_list', 'speciality_list']
+[2026-08-11 03:34:48,443] 544 src.logger - INFO - [derived_features] START
+[2026-08-11 03:34:49,086] 586 src.logger - INFO - [derived_features] END - Created column(s): ['salary_available', 'has_company_description', 'has_description', 'listing_age_available', 'skill_count', 'benefit_count', 'industry_count', 'speciality_count']
+[2026-08-11 03:34:49,088] 603 src.logger - INFO - [duplicate_removal] START
+[2026-08-11 03:34:52,618] 611 src.logger - INFO - [duplicate_removal] END - Removed 0 duplicate row(s).
+[2026-08-11 03:34:52,942] 226 src.logger - INFO - Starting strict schema validation for feature store output.
+[2026-08-11 03:34:52,955] 248 src.logger - WARNING - Validation warning: Missing expected columns (may be legitimately omitted): {'time_recorded', 'application_type'}
+[2026-08-11 03:34:52,955] 258 src.logger - INFO - Schema validation passed successfully. No anomalies detected.
+[2026-08-11 03:34:52,955] 630 src.logger - INFO - [final_validation] Passed -> 154676 rows, 65 columns.
+[2026-08-11 03:35:08,561] 649 src.logger - INFO - Feature Store successfully written to artifacts\feature_store\latest\feature_store.csv
+[2026-08-11 03:35:08,568] 84 src.logger - INFO - Successfully saved JSON payload to artifacts\feature_store\latest\feature_store_metadata.json
+[2026-08-11 03:35:08,576] 84 src.logger - INFO - Successfully saved JSON payload to artifacts\feature_store\latest\feature_store_report.json
+[2026-08-11 03:35:08,577] 84 src.logger - INFO - Successfully saved JSON payload to artifacts\feature_store\latest\schema_fingerprint.json
+[2026-08-11 03:35:08,577] 691 src.logger - INFO - Artifacts saved:
+- Feature Store
+- Metadata
+- Report
+- Schema
+[2026-08-11 03:35:10,601] 718 src.logger - INFO - Archive created:
+artifacts\feature_store\archive\fs_20260810_220405
+[2026-08-11 03:35:10,603] 141 src.logger - INFO - Build summary: {'dataset_id': 'fs_20260810_220405', 'rows': '154676 -> 154676', 'columns': '64 -> 65', 'columns_created': 8, 'columns_removed': 3, 'nulls': '2885077 -> 1224283', 'execution_time_seconds': 47.5678, 'schema_hash': 'bb957320ce8a9242...'}
+[2026-08-11 03:35:10,603] 154 src.logger - INFO - ======================================================================
+[2026-08-11 03:35:10,603] 155 src.logger - INFO - COMMON FEATURE ENGINEERING COMPLETED
+[2026-08-11 03:35:10,603] 156 src.logger - INFO - ======================================================================
+[2026-08-11 03:35:13,315] 232 src.logger - INFO - Saved stage cache: artifacts\pipeline_cache\common_feature_engineering.joblib
+[2026-08-11 03:35:14,161] 942 src.logger - INFO - ===========================================================================
+[2026-08-11 03:35:14,161] 943 src.logger - INFO - STATE-AWARE DATA PIPELINE COMPLETED
+[2026-08-11 03:35:14,161] 946 src.logger - INFO - ===========================================================================
+[2026-08-11 03:35:14,161] 950 src.logger - INFO - data_ingestion                 : EXECUTED
+[2026-08-11 03:35:14,161] 950 src.logger - INFO - schema_alignment               : EXECUTED
+[2026-08-11 03:35:14,162] 950 src.logger - INFO - data_validation                : EXECUTED
+[2026-08-11 03:35:14,162] 950 src.logger - INFO - data_cleaning                  : EXECUTED
+[2026-08-11 03:35:14,162] 950 src.logger - INFO - master_dataset                 : EXECUTED
+[2026-08-11 03:35:14,162] 950 src.logger - INFO - common_feature_engineering     : EXECUTED
+[2026-08-11 03:35:14,162] 956 src.logger - INFO - Total execution time: 149.70 sec
+[2026-08-11 03:35:20,949] 279 src.logger - INFO - Data pipeline reused: False
+[2026-08-11 03:35:20,954] 284 src.logger - INFO - Data stage status: {'data_ingestion': 'executed', 'schema_alignment': 'executed', 'data_validation': 'executed', 'data_cleaning': 'executed', 'master_dataset': 'executed', 'common_feature_engineering': 'executed'}
+[2026-08-11 03:35:20,955] 387 src.logger - INFO - 
+[2026-08-11 03:35:20,956] 388 src.logger - INFO - ==========================================================================================
+[2026-08-11 03:35:20,956] 389 src.logger - INFO - MASTER STAGE 2 - SALARY ML PIPELINE
+[2026-08-11 03:35:20,956] 392 src.logger - INFO - ==========================================================================================
+[2026-08-11 03:35:20,958] 635 src.logger - INFO - Starting Salary ML Pipeline...
+[2026-08-11 03:35:21,001] 578 src.logger - ERROR - MASTER PIPELINE FAILED
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\salary_orchestrators\master_pipeline_orchestrator.py", line 397, in run
+    self._run_salary_ml_pipeline()
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\salary_orchestrators\master_pipeline_orchestrator.py", line 640, in _run_salary_ml_pipeline
+    self.salary_ml_pipeline.run(
+TypeError: SalaryModelPipelineOrchestrator.run() got an unexpected keyword argument 'force_split_rebuild'
+[2026-08-11 03:35:21,280] 749 src.logger - INFO - Master pipeline summary saved: artifacts\master_pipeline\latest_run.json

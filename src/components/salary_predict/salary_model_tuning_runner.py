@@ -141,19 +141,25 @@ class SalaryModelTuningRunner:
 
             baseline_result = self._get_winner_result(model_family_summary)
             feature_experiment_id = model_family_summary.feature_experiment_id
-            feature_config_signature = getattr(model_family_summary, "feature_config_signature", None)
+            feature_config_signature = getattr(
+                model_family_summary, "feature_config_signature", None
+            )
 
             if tuning_config is None:
                 tuning_config = get_tuning_config_for_winner(
                     model_family_summary,
-                    ranking_metric=getattr(model_family_summary, "ranking_metric", "RMSE"),
+                    ranking_metric=getattr(
+                        model_family_summary, "ranking_metric", "RMSE"
+                    ),
                 )
 
             self._validate_tuning_config(tuning_config, model_family_summary)
 
             logging.info(f"Winner model          : {tuning_config.model_name}")
             logging.info(f"Feature configuration : {feature_experiment_id}")
-            logging.info(f"Baseline {tuning_config.ranking_metric:<5}       : {model_family_summary.winner_score}")
+            logging.info(
+                f"Baseline {tuning_config.ranking_metric:<5}       : {model_family_summary.winner_score}"
+            )
             logging.info(f"Search strategy       : {tuning_config.search_strategy}")
 
             param_grid = tuning_config.generate_param_grid()
@@ -185,7 +191,9 @@ class SalaryModelTuningRunner:
                 )
 
             ranked_trials = self._rank_trials(
-                successful_trials, tuning_config.ranking_metric, tuning_config.ranking_direction
+                successful_trials,
+                tuning_config.ranking_metric,
+                tuning_config.ranking_direction,
             )
             best_trial = ranked_trials[0]
             best_score = best_trial.metrics[tuning_config.ranking_metric]
@@ -228,7 +236,9 @@ class SalaryModelTuningRunner:
                 feature_config_signature=feature_config_signature,
                 winner_model_experiment_id=model_family_summary.winner_experiment_id,
                 model_name=tuning_config.model_name,
-                model_class_name=getattr(model_family_summary, "winner_model_class", None),
+                model_class_name=getattr(
+                    model_family_summary, "winner_model_class", None
+                ),
                 baseline_score=baseline_score,
                 best_score=best_score,
                 ranking_metric=tuning_config.ranking_metric,
@@ -255,12 +265,18 @@ class SalaryModelTuningRunner:
                 self._generate_reports(summary=summary, tuning_config=tuning_config)
             except Exception as e:
                 logging.error("Failed to generate tuning reports.", exc_info=True)
-                raise CustomException(RuntimeError(f"Failed to generate tuning reports: {e}"), sys) from e
+                raise CustomException(
+                    RuntimeError(f"Failed to generate tuning reports: {e}"), sys
+                ) from e
 
             try:
-                summary.mlflow_summary_run_id = self._track_tuning_summary(summary, tuning_config)
+                summary.mlflow_summary_run_id = self._track_tuning_summary(
+                    summary, tuning_config
+                )
             except Exception as e:
-                logging.warning(f"Tuning summary MLflow tracking failed: {e}", exc_info=True)
+                logging.warning(
+                    f"Tuning summary MLflow tracking failed: {e}", exc_info=True
+                )
 
             self._log_console_summary(summary)
 
@@ -283,16 +299,26 @@ class SalaryModelTuningRunner:
     def _get_winner_result(model_family_summary: Any) -> Any:
         winner_id = getattr(model_family_summary, "winner_experiment_id", None)
         if not winner_id:
-            raise ValueError("model_family_summary does not contain a valid 'winner_experiment_id'.")
+            raise ValueError(
+                "model_family_summary does not contain a valid 'winner_experiment_id'."
+            )
 
         candidates = []
-        if hasattr(model_family_summary, "ranked_results") and model_family_summary.ranked_results:
+        if (
+            hasattr(model_family_summary, "ranked_results")
+            and model_family_summary.ranked_results
+        ):
             candidates.extend(model_family_summary.ranked_results)
-        if hasattr(model_family_summary, "successful_results") and model_family_summary.successful_results:
+        if (
+            hasattr(model_family_summary, "successful_results")
+            and model_family_summary.successful_results
+        ):
             candidates.extend(model_family_summary.successful_results)
 
         for result in candidates:
-            exp_id = getattr(result, "experiment_id", None) or getattr(result, "model_experiment_id", None)
+            exp_id = getattr(result, "experiment_id", None) or getattr(
+                result, "model_experiment_id", None
+            )
             if exp_id == winner_id:
                 return result
 
@@ -315,9 +341,13 @@ class SalaryModelTuningRunner:
         )
         missing = [a for a in required_attrs if not hasattr(model_family_summary, a)]
         if missing:
-            raise ValueError(f"model_family_summary is missing required attributes: {missing}")
+            raise ValueError(
+                f"model_family_summary is missing required attributes: {missing}"
+            )
         if not model_family_summary.ranked_results:
-            raise ValueError("model_family_summary.ranked_results is empty — no winner to tune.")
+            raise ValueError(
+                "model_family_summary.ranked_results is empty — no winner to tune."
+            )
         if not model_family_summary.winner_model_name:
             raise ValueError("model_family_summary.winner_model_name is empty.")
 
@@ -331,22 +361,56 @@ class SalaryModelTuningRunner:
                 f"winner_score must be numeric, got {winner_score!r}."
             ) from e
         if not math.isfinite(winner_score_val):
-            raise ValueError(
-                f"winner_score must be finite, got {winner_score!r}."
-            )
+            raise ValueError(f"winner_score must be finite, got {winner_score!r}.")
 
     @staticmethod
-    def _validate_data(X_train: Any, y_train: Any, X_validation: Any, y_validation: Any) -> None:
+    def _validate_data(
+        X_train: Any, y_train: Any, X_validation: Any, y_validation: Any
+    ) -> None:
+        # -------------------------------------------------------------
+        # Data Validation
+        # Supports pandas, NumPy and SciPy sparse matrices.
+        # -------------------------------------------------------------
+
         if X_train is None or y_train is None:
-            raise ValueError("X_train/y_train must not be None.")
+            raise ValueError("Training data cannot be None.")
+
         if X_validation is None or y_validation is None:
-            raise ValueError("X_validation/y_validation must not be None.")
-        if len(X_train) != len(y_train):
-            raise ValueError(f"X_train/y_train length mismatch: {len(X_train)} != {len(y_train)}")
-        if len(X_validation) != len(y_validation):
-            raise ValueError(f"X_validation/y_validation length mismatch: {len(X_validation)} != {len(y_validation)}")
-        if len(X_train) == 0 or len(X_validation) == 0:
-            raise ValueError("X_train and X_validation must both be non-empty.")
+            raise ValueError("Validation data cannot be None.")
+
+        def _n_rows(data: Any) -> int:
+
+            if not hasattr(data, "shape"):
+                raise TypeError(f"Unsupported data object: {type(data).__name__}")
+
+            if len(data.shape) == 0:
+                raise ValueError("Input data must have at least one dimension.")
+
+            return int(data.shape[0])
+
+        train_rows = _n_rows(X_train)
+        train_target_rows = _n_rows(y_train)
+
+        validation_rows = _n_rows(X_validation)
+        validation_target_rows = _n_rows(y_validation)
+
+        if train_rows != train_target_rows:
+            raise ValueError(
+                "X_train/y_train length mismatch: "
+                f"{train_rows} != {train_target_rows}"
+            )
+
+        if validation_rows != validation_target_rows:
+            raise ValueError(
+                "X_validation/y_validation length mismatch: "
+                f"{validation_rows} != {validation_target_rows}"
+            )
+
+        if train_rows == 0:
+            raise ValueError("X_train must not be empty.")
+
+        if validation_rows == 0:
+            raise ValueError("X_validation must not be empty.")
 
     @staticmethod
     def _validate_tuning_config(
@@ -428,7 +492,9 @@ class SalaryModelTuningRunner:
             trials.append(trial)
 
             if trial.success:
-                logging.info(f"{tuning_config.ranking_metric}: {trial.metrics.get(tuning_config.ranking_metric)}")
+                logging.info(
+                    f"{tuning_config.ranking_metric}: {trial.metrics.get(tuning_config.ranking_metric)}"
+                )
                 logging.info("Status: SUCCESS")
             else:
                 logging.warning(f"Status: FAILED ({trial.error})")
@@ -491,17 +557,24 @@ class SalaryModelTuningRunner:
 
         run_name = f"{getattr(tuning_config, 'tuning_config_id', 'tuning')}_{trial_id}"
 
-        if self.mlflow_tracker is not None:
+        if (
+            self.mlflow_tracker is not None
+            and self.mlflow_tracker.config.is_tracking_enabled
+        ):
             try:
                 with self.mlflow_tracker.start_run(run_name=run_name) as active_run:
-                    if hasattr(active_run, "info") and hasattr(active_run.info, "run_id"):
+                    if hasattr(active_run, "info") and hasattr(
+                        active_run.info, "run_id"
+                    ):
                         trial.mlflow_run_id = active_run.info.run_id
 
                     try:
                         if trial.params:
                             self.mlflow_tracker.log_params(dict(trial.params))
                     except Exception as log_err:
-                        logging.warning(f"Failed to log params to MLflow for trial '{trial_id}': {log_err}")
+                        logging.warning(
+                            f"Failed to log params to MLflow for trial '{trial_id}': {log_err}"
+                        )
 
                     # Execute model trial exactly once
                     try:
@@ -509,7 +582,10 @@ class SalaryModelTuningRunner:
                     except Exception as trial_err:
                         trial.success = False
                         trial.error = str(trial_err)
-                        logging.error(f"Trial '{trial_id}' execution failed: {trial_err}", exc_info=True)
+                        logging.error(
+                            f"Trial '{trial_id}' execution failed: {trial_err}",
+                            exc_info=True,
+                        )
 
                     # Post-execution MLflow tracking — failure here will NOT mark trial as failed
                     try:
@@ -520,8 +596,12 @@ class SalaryModelTuningRunner:
                             "model_name": trial.model_name,
                             "model_class_name": trial.model_class_name or "",
                             "trial_id": trial.trial_id,
-                            "tuning_config_id": getattr(tuning_config, "tuning_config_id", ""),
-                            "tuning_config_signature": getattr(tuning_config, "config_signature", ""),
+                            "tuning_config_id": getattr(
+                                tuning_config, "tuning_config_id", ""
+                            ),
+                            "tuning_config_signature": getattr(
+                                tuning_config, "config_signature", ""
+                            ),
                             "ranking_metric": tuning_config.ranking_metric,
                             "ranking_direction": tuning_config.ranking_direction,
                             "status": "success" if trial.success else "failed",
@@ -552,14 +632,19 @@ class SalaryModelTuningRunner:
                 except Exception as trial_err:
                     trial.success = False
                     trial.error = str(trial_err)
-                    logging.error(f"Trial '{trial_id}' execution failed: {trial_err}", exc_info=True)
+                    logging.error(
+                        f"Trial '{trial_id}' execution failed: {trial_err}",
+                        exc_info=True,
+                    )
         else:
             try:
                 _execute_model_trial()
             except Exception as trial_err:
                 trial.success = False
                 trial.error = str(trial_err)
-                logging.error(f"Trial '{trial_id}' execution failed: {trial_err}", exc_info=True)
+                logging.error(
+                    f"Trial '{trial_id}' execution failed: {trial_err}", exc_info=True
+                )
 
         return trial
 
@@ -567,7 +652,9 @@ class SalaryModelTuningRunner:
     # RANKING & COMPARISON
     # ==================================================================
     @staticmethod
-    def _directional_value(trial: SalaryModelTuningTrialResult, metric: str, direction: str) -> float:
+    def _directional_value(
+        trial: SalaryModelTuningTrialResult, metric: str, direction: str
+    ) -> float:
         value = trial.metrics.get(metric) if trial.metrics else None
         try:
             numeric = float(value)
@@ -583,10 +670,24 @@ class SalaryModelTuningRunner:
         metric: str,
         direction: str,
     ) -> Tuple[SalaryModelTuningTrialResult, ...]:
-        valid = [t for t in trials if self._directional_value(t, metric, direction) != math.inf]
+        valid = [
+            t
+            for t in trials
+            if self._directional_value(t, metric, direction) != math.inf
+        ]
         if not valid:
-            raise ValueError(f"No successful trials produced a valid finite '{metric}' value.")
-        return tuple(sorted(valid, key=lambda t: (self._directional_value(t, metric, direction), t.trial_id)))
+            raise ValueError(
+                f"No successful trials produced a valid finite '{metric}' value."
+            )
+        return tuple(
+            sorted(
+                valid,
+                key=lambda t: (
+                    self._directional_value(t, metric, direction),
+                    t.trial_id,
+                ),
+            )
+        )
 
     @staticmethod
     def _compare_to_baseline(
@@ -609,23 +710,33 @@ class SalaryModelTuningRunner:
 
         return (
             round(improvement, 6),
-            round(improvement_percentage, 4) if math.isfinite(improvement_percentage) else improvement_percentage,
+            (
+                round(improvement_percentage, 4)
+                if math.isfinite(improvement_percentage)
+                else improvement_percentage
+            ),
             improved,
         )
 
     # ==================================================================
     # REPORTING
     # ==================================================================
-    def _generate_reports(self, summary: SalaryModelTuningSummary, tuning_config: SalaryModelTuningConfig) -> None:
+    def _generate_reports(
+        self, summary: SalaryModelTuningSummary, tuning_config: SalaryModelTuningConfig
+    ) -> None:
         model_dir = self.base_artifacts_dir / summary.model_name
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         run_dir = model_dir / f"run_{timestamp}"
         latest_dir = model_dir / "latest"
         run_dir.mkdir(parents=True, exist_ok=True)
 
-        (run_dir / "tuning_summary.json").write_text(summary.to_json(), encoding="utf-8")
+        (run_dir / "tuning_summary.json").write_text(
+            summary.to_json(), encoding="utf-8"
+        )
 
-        with (run_dir / "tuning_trials.csv").open("w", newline="", encoding="utf-8") as f:
+        with (run_dir / "tuning_trials.csv").open(
+            "w", newline="", encoding="utf-8"
+        ) as f:
             writer = csv.writer(f)
             writer.writerow(
                 (
@@ -648,7 +759,11 @@ class SalaryModelTuningRunner:
                         trial.trial_id,
                         trial.model_name,
                         "SUCCESS" if trial.success else "FAILED",
-                        trial.metrics.get(summary.ranking_metric) if trial.metrics else None,
+                        (
+                            trial.metrics.get(summary.ranking_metric)
+                            if trial.metrics
+                            else None
+                        ),
                         trial.metrics.get("MAE") if trial.metrics else None,
                         trial.metrics.get("RMSE") if trial.metrics else None,
                         trial.metrics.get("R2") if trial.metrics else None,
@@ -668,7 +783,9 @@ class SalaryModelTuningRunner:
             "baseline_score": summary.baseline_score,
             "ranking_metric": summary.ranking_metric,
         }
-        (run_dir / "baseline_config.json").write_text(json.dumps(baseline_config, indent=2, default=str), encoding="utf-8")
+        (run_dir / "baseline_config.json").write_text(
+            json.dumps(baseline_config, indent=2, default=str), encoding="utf-8"
+        )
 
         best_config = {
             "trial_id": summary.best_trial_id,
@@ -681,7 +798,9 @@ class SalaryModelTuningRunner:
             "preferred_params": summary.preferred_params,
             "preferred_config_signature": summary.preferred_config_signature,
         }
-        (run_dir / "best_config.json").write_text(json.dumps(best_config, indent=2, default=str), encoding="utf-8")
+        (run_dir / "best_config.json").write_text(
+            json.dumps(best_config, indent=2, default=str), encoding="utf-8"
+        )
 
         run_metadata = {
             "timestamp": timestamp,
@@ -701,7 +820,9 @@ class SalaryModelTuningRunner:
             "best_score": summary.best_score,
             "tuning_improved_baseline": summary.tuning_improved_baseline,
         }
-        (run_dir / "run_metadata.json").write_text(json.dumps(run_metadata, indent=2), encoding="utf-8")
+        (run_dir / "run_metadata.json").write_text(
+            json.dumps(run_metadata, indent=2), encoding="utf-8"
+        )
 
         temp_latest = model_dir / "_latest_tmp"
         if temp_latest.exists():
@@ -723,30 +844,43 @@ class SalaryModelTuningRunner:
         self, summary: SalaryModelTuningSummary, tuning_config: SalaryModelTuningConfig
     ) -> Optional[str]:
         if self.mlflow_tracker is None:
-            logging.info("MLflow tracker not provided. Skipping tuning-summary MLflow tracking.")
+            logging.info(
+                "MLflow tracker not provided. Skipping tuning-summary MLflow tracking."
+            )
             return None
 
-        run_name = f"tuning_summary_{summary.model_name}_{summary.feature_experiment_id}"
+        run_name = (
+            f"tuning_summary_{summary.model_name}_{summary.feature_experiment_id}"
+        )
         try:
             with self.mlflow_tracker.start_run(run_name=run_name) as active_run:
                 self.mlflow_tracker.log_tags(
                     {
                         "stage": "hyperparameter_tuning_summary",
                         "feature_experiment_id": summary.feature_experiment_id,
-                        "feature_config_signature": summary.feature_config_signature or "",
+                        "feature_config_signature": summary.feature_config_signature
+                        or "",
                         "winner_model_experiment_id": summary.winner_model_experiment_id,
                         "model_name": summary.model_name,
                         "best_trial_id": summary.best_trial_id,
-                        "tuning_improved_baseline": str(summary.tuning_improved_baseline),
+                        "tuning_improved_baseline": str(
+                            summary.tuning_improved_baseline
+                        ),
                     }
                 )
                 self.mlflow_tracker.log_params(
                     {
                         "ranking_metric": summary.ranking_metric,
                         "ranking_direction": summary.ranking_direction,
-                        "search_strategy": getattr(tuning_config, "search_strategy", ""),
-                        "tuning_config_id": getattr(tuning_config, "tuning_config_id", ""),
-                        "tuning_config_signature": getattr(tuning_config, "config_signature", ""),
+                        "search_strategy": getattr(
+                            tuning_config, "search_strategy", ""
+                        ),
+                        "tuning_config_id": getattr(
+                            tuning_config, "tuning_config_id", ""
+                        ),
+                        "tuning_config_signature": getattr(
+                            tuning_config, "config_signature", ""
+                        ),
                         "total_trial_count": summary.total_trial_count,
                         "successful_trial_count": summary.successful_trial_count,
                         "failed_trial_count": summary.failed_trial_count,
@@ -766,14 +900,22 @@ class SalaryModelTuningRunner:
                 )
                 if summary.report_artifacts_dir:
                     self.mlflow_tracker.log_artifacts(
-                        summary.report_artifacts_dir, artifact_folder="hyperparameter_tuning"
+                        summary.report_artifacts_dir,
+                        artifact_folder="hyperparameter_tuning",
                     )
 
-                run_id = active_run.info.run_id if hasattr(active_run, "info") and hasattr(active_run.info, "run_id") else None
+                run_id = (
+                    active_run.info.run_id
+                    if hasattr(active_run, "info")
+                    and hasattr(active_run.info, "run_id")
+                    else None
+                )
                 logging.info(f"Tuning-summary MLflow run created: {run_id}")
                 return run_id
         except Exception as e:
-            logging.warning(f"Tuning summary MLflow tracking failed: {e}", exc_info=True)
+            logging.warning(
+                f"Tuning summary MLflow tracking failed: {e}", exc_info=True
+            )
             return None
 
     # ==================================================================

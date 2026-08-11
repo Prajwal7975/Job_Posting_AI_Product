@@ -1,8 +1,8 @@
 {
-  "dataset_id": "fs_20260730_224026",
+  "dataset_id": "fs_20260810_220405",
   "rows": 154676,
   "columns": 65,
   "schema_hash": "bb957320ce8a92429225a28078f2e357700be1fdc77a168186f8af76b3ef1e8f",
-  "generated_at": "2026-07-30T22:41:52.859126+00:00",
+  "generated_at": "2026-08-10T22:05:08.565253+00:00",
   "source_master_dataset": "artifacts/master_dataset/latest/master_dataset.parquet"
 }

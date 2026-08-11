@@ -1,6 +1,6 @@
 {
   "summary": {
-    "dataset_id": "fs_20260730_224026",
+    "dataset_id": "fs_20260810_220405",
     "rows_before": 154676,
     "rows_after": 154676,
     "rows_removed": 0,
@@ -32,7 +32,7 @@
     "missing_values_filled": 1553440,
     "duplicates_removed": 0,
     "schema_hash": "bb957320ce8a92429225a28078f2e357700be1fdc77a168186f8af76b3ef1e8f",
-    "execution_time_seconds": 77.9248,
+    "execution_time_seconds": 47.5678,
     "integrity_passed": true
   },
   "steps": [
@@ -44,7 +44,7 @@
       "details": {
         "dtype_conversions": {}
       },
-      "execution_time_seconds": 0.0016
+      "execution_time_seconds": 0.0
     },
     {
       "step_name": "identifier_handling",
@@ -63,7 +63,7 @@
         ],
         "missing_from_source": []
       },
-      "execution_time_seconds": 0.2016
+      "execution_time_seconds": 0.1376
     },
     {
       "step_name": "datetime_standardization",
@@ -76,7 +76,7 @@
       "rows_before": 154676,
       "rows_after": 154676,
       "details": {},
-      "execution_time_seconds": 0.1753
+      "execution_time_seconds": 0.1458
     },
     {
       "step_name": "missing_value_handling",
@@ -205,7 +205,7 @@
           "filled": 114702
         }
       },
-      "execution_time_seconds": 1.2704
+      "execution_time_seconds": 1.1862
     },
     {
       "step_name": "boolean_standardization",
@@ -216,7 +216,7 @@
       "rows_before": 154676,
       "rows_after": 154676,
       "details": {},
-      "execution_time_seconds": 0.1905
+      "execution_time_seconds": 0.1588
     },
     {
       "step_name": "categorical_cleanup",
@@ -235,7 +235,7 @@
       "rows_before": 154676,
       "rows_after": 154676,
       "details": {},
-      "execution_time_seconds": 1.2025
+      "execution_time_seconds": 1.1738
     },
     {
       "step_name": "text_cleanup",
@@ -250,7 +250,7 @@
       "rows_before": 154676,
       "rows_after": 154676,
       "details": {},
-      "execution_time_seconds": 43.6872
+      "execution_time_seconds": 28.608
     },
     {
       "step_name": "list_column_standardization",
@@ -265,7 +265,7 @@
       "details": {
         "delimiter": "|"
       },
-      "execution_time_seconds": 4.6652
+      "execution_time_seconds": 4.2315
     },
     {
       "step_name": "derived_features",
@@ -282,7 +282,7 @@
       "rows_before": 154676,
       "rows_after": 154676,
       "details": {},
-      "execution_time_seconds": 0.6375
+      "execution_time_seconds": 0.6433
     },
     {
       "step_name": "duplicate_removal",
@@ -292,7 +292,7 @@
       "details": {
         "removed": 0
       },
-      "execution_time_seconds": 16.8559
+      "execution_time_seconds": 3.5332
     }
   ],
   "final_schema": {
@@ -362,5 +362,5 @@
     "has_description": "boolean",
     "listing_age_available": "boolean"
   },
-  "generated_at": "2026-07-30T22:41:52.875400+00:00"
+  "generated_at": "2026-08-10T22:05:08.571097+00:00"
 }
