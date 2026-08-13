@@ -1,0 +1,72 @@
+[2026-08-13 00:08:37,020] 64 src.logger - INFO - Starting Salary Prediction API.
+[2026-08-13 00:08:37,021] 46 src.logger - INFO - Loading production salary model from MLflow.
+[2026-08-13 00:08:37,021] 48 src.logger - INFO - Tracking URI: sqlite:///mlflow.db
+[2026-08-13 00:08:37,021] 53 src.logger - INFO - Model URI: models:/salary_prediction_model@production
+[2026-08-13 00:08:45,094] 62 src.logger - INFO - Production salary model loaded successfully.
+[2026-08-13 00:08:45,095] 71 src.logger - INFO - Production salary model loaded during API startup.
+[2026-08-13 00:09:21,391] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:09:21,392] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:09:21,392] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:09:21,398] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:09:21,398] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:09:21,504] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128358.33
+[2026-08-13 00:09:28,463] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:09:28,463] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:09:28,463] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:09:28,464] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:09:28,464] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:09:28,478] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128358.33
+[2026-08-13 00:09:34,025] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:09:34,025] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:09:34,025] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:09:34,026] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:09:34,026] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:09:34,038] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128358.33
+[2026-08-13 00:09:40,136] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:09:40,136] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:09:40,136] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:09:40,138] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:09:40,138] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:09:40,151] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128358.33
+[2026-08-13 00:09:42,146] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:09:42,146] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:09:42,146] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:09:42,146] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:09:42,146] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:09:42,159] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128358.33
+[2026-08-13 00:09:59,168] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:09:59,168] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:09:59,168] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:09:59,169] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:09:59,169] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:09:59,181] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 103486.30
+[2026-08-13 00:10:19,953] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:10:19,953] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:10:19,953] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:10:19,955] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:10:19,955] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:10:19,966] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 103787.61
+[2026-08-13 00:10:23,602] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:10:23,602] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:10:23,602] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:10:23,603] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:10:23,603] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:10:23,615] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 103787.61
+[2026-08-13 00:16:10,829] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:16:10,840] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:16:10,840] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:16:10,871] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:16:10,873] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:16:11,100] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128171.88
+[2026-08-13 00:16:35,553] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:16:35,554] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:16:35,554] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:16:35,555] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:16:35,555] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:16:35,575] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128732.06
+[2026-08-13 00:16:49,614] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-13 00:16:49,614] 66 src.logger - INFO - Running salary prediction.
+[2026-08-13 00:16:49,614] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-13 00:16:49,614] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-13 00:16:49,614] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-13 00:16:49,627] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128732.06

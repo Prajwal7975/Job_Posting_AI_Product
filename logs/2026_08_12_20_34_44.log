@@ -1,0 +1,12 @@
+[2026-08-12 20:35:03,285] 64 src.logger - INFO - Starting Salary Prediction API.
+[2026-08-12 20:35:03,285] 46 src.logger - INFO - Loading production salary model from MLflow.
+[2026-08-12 20:35:03,285] 48 src.logger - INFO - Tracking URI: sqlite:///mlflow.db
+[2026-08-12 20:35:03,286] 53 src.logger - INFO - Model URI: models:/salary_prediction_model@production
+[2026-08-12 20:35:09,711] 62 src.logger - INFO - Production salary model loaded successfully.
+[2026-08-12 20:35:09,711] 71 src.logger - INFO - Production salary model loaded during API startup.
+[2026-08-12 20:36:06,357] 191 src.logger - INFO - Received salary prediction request.
+[2026-08-12 20:36:06,358] 66 src.logger - INFO - Running salary prediction.
+[2026-08-12 20:36:06,358] 124 src.logger - INFO - Building salary inference feature DataFrame.
+[2026-08-12 20:36:06,377] 198 src.logger - INFO - Salary inference features built successfully. Columns=['title', 'skill_list', 'formatted_experience_level', 'company_state', 'company_country', 'top_industry', 'skill_count']
+[2026-08-12 20:36:06,378] 85 src.logger - INFO - Inference feature DataFrame created successfully.
+[2026-08-12 20:36:06,534] 133 src.logger - INFO - Salary prediction completed successfully. Predicted annual salary: 128482.79

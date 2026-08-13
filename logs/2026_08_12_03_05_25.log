@@ -1,0 +1,46 @@
+[2026-08-12 03:06:42,774] 73 src.logger - INFO - Running salary prediction.
+[2026-08-12 03:06:42,775] 46 src.logger - INFO - Loading production salary model from MLflow.
+[2026-08-12 03:06:42,775] 48 src.logger - INFO - Tracking URI: sqlite:///mlflow.db
+[2026-08-12 03:06:42,778] 53 src.logger - INFO - Model URI: models:/salary_prediction_model@production
+[2026-08-12 03:06:50,493] 62 src.logger - INFO - Production salary model loaded successfully.
+[2026-08-12 03:06:50,545] 116 src.logger - ERROR - Salary prediction failed: columns are missing: {'company_country', 'company_state'}
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\api\salary_api.py", line 112, in predict
+    return inference_service.predict(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\serving\salary_predict\salary_inference_service.py", line 79, in predict
+    prediction = self.model_loader.predict(row)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\serving\salary_predict\salary_model_loader.py", line 77, in predict
+    return model.predict(features)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\sklearn\pipeline.py", line 796, in predict
+    Xt = transform.transform(Xt)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\sklearn\utils\_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\sklearn\compose\_column_transformer.py", line 1068, in transform
+    raise ValueError(f"columns are missing: {diff}")
+ValueError: columns are missing: {'company_country', 'company_state'}
+[2026-08-12 03:09:31,735] 73 src.logger - INFO - Running salary prediction.
+[2026-08-12 03:09:31,797] 116 src.logger - ERROR - Salary prediction failed: columns are missing: {'company_country', 'company_state'}
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\api\salary_api.py", line 112, in predict
+    return inference_service.predict(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\serving\salary_predict\salary_inference_service.py", line 79, in predict
+    prediction = self.model_loader.predict(row)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\serving\salary_predict\salary_model_loader.py", line 77, in predict
+    return model.predict(features)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\sklearn\pipeline.py", line 796, in predict
+    Xt = transform.transform(Xt)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\sklearn\utils\_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\sklearn\compose\_column_transformer.py", line 1068, in transform
+    raise ValueError(f"columns are missing: {diff}")
+ValueError: columns are missing: {'company_country', 'company_state'}

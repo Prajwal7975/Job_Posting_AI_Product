@@ -64,6 +64,15 @@ artifacts/feature_store/
 artifacts/*.csv
 artifacts/reports/feature_experiments/  
 artifacts/
+mlruns/
+*.joblib
+*.pkl
+*.pickle
+*.db
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
 
 
 # ======================================================

@@ -1,0 +1,401 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        #f4f6f8;
+
+    color:
+        #1f2937;
+
+    min-height:
+        100vh;
+}
+
+
+.page {
+    min-height:
+        100vh;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    padding:
+        40px 20px;
+}
+
+
+.card {
+    width:
+        100%;
+
+    max-width:
+        620px;
+
+    background:
+        white;
+
+    border-radius:
+        16px;
+
+    padding:
+        40px;
+
+    box-shadow:
+        0 10px 30px rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+}
+
+
+.header {
+    margin-bottom:
+        32px;
+}
+
+
+.eyebrow {
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1.5px;
+
+    margin-bottom:
+        10px;
+}
+
+
+h1 {
+    font-size:
+        34px;
+
+    margin-bottom:
+        12px;
+}
+
+
+.subtitle {
+    color:
+        #6b7280;
+
+    line-height:
+        1.6;
+}
+
+
+.form-group {
+    margin-bottom:
+        20px;
+}
+
+
+label {
+    display:
+        block;
+
+    font-size:
+        14px;
+
+    font-weight:
+        600;
+
+    margin-bottom:
+        8px;
+}
+
+
+input,
+select {
+    width:
+        100%;
+
+    padding:
+        13px 14px;
+
+    border:
+        1px solid #d1d5db;
+
+    border-radius:
+        8px;
+
+    font-size:
+        15px;
+
+    outline:
+        none;
+
+    background:
+        white;
+}
+
+
+input:focus,
+select:focus {
+    border-color:
+        #2563eb;
+}
+
+
+small {
+    display:
+        block;
+
+    margin-top:
+        6px;
+
+    color:
+        #6b7280;
+}
+
+
+.optional-section {
+    margin-top:
+        28px;
+
+    padding-top:
+        24px;
+
+    border-top:
+        1px solid #e5e7eb;
+}
+
+
+.optional-title {
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        20px;
+}
+
+
+button {
+    width:
+        100%;
+
+    padding:
+        14px;
+
+    border:
+        none;
+
+    border-radius:
+        8px;
+
+    background:
+        #2563eb;
+
+    color:
+        white;
+
+    font-size:
+        16px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+}
+
+
+button:hover {
+    background:
+        #1d4ed8;
+}
+
+
+button:disabled {
+    opacity:
+        0.6;
+
+    cursor:
+        not-allowed;
+}
+
+
+.loading {
+    margin-top:
+        20px;
+
+    text-align:
+        center;
+
+    color:
+        #6b7280;
+}
+
+
+.error {
+    margin-top:
+        20px;
+
+    padding:
+        12px;
+
+    border-radius:
+        8px;
+
+    background:
+        #fee2e2;
+
+    color:
+        #991b1b;
+}
+
+
+.result {
+    margin-top:
+        30px;
+
+    padding:
+        28px;
+
+    border-radius:
+        12px;
+
+    background:
+        #f0fdf4;
+
+    text-align:
+        center;
+}
+
+
+.result-label {
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+}
+
+
+#salary-value {
+    font-size:
+        38px;
+
+    margin:
+        10px 0;
+}
+
+
+#model-info {
+    font-size:
+        13px;
+
+    color:
+        #6b7280;
+}
+
+
+.hidden {
+    display:
+        none;
+}
+
+
+@media (max-width: 600px) {
+
+    .card {
+        padding:
+            25px;
+    }
+
+    h1 {
+        font-size:
+            28px;
+    }
+
+}
+
+/* ==========================================================
+   CURRENCY CONTROL
+   ========================================================== */
+
+.currency-control {
+    margin:
+        20px auto 12px;
+
+    max-width:
+        220px;
+
+    text-align:
+        left;
+}
+
+
+.currency-control label {
+    display:
+        block;
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    margin-bottom:
+        7px;
+}
+
+
+.currency-control select {
+    width:
+        100%;
+
+    padding:
+        10px 12px;
+
+    border:
+        1px solid #d1d5db;
+
+    border-radius:
+        8px;
+
+    background:
+        white;
+
+    font-size:
+        14px;
+}
+
+
+.conversion-info {
+    font-size:
+        12px;
+
+    color:
+        #6b7280;
+
+    margin-bottom:
+        12px;
+}
