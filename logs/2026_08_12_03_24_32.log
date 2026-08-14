@@ -1,0 +1,6 @@
+[2026-08-12 03:25:28,756] 46 src.logger - INFO - Loading production salary model from MLflow.
+[2026-08-12 03:25:28,757] 48 src.logger - INFO - Tracking URI: sqlite:///mlflow.db
+[2026-08-12 03:25:28,757] 53 src.logger - INFO - Model URI: models:/salary_prediction_model@production
+[2026-08-12 03:25:34,829] 62 src.logger - INFO - Production salary model loaded successfully.
+[2026-08-12 03:29:31,507] 73 src.logger - INFO - Running salary prediction.
+[2026-08-12 03:29:37,707] 73 src.logger - INFO - Running salary prediction.

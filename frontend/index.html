@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Salary Prediction | Job Intelligence</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <main class="page">
+      <section class="card">
+        <header class="header">
+          <p class="eyebrow">JOB MARKET INTELLIGENCE</p>
+
+          <h1>Salary Prediction</h1>
+
+          <p class="subtitle">
+            Estimate the annual salary of a job based on its role, skills and
+            experience level.
+          </p>
+        </header>
+
+        <form id="salary-form">
+          <!-- Job Title -->
+
+          <div class="form-group">
+            <label for="title"> Job Title </label>
+
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="e.g. Machine Learning Engineer"
+              required
+            />
+          </div>
+
+          <!-- Skills -->
+
+          <div class="form-group">
+            <label for="skill_list"> Skills </label>
+
+            <input
+              type="text"
+              id="skill_list"
+              name="skill_list"
+              placeholder="Python | SQL | Docker | AWS"
+              required
+            />
+
+            <small> Separate skills using | </small>
+          </div>
+
+          <!-- Experience -->
+
+          <div class="form-group">
+            <label for="experience"> Experience Level </label>
+
+            <select id="experience" name="formatted_experience_level" required>
+              <option value="">Select experience level</option>
+
+              <option value="Internship">Internship</option>
+
+              <option value="Entry-level">Entry Level</option>
+
+              <option value="Associate">Associate</option>
+
+              <option value="Mid-Senior level">Mid-Senior Level</option>
+
+              <option value="Director">Director</option>
+
+              <option value="Executive">Executive</option>
+            </select>
+          </div>
+
+          <div class="optional-section">
+            <p class="optional-title">Optional Information</p>
+
+            <!-- State -->
+
+            <div class="form-group">
+              <label for="state"> Company State </label>
+
+              <input
+                type="text"
+                id="state"
+                name="company_state"
+                placeholder="e.g. CA"
+              />
+            </div>
+
+            <!-- Country -->
+
+            <div class="form-group">
+              <label for="country"> Company Country </label>
+
+              <input
+                type="text"
+                id="country"
+                name="company_country"
+                placeholder="e.g. US"
+              />
+            </div>
+
+            <!-- Industry -->
+
+            <div class="form-group">
+              <label for="industry"> Industry </label>
+
+              <input
+                type="text"
+                id="industry"
+                name="top_industry"
+                placeholder="e.g. Technology"
+              />
+            </div>
+          </div>
+
+          <button type="submit" id="predict-button">Predict Salary</button>
+        </form>
+
+        <!-- Loading -->
+
+        <div id="loading" class="loading hidden">Predicting salary...</div>
+
+        <!-- Error -->
+
+        <div id="error" class="error hidden"></div>
+
+        <!-- Result -->
+
+        <section id="result" class="result hidden">
+          <p class="result-label">ESTIMATED ANNUAL SALARY</p>
+
+          <div class="salary-display">
+            <h2 id="salary-value">—</h2>
+          </div>
+
+          <div class="currency-control">
+            <label for="currency"> Display Currency </label>
+
+            <select id="currency">
+              <option value="USD">USD ($)</option>
+
+              <option value="INR">INR (₹)</option>
+            </select>
+          </div>
+
+          <p id="conversion-info" class="conversion-info hidden">—</p>
+
+          <p id="model-info">—</p>
+        </section>
+      </section>
+    </main>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>

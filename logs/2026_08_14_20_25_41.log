@@ -1,0 +1,49 @@
+[2026-08-14 20:26:04,868] 227 src.logger - INFO - 
+[2026-08-14 20:26:04,868] 228 src.logger - INFO - ##########################################################################################
+[2026-08-14 20:26:04,868] 229 src.logger - INFO - MASTER AI/ML PIPELINE STARTED
+[2026-08-14 20:26:04,868] 230 src.logger - INFO - ##########################################################################################
+[2026-08-14 20:26:04,868] 238 src.logger - INFO - 
+[2026-08-14 20:26:04,868] 239 src.logger - INFO - ==========================================================================================
+[2026-08-14 20:26:04,869] 240 src.logger - INFO - MASTER STAGE 1 - DATA PIPELINE
+[2026-08-14 20:26:04,869] 241 src.logger - INFO - ==========================================================================================
+[2026-08-14 20:26:04,887] 366 src.logger - INFO - ===========================================================================
+[2026-08-14 20:26:04,887] 367 src.logger - INFO - STATE-AWARE DATA PIPELINE STARTED
+[2026-08-14 20:26:04,887] 368 src.logger - INFO - ===========================================================================
+[2026-08-14 20:26:06,133] 404 src.logger - INFO - [REUSE] Data Ingestion
+[2026-08-14 20:26:06,133] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_ingestion.joblib
+[2026-08-14 20:26:09,071] 489 src.logger - INFO - [REUSE] Schema Alignment
+[2026-08-14 20:26:09,076] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\schema_alignment.joblib
+[2026-08-14 20:26:14,331] 578 src.logger - INFO - [REUSE] Data Validation
+[2026-08-14 20:26:14,339] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_validation.joblib
+[2026-08-14 20:26:21,006] 667 src.logger - INFO - [REUSE] Data Cleaning
+[2026-08-14 20:26:21,016] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_cleaning.joblib
+[2026-08-14 20:26:30,402] 756 src.logger - INFO - [REUSE] Master Dataset Builder
+[2026-08-14 20:26:30,413] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\master_dataset.joblib
+[2026-08-14 20:26:40,485] 310 src.logger - INFO - CommonFeatureEngineeringConfig initialized successfully.
+[2026-08-14 20:26:40,495] 314 src.logger - INFO - Master dataset: artifacts/master_dataset/latest/master_dataset.parquet
+[2026-08-14 20:26:40,525] 319 src.logger - INFO - Feature store output: artifacts/feature_store/latest/feature_store.csv
+[2026-08-14 20:26:40,544] 859 src.logger - INFO - [REUSE] Common Feature Engineering
+[2026-08-14 20:26:40,549] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\common_feature_engineering.joblib
+[2026-08-14 20:26:45,440] 942 src.logger - INFO - ===========================================================================
+[2026-08-14 20:26:45,464] 943 src.logger - INFO - STATE-AWARE DATA PIPELINE COMPLETED
+[2026-08-14 20:26:45,464] 946 src.logger - INFO - ===========================================================================
+[2026-08-14 20:26:45,466] 950 src.logger - INFO - data_ingestion                 : REUSED
+[2026-08-14 20:26:45,466] 950 src.logger - INFO - schema_alignment               : REUSED
+[2026-08-14 20:26:45,466] 950 src.logger - INFO - data_validation                : REUSED
+[2026-08-14 20:26:45,466] 950 src.logger - INFO - data_cleaning                  : REUSED
+[2026-08-14 20:26:45,466] 950 src.logger - INFO - master_dataset                 : REUSED
+[2026-08-14 20:26:45,466] 950 src.logger - INFO - common_feature_engineering     : REUSED
+[2026-08-14 20:26:45,466] 956 src.logger - INFO - Total execution time: 40.56 sec
+[2026-08-14 20:26:59,919] 270 src.logger - INFO - Data pipeline reused: True
+[2026-08-14 20:26:59,923] 275 src.logger - INFO - Data stage status: {'data_ingestion': 'reused', 'schema_alignment': 'reused', 'data_validation': 'reused', 'data_cleaning': 'reused', 'master_dataset': 'reused', 'common_feature_engineering': 'reused'}
+[2026-08-14 20:26:59,923] 321 src.logger - INFO - 
+[2026-08-14 20:26:59,924] 322 src.logger - INFO - ==========================================================================================
+[2026-08-14 20:26:59,924] 323 src.logger - INFO - MASTER DECISION - ML PIPELINE NOT REQUIRED
+[2026-08-14 20:26:59,924] 324 src.logger - INFO - ==========================================================================================
+[2026-08-14 20:26:59,924] 326 src.logger - INFO - Data pipeline reused successfully.
+[2026-08-14 20:26:59,924] 328 src.logger - INFO - No ML pipeline execution requested.
+[2026-08-14 20:26:59,942] 631 src.logger - INFO - Master pipeline summary saved: artifacts\master_pipeline\latest_run.json
+[2026-08-14 20:26:59,942] 347 src.logger - INFO - 
+[2026-08-14 20:26:59,942] 348 src.logger - INFO - MASTER PIPELINE COMPLETED WITHOUT ML RETRAINING.
+[2026-08-14 20:27:31,746] 689 src.logger - INFO - 
+[2026-08-14 20:27:31,747] 690 src.logger - INFO - MASTER PIPELINE SUCCESS.
