@@ -1,0 +1,37 @@
+[2026-08-14 01:39:56,036] 366 src.logger - INFO - ===========================================================================
+[2026-08-14 01:39:56,037] 367 src.logger - INFO - STATE-AWARE DATA PIPELINE STARTED
+[2026-08-14 01:39:56,037] 368 src.logger - INFO - ===========================================================================
+[2026-08-14 01:39:57,141] 404 src.logger - INFO - [REUSE] Data Ingestion
+[2026-08-14 01:39:57,142] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_ingestion.joblib
+[2026-08-14 01:40:00,676] 489 src.logger - INFO - [REUSE] Schema Alignment
+[2026-08-14 01:40:00,682] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\schema_alignment.joblib
+[2026-08-14 01:40:09,107] 578 src.logger - INFO - [REUSE] Data Validation
+[2026-08-14 01:40:09,110] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_validation.joblib
+[2026-08-14 01:40:11,588] 667 src.logger - INFO - [REUSE] Data Cleaning
+[2026-08-14 01:40:11,588] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_cleaning.joblib
+[2026-08-14 01:40:39,404] 980 src.logger - ERROR - State-aware data pipeline failed at stage 'None'
+Traceback (most recent call last):
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\pipelines\data_pipeline_orchestrator.py", line 673, in run_pipeline
+    cleaning_result = _load_stage_cache(
+                      ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\src\pipelines\data_pipeline_orchestrator.py", line 259, in _load_stage_cache
+    return joblib.load(path)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\joblib\numpy_pickle.py", line 749, in load
+    obj = _unpickle(
+          ^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\joblib\numpy_pickle.py", line 626, in _unpickle
+    obj = unpickler.load()
+          ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python versions\Python 312\Lib\pickle.py", line 1256, in load
+    dispatch[key[0]](self)
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\joblib\numpy_pickle.py", line 462, in load_build
+    _array_payload = array_wrapper.read(self, self.ensure_native_byte_order)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\joblib\numpy_pickle.py", line 284, in read
+    array = self.read_array(unpickler, ensure_native_byte_order)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\OneDrive\Desktop\job_postings_project\venv\Lib\site-packages\joblib\numpy_pickle.py", line 175, in read_array
+    array = pickle.load(unpickler.file_handle)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 22] Invalid argument

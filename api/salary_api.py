@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from typing import AsyncIterator
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.logger import logging
@@ -47,25 +48,48 @@ inference_service = SalaryInferenceService(
 @asynccontextmanager
 async def lifespan(
     app: FastAPI,
-):
+) -> AsyncIterator[None]:
 
     logging.info(
         "Starting Salary Prediction API."
     )
 
     try:
+
+        # --------------------------------------------------
+        # Load production model during startup
+        # --------------------------------------------------
+
         model_loader.load()
 
         logging.info(
-            "Production salary model loaded during API startup."
+            "Production salary model loaded successfully."
         )
 
-    except Exception as exc:
+        logging.info(
+            "Registered model: %s",
+            serving_config.registered_model_name,
+        )
+
+        logging.info(
+            "Model alias: %s",
+            serving_config.model_alias,
+        )
+
+    except Exception:
 
         logging.exception(
-            "Failed to load production salary model: %s",
-            exc,
+            "Failed to load production salary model."
         )
+
+        # --------------------------------------------------
+        # Fail fast
+        #
+        # The API should not start if the production model
+        # cannot be loaded.
+        # --------------------------------------------------
+
+        raise
 
     yield
 
@@ -95,14 +119,19 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
+
     allow_origins=[
         "http://localhost:5500",
         "http://127.0.0.1:5500",
+
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ],
+
     allow_credentials=True,
+
     allow_methods=["*"],
+
     allow_headers=["*"],
 )
 
@@ -120,12 +149,6 @@ def root() -> dict[str, str]:
     return {
         "service": "salary-prediction-api",
         "status": "running",
-        "model": (
-            serving_config.registered_model_name
-        ),
-        "alias": (
-            serving_config.model_alias
-        ),
     }
 
 
@@ -139,13 +162,22 @@ def root() -> dict[str, str]:
 )
 def health() -> dict[str, object]:
 
+    if not model_loader.is_loaded:
+
+        return {
+            "status": "degraded",
+            "model_loaded": False,
+            "registered_model_name": (
+                serving_config.registered_model_name
+            ),
+            "model_alias": (
+                serving_config.model_alias
+            ),
+        }
+
     return {
-        "status": (
-            "healthy"
-            if model_loader.is_loaded
-            else "degraded"
-        ),
-        "model_loaded": model_loader.is_loaded,
+        "status": "healthy",
+        "model_loaded": True,
         "registered_model_name": (
             serving_config.registered_model_name
         ),
@@ -174,30 +206,35 @@ def predict(
 
     try:
 
-        return inference_service.predict(
+        prediction = inference_service.predict(
             request
         )
 
+        logging.info(
+            "Salary prediction request completed successfully."
+        )
+
+        return prediction
+
     except ValueError as exc:
 
-        logging.exception(
+        logging.warning(
             "Salary prediction validation failed: %s",
             exc,
         )
 
         raise HTTPException(
-            status_code=400,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(exc),
         ) from exc
 
-    except Exception as exc:
+    except Exception:
 
         logging.exception(
-            "Salary prediction failed: %s",
-            exc,
+            "Salary prediction failed unexpectedly."
         )
 
         raise HTTPException(
-            status_code=500,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Prediction failed.",
-        ) from exc
+        ) from None

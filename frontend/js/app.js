@@ -8,244 +8,139 @@
 // The ML model always predicts salary in USD.
 const USD_TO_INR = 88.0;
 
-
 // Store the latest prediction in USD.
 let latestSalaryUSD = null;
 
+const API_URL = "http://127.0.0.1:8000/api/v1/predict";
 
-const API_URL =
-    "http://127.0.0.1:8000/api/v1/predict";
+const form = document.getElementById("salary-form");
 
+const button = document.getElementById("predict-button");
 
-const form =
-    document.getElementById("salary-form");
+const loading = document.getElementById("loading");
 
-const button =
-    document.getElementById("predict-button");
+const errorBox = document.getElementById("error");
 
-const loading =
-    document.getElementById("loading");
+const result = document.getElementById("result");
 
-const errorBox =
-    document.getElementById("error");
+const salaryValue = document.getElementById("salary-value");
 
-const result =
-    document.getElementById("result");
+const modelInfo = document.getElementById("model-info");
 
-const salaryValue =
-    document.getElementById("salary-value");
+const currencySelector = document.getElementById("currency");
 
-const modelInfo =
-    document.getElementById("model-info");
-
-const currencySelector =
-    document.getElementById("currency");
-
-const conversionInfo =
-    document.getElementById("conversion-info");
-
+const conversionInfo = document.getElementById("conversion-info");
 
 // ==========================================================
 // FORM SUBMISSION
 // ==========================================================
 
-form.addEventListener(
-    "submit",
-    async function (event) {
+form.addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-        event.preventDefault();
+  hideError();
+  hideResult();
 
-        hideError();
-        hideResult();
+  button.disabled = true;
 
-        button.disabled = true;
+  loading.classList.remove("hidden");
 
-        loading.classList.remove(
-            "hidden"
-        );
+  try {
+    const payload = {
+      title: document.getElementById("title").value.trim().toLowerCase(),
 
+      skill_list: document
+        .getElementById("skill_list")
+        .value.trim()
+        .toLowerCase(),
 
-        try {
+      formatted_experience_level: document
+        .getElementById("experience")
+        .value.trim()
+        .toLowerCase(),
 
-            const payload = {
+      company_state: getOptionalValue("state"),
 
-                title:
-                    document
-                        .getElementById("title")
-                        .value
-                        .trim(),
+      company_country: getOptionalValue("country"),
 
-                skill_list:
-                    document
-                        .getElementById("skill_list")
-                        .value
-                        .trim(),
+      top_industry: getOptionalValue("industry"),
+    };
 
-                formatted_experience_level:
-                    document
-                        .getElementById("experience")
-                        .value,
+    console.log("Sending prediction request:", payload);
 
-                company_state:
-                    getOptionalValue("state"),
+    const response = await fetch(API_URL, {
+      method: "POST",
 
-                company_country:
-                    getOptionalValue("country"),
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-                top_industry:
-                    getOptionalValue("industry")
-            };
+      body: JSON.stringify(payload),
+    });
 
+    const data = await response.json();
 
-            console.log(
-                "Sending prediction request:",
-                payload
-            );
-
-
-            const response =
-                await fetch(
-                    API_URL,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(
-                                payload
-                            )
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.detail ||
-                    "Prediction request failed."
-                );
-
-            }
-
-
-            displayResult(data);
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Prediction error:",
-                error
-            );
-
-            showError(
-                error.message ||
-                "Unable to get prediction."
-            );
-
-        }
-
-        finally {
-
-            button.disabled = false;
-
-            loading.classList.add(
-                "hidden"
-            );
-
-        }
-
+    if (!response.ok) {
+      throw new Error(data.detail || "Prediction request failed.");
     }
-);
 
-currencySelector.addEventListener(
-    "change",
-    function () {
+    displayResult(data);
+  } catch (error) {
+    console.error("Prediction error:", error);
 
-        updateSalaryDisplay();
+    showError(error.message || "Unable to get prediction.");
+  } finally {
+    button.disabled = false;
 
-    }
-);
+    loading.classList.add("hidden");
+  }
+});
+
+currencySelector.addEventListener("change", function () {
+  updateSalaryDisplay();
+});
 
 // ==========================================================
 // OPTIONAL FIELD HELPER
 // ==========================================================
 
 function getOptionalValue(id) {
+  const value = document.getElementById(id).value.trim();
 
-    const value =
-        document
-            .getElementById(id)
-            .value
-            .trim();
-
-    return value === ""
-        ? null
-        : value;
+  return value === "" ? null : value;
 }
-
 
 // ==========================================================
 // DISPLAY RESULT
 // ==========================================================
 
 function displayResult(data) {
+  // ------------------------------------------------------
+  // Store the canonical model output.
+  // The model prediction is always USD.
+  // ------------------------------------------------------
 
-    // ------------------------------------------------------
-    // Store the canonical model output.
-    // The model prediction is always USD.
-    // ------------------------------------------------------
+  latestSalaryUSD = Number(data.predicted_annual_salary);
 
-    latestSalaryUSD =
-        Number(
-            data.predicted_annual_salary
-        );
+  if (!Number.isFinite(latestSalaryUSD)) {
+    throw new Error("Invalid salary returned by the API.");
+  }
 
+  // Reset currency to USD whenever
+  // a new prediction is generated.
 
-    if (
-        !Number.isFinite(
-            latestSalaryUSD
-        )
-    ) {
+  currencySelector.value = "USD";
 
-        throw new Error(
-            "Invalid salary returned by the API."
-        );
+  // Display salary.
 
-    }
+  updateSalaryDisplay();
 
+  // Model information.
 
-    // Reset currency to USD whenever
-    // a new prediction is generated.
+  modelInfo.textContent =
+    `Model: ${data.model_name} | ` + `Version alias: ${data.model_alias}`;
 
-    currencySelector.value =
-        "USD";
-
-
-    // Display salary.
-
-    updateSalaryDisplay();
-
-
-    // Model information.
-
-    modelInfo.textContent =
-        `Model: ${data.model_name} | ` +
-        `Version alias: ${data.model_alias}`;
-
-
-    result.classList.remove(
-        "hidden"
-    );
+  result.classList.remove("hidden");
 }
 
 // ==========================================================
@@ -253,127 +148,70 @@ function displayResult(data) {
 // ==========================================================
 
 function updateSalaryDisplay() {
+  if (latestSalaryUSD === null) {
+    return;
+  }
 
-    if (
-        latestSalaryUSD === null
-    ) {
-        return;
-    }
+  const currency = currencySelector.value;
 
+  // ------------------------------------------------------
+  // USD
+  // ------------------------------------------------------
 
-    const currency =
-        currencySelector.value;
+  if (currency === "USD") {
+    salaryValue.textContent = formatCurrency(latestSalaryUSD, "USD", "en-US");
 
+    conversionInfo.classList.add("hidden");
 
-    // ------------------------------------------------------
-    // USD
-    // ------------------------------------------------------
+    return;
+  }
 
-    if (currency === "USD") {
+  // ------------------------------------------------------
+  // INR
+  // ------------------------------------------------------
 
-        salaryValue.textContent =
-            formatCurrency(
-                latestSalaryUSD,
-                "USD",
-                "en-US"
-            );
+  if (currency === "INR") {
+    const salaryINR = latestSalaryUSD * USD_TO_INR;
 
+    salaryValue.textContent = formatCurrency(salaryINR, "INR", "en-IN");
 
-        conversionInfo.classList.add(
-            "hidden"
-        );
+    conversionInfo.textContent =
+      `Approx. conversion: ` + `1 USD = ₹${USD_TO_INR}`;
 
-        return;
-    }
-
-
-    // ------------------------------------------------------
-    // INR
-    // ------------------------------------------------------
-
-    if (currency === "INR") {
-
-        const salaryINR =
-            latestSalaryUSD *
-            USD_TO_INR;
-
-
-        salaryValue.textContent =
-            formatCurrency(
-                salaryINR,
-                "INR",
-                "en-IN"
-            );
-
-
-        conversionInfo.textContent =
-            `Approx. conversion: ` +
-            `1 USD = ₹${USD_TO_INR}`;
-
-
-        conversionInfo.classList.remove(
-            "hidden"
-        );
-
-    }
+    conversionInfo.classList.remove("hidden");
+  }
 }
 
-function formatCurrency(
-    value,
-    currency,
-    locale
-) {
+function formatCurrency(value, currency, locale) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
 
-    return new Intl.NumberFormat(
-        locale,
-        {
-            style: "currency",
+    currency: currency,
 
-            currency:
-                currency,
-
-            maximumFractionDigits:
-                0
-        }
-    ).format(value);
+    maximumFractionDigits: 0,
+  }).format(value);
 }
-
-
-
 
 // ==========================================================
 // ERROR
 // ==========================================================
 
 function showError(message) {
+  errorBox.textContent = message;
 
-    errorBox.textContent =
-        message;
-
-    errorBox.classList.remove(
-        "hidden"
-    );
+  errorBox.classList.remove("hidden");
 }
-
 
 function hideError() {
+  errorBox.classList.add("hidden");
 
-    errorBox.classList.add(
-        "hidden"
-    );
-
-    errorBox.textContent =
-        "";
+  errorBox.textContent = "";
 }
-
 
 // ==========================================================
 // RESULT
 // ==========================================================
 
 function hideResult() {
-
-    result.classList.add(
-        "hidden"
-    );
+  result.classList.add("hidden");
 }

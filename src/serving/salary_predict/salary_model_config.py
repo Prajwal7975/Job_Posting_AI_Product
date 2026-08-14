@@ -54,14 +54,31 @@ class SalaryServingConfig:
         == "true"
     )
 
+    # ---------------------------------------------------------
+    # MODEL URI
+    # ---------------------------------------------------------
+
     @property
     def model_uri(self) -> str:
         """
-        MLflow alias-based model URI.
+        Resolve the production model using an MLflow alias.
 
         Example:
 
-        models:/salary_prediction_model@production
+            models:/salary_prediction_model@production
         """
 
-        return f"models:/{self.registered_model_name}" f"@{self.model_alias}"
+        if not self.registered_model_name.strip():
+            raise ValueError(
+                "Registered model name must not be empty."
+            )
+
+        if not self.model_alias.strip():
+            raise ValueError(
+                "Model alias must not be empty."
+            )
+
+        return (
+            f"models:/{self.registered_model_name}"
+            f"@{self.model_alias}"
+        )

@@ -1,0 +1,26 @@
+[2026-08-14 01:54:40,470] 366 src.logger - INFO - ===========================================================================
+[2026-08-14 01:54:40,470] 367 src.logger - INFO - STATE-AWARE DATA PIPELINE STARTED
+[2026-08-14 01:54:40,471] 368 src.logger - INFO - ===========================================================================
+[2026-08-14 01:54:41,405] 404 src.logger - INFO - [REUSE] Data Ingestion
+[2026-08-14 01:54:41,406] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_ingestion.joblib
+[2026-08-14 01:54:43,564] 489 src.logger - INFO - [REUSE] Schema Alignment
+[2026-08-14 01:54:43,568] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\schema_alignment.joblib
+[2026-08-14 01:54:51,840] 578 src.logger - INFO - [REUSE] Data Validation
+[2026-08-14 01:54:51,844] 254 src.logger - INFO - Loading cached stage result: artifacts\pipeline_cache\data_validation.joblib
+[2026-08-14 01:54:55,870] 686 src.logger - INFO - [RUN] Data Cleaning
+[2026-08-14 01:54:55,870] 237 src.logger - INFO - ======================================================================
+[2026-08-14 01:54:55,870] 238 src.logger - INFO - DATA CLEANING STARTED
+[2026-08-14 01:54:55,870] 239 src.logger - INFO - ======================================================================
+[2026-08-14 01:54:55,870] 256 src.logger - INFO - Cleaning Version_9 (10 tables detected)
+[2026-08-14 01:54:56,537] 321 src.logger - INFO - [Version_9/companies] Cleaned: 11361 -> 11361 rows (Strings modified: 9301, Nulls filled: 1, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-14 01:55:01,512] 321 src.logger - INFO - [Version_9/postings] Cleaned: 33246 -> 32545 rows (Strings modified: 33004, Nulls filled: 0, Dtype conversions: 5, Invalids: 0, Duplicates: 0, Orphans: 47)
+[2026-08-14 01:55:01,515] 321 src.logger - INFO - [Version_9/industries] Cleaned: 229 -> 229 rows (Strings modified: 212, Nulls filled: 17, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-14 01:55:01,520] 321 src.logger - INFO - [Version_9/skills] Cleaned: 35 -> 35 rows (Strings modified: 35, Nulls filled: 0, Dtype conversions: 0, Invalids: 0, Duplicates: 0, Orphans: 0)
+[2026-08-14 01:55:01,542] 321 src.logger - INFO - [Version_9/job_industries] Cleaned: 44091 -> 42769 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 1322)
+[2026-08-14 01:55:01,606] 321 src.logger - INFO - [Version_9/benefits] Cleaned: 29325 -> 28621 rows (Strings modified: 19842, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 704)
+[2026-08-14 01:55:01,821] 321 src.logger - INFO - [Version_9/company_specialities] Cleaned: 78405 -> 77978 rows (Strings modified: 66650, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 92, Orphans: 335)
+[2026-08-14 01:55:01,830] 321 src.logger - INFO - [Version_9/employee_counts] Cleaned: 14275 -> 14230 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 3, Invalids: 0, Duplicates: 0, Orphans: 45)
+[2026-08-14 01:55:01,928] 321 src.logger - INFO - [Version_9/job_skills] Cleaned: 56591 -> 54760 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 1831)
+[2026-08-14 01:55:02,002] 321 src.logger - INFO - [Version_9/salaries] Cleaned: 13352 -> 13116 rows (Strings modified: 0, Nulls filled: 0, Dtype conversions: 2, Invalids: 0, Duplicates: 0, Orphans: 236)
+[2026-08-14 01:55:02,002] 256 src.logger - INFO - Cleaning Version_13 (10 tables detected)
+[2026-08-14 01:55:03,024] 321 src.logger - INFO - [Version_13/companies] Cleaned: 24473 -> 24473 rows (Strings modified: 20092, Nulls filled: 1, Dtype conversions: 1, Invalids: 0, Duplicates: 0, Orphans: 0)

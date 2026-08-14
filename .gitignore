@@ -73,6 +73,8 @@ mlruns/
 *.temp
 .DS_Store
 Thumbs.db
+artifacts/salary_dataset_splits/
+
 
 
 # ======================================================

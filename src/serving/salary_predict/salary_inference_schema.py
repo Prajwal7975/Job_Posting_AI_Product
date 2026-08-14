@@ -1,28 +1,21 @@
-
 from __future__ import annotations
+
 from typing import Optional
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class SalaryPredictionRequest(BaseModel):
     """
-    User-facing request schema.
+    User-facing request schema for salary prediction.
 
-    Only the information that a normal user is expected to know
-    is required.
-
-    Location and industry are optional because the trained
-    preprocessing pipeline already supports missing categorical values.
+    The client supplies only raw business-level information.
+    Derived model features are generated server-side.
     """
 
     model_config = ConfigDict(
         extra="forbid"
     )
-
-    # ---------------------------------------------------------
-    # Required user inputs
-    # ---------------------------------------------------------
 
     title: str = Field(
         ...,
@@ -34,9 +27,7 @@ class SalaryPredictionRequest(BaseModel):
     skill_list: str = Field(
         ...,
         min_length=1,
-        description=(
-            "Pipe-separated skills."
-        ),
+        description="Pipe-separated skills.",
         examples=[
             "Python|Machine Learning|SQL|Docker|AWS"
         ],
@@ -49,45 +40,22 @@ class SalaryPredictionRequest(BaseModel):
         examples=["Mid-Senior level"],
     )
 
-    # ---------------------------------------------------------
-    # Optional user inputs
-    # ---------------------------------------------------------
-
     company_state: Optional[str] = Field(
         default=None,
-        description=(
-            "Optional company state or region."
-        ),
+        description="Optional company state or region.",
         examples=["CA"],
     )
 
     company_country: Optional[str] = Field(
         default=None,
-        description=(
-            "Optional company country."
-        ),
+        description="Optional company country.",
         examples=["US"],
     )
 
     top_industry: Optional[str] = Field(
         default=None,
-        description=(
-            "Optional industry."
-        ),
+        description="Optional industry.",
         examples=["Technology"],
-    )
-
-    # ---------------------------------------------------------
-    # Derived feature
-    # ---------------------------------------------------------
-
-    skill_count: Optional[int] = Field(
-        default=None,
-        ge=0,
-        description=(
-            "Optional skill count. If omitted, it is calculated "
-            "automatically from skill_list."
-        ),
     )
 
 
