@@ -52,6 +52,7 @@ logs/
 .coverage
 coverage.xml
 htmlcov/
+.pytest_cache/
 
 # ======================================================
 # MLflow
