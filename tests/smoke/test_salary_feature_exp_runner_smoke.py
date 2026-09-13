@@ -1,6 +1,4 @@
 """
-tests/smoke/test_salary_training_runner_smoke.py
-
 Smoke test for SalaryTrainingRunner.
 
 Purpose
@@ -32,16 +30,22 @@ Important
 - Does NOT perform hyperparameter tuning.
 
 Run:
-    python -m tests.smoke.test_salary_training_runner_smoke
+    python -m tests.smoke.test_salary_feature_exp_runner_smoke
 
 or:
-    pytest tests/smoke/test_salary_training_runner_smoke.py -s
+    pytest tests/smoke/test_salary_feature_exp_runner_smoke.py -s
 """
 
 from __future__ import annotations
 
 import math
+import tempfile
+from pathlib import Path
 from typing import Dict
+
+import numpy as np
+import pandas as pd
+import pytest
 
 from sklearn.dummy import DummyRegressor
 from sklearn.pipeline import Pipeline
@@ -71,6 +75,125 @@ EXPERIMENT_IDS = (
 
 
 # ======================================================================
+# CI-SAFE TEST DATA
+# ======================================================================
+
+
+def _make_smoke_df(
+    n: int,
+    seed: int,
+) -> pd.DataFrame:
+    """
+    Create a small deterministic dataset for smoke tests.
+
+    The real training runner expects train/validation parquet files.
+    CI runners start from a clean checkout, so the smoke test must
+    create its own temporary data instead of depending on local
+    generated artifacts.
+    """
+
+    rng = np.random.default_rng(seed)
+
+    annual_salary = rng.uniform(
+        50_000,
+        200_000,
+        size=n,
+    )
+
+    # Keep recurring tokens because the real E2/E3A/E3B TF-IDF
+    # configuration uses min_df=5.
+    titles = ["software engineer"] * int(n * 0.75) + ["data analyst"] * (
+        n - int(n * 0.75)
+    )
+
+    skills = ["python|sql"] * int(n * 0.75) + ["java|aws"] * (n - int(n * 0.75))
+
+    rng.shuffle(titles)
+    rng.shuffle(skills)
+
+    return pd.DataFrame(
+        {
+            "title": titles,
+            "skill_list": skills,
+            "formatted_experience_level": rng.choice(
+                [
+                    "Entry level",
+                    "Associate",
+                    "Mid-Senior level",
+                    "Director",
+                ],
+                size=n,
+            ),
+            "company_state": rng.choice(
+                ["CA", "NY", "TX", "WA"],
+                size=n,
+            ),
+            "company_country": ["US"] * n,
+            "top_industry": rng.choice(
+                ["Tech", "Finance", "Retail"],
+                size=n,
+            ),
+            "skill_count": rng.integers(
+                0,
+                6,
+                size=n,
+            ).astype(float),
+            "target_annual_salary": annual_salary,
+            "target_log_salary": np.log1p(annual_salary),
+        }
+    )
+
+
+def _create_smoke_runner(
+    base_dir: Path,
+) -> SalaryTrainingRunner:
+    """
+    Create a SalaryTrainingRunner using temporary CI-safe datasets.
+
+    This helper is shared by pytest and the manual smoke-test entry
+    point so neither execution path depends on repository-generated
+    artifacts.
+    """
+
+    train_df = _make_smoke_df(
+        40,
+        seed=1,
+    )
+
+    validation_df = _make_smoke_df(
+        15,
+        seed=2,
+    )
+
+    train_path = base_dir / "train.parquet"
+    validation_path = base_dir / "validation.parquet"
+
+    train_df.to_parquet(train_path)
+    validation_df.to_parquet(validation_path)
+
+    return SalaryTrainingRunner(
+        train_path=train_path,
+        validation_path=validation_path,
+    )
+
+
+@pytest.fixture
+def smoke_runner(
+    tmp_path: Path,
+) -> SalaryTrainingRunner:
+    """
+    Build a CI-safe SalaryTrainingRunner using temporary datasets.
+
+    Nothing is read from the repository's generated artifacts
+    directory.
+    """
+
+    return _create_smoke_runner(
+        tmp_path,
+    )
+
+
+# ======================================================================
 # HELPERS
 # ======================================================================
 
@@ -90,7 +213,9 @@ def _assert_finite_number(
         f"{label}: expected numeric value, " f"got {type(value).__name__}"
     )
 
-    assert math.isfinite(float(value)), f"{label}: expected finite value, got {value}"
+    assert math.isfinite(float(value)), (
+        f"{label}: expected finite value, " f"got {value}"
+    )
 
 
 def _validate_metrics(
@@ -115,13 +240,10 @@ def _validate_metrics(
     )
 
     for metric_name in required_metrics:
-
         _assert_finite_number(
             metrics[metric_name],
             f"{experiment_id}.{metric_space}.{metric_name}",
         )
-
-    # MAE and RMSE must never be negative.
 
     assert metrics["mae"] >= 0, (
         f"{experiment_id}: " f"{metric_space} MAE cannot be negative."
@@ -216,10 +338,8 @@ def _validate_training_result(
         "annual",
     )
 
-    # Annual metric dictionary should additionally contain Median APE.
-
     assert "median_ape" in result.annual_metrics, (
-        f"{experiment_id}: " "annual metrics missing median_ape."
+        f"{experiment_id}: " f"annual metrics missing median_ape."
     )
 
     median_ape = result.annual_metrics["median_ape"]
@@ -255,8 +375,6 @@ def _validate_training_result(
         assert result.raw_feature_count == 0
 
         assert result.transformed_feature_count is None
-
-        # DummyRegressor gets constant_ after fitting.
 
         assert hasattr(
             result.fitted_workflow,
@@ -316,7 +434,7 @@ def _validate_training_result(
 
     feature_names = fitted_preprocessor.get_feature_names_out()
 
-    assert len(feature_names) == result.transformed_feature_count, (
+    assert len(feature_names) == (result.transformed_feature_count), (
         f"{experiment_id}: transformed feature "
         "count does not match fitted preprocessor."
     )
@@ -330,7 +448,9 @@ def _validate_training_result(
     assert hasattr(
         fitted_model,
         "n_features_in_",
-    ), f"{experiment_id}: model does not appear fitted."
+    ), (
+        f"{experiment_id}: " "model does not appear fitted."
+    )
 
 
 # ======================================================================
@@ -403,52 +523,52 @@ def _run_experiment(
 # ======================================================================
 
 
-def test_salary_training_e0() -> None:
-
-    runner = SalaryTrainingRunner()
+def test_salary_training_e0(
+    smoke_runner: SalaryTrainingRunner,
+) -> None:
 
     _run_experiment(
-        runner,
+        smoke_runner,
         "E0",
     )
 
 
-def test_salary_training_e1() -> None:
-
-    runner = SalaryTrainingRunner()
+def test_salary_training_e1(
+    smoke_runner: SalaryTrainingRunner,
+) -> None:
 
     _run_experiment(
-        runner,
+        smoke_runner,
         "E1",
     )
 
 
-def test_salary_training_e2() -> None:
-
-    runner = SalaryTrainingRunner()
+def test_salary_training_e2(
+    smoke_runner: SalaryTrainingRunner,
+) -> None:
 
     _run_experiment(
-        runner,
+        smoke_runner,
         "E2",
     )
 
 
-def test_salary_training_e3a() -> None:
-
-    runner = SalaryTrainingRunner()
+def test_salary_training_e3a(
+    smoke_runner: SalaryTrainingRunner,
+) -> None:
 
     _run_experiment(
-        runner,
+        smoke_runner,
         "E3A",
     )
 
 
-def test_salary_training_e3b() -> None:
-
-    runner = SalaryTrainingRunner()
+def test_salary_training_e3b(
+    smoke_runner: SalaryTrainingRunner,
+) -> None:
 
     _run_experiment(
-        runner,
+        smoke_runner,
         "E3B",
     )
 
@@ -459,68 +579,76 @@ def test_salary_training_e3b() -> None:
 
 
 def run_all() -> None:
+    """
+    Run all salary training smoke tests manually.
+
+    Uses temporary synthetic datasets so manual execution is completely
+    independent of repository-generated artifacts.
+    """
 
     logging.info("")
     logging.info("#" * 70)
     logging.info("SALARY TRAINING RUNNER SMOKE TEST STARTED")
     logging.info("#" * 70)
 
-    runner = SalaryTrainingRunner()
+    with tempfile.TemporaryDirectory(prefix="salary_smoke_") as temp_dir:
 
-    results: Dict[
-        str,
-        SalaryTrainingResult,
-    ] = {}
+        runner = _create_smoke_runner(Path(temp_dir))
 
-    for experiment_id in EXPERIMENT_IDS:
+        results: Dict[
+            str,
+            SalaryTrainingResult,
+        ] = {}
 
-        result = _run_experiment(
-            runner,
-            experiment_id,
-        )
+        for experiment_id in EXPERIMENT_IDS:
 
-        results[experiment_id] = result
+            result = _run_experiment(
+                runner,
+                experiment_id,
+            )
 
-    # ==================================================================
-    # SUMMARY
-    # ==================================================================
+            results[experiment_id] = result
 
-    logging.info("")
-    logging.info("=" * 70)
-    logging.info("SALARY TRAINING SMOKE TEST SUMMARY")
-    logging.info("=" * 70)
+        # ==============================================================
+        # SUMMARY
+        # ==============================================================
 
-    logging.info(
-        "%-6s %-14s %-14s %-10s %-12s",
-        "EXP",
-        "ANNUAL MAE",
-        "ANNUAL RMSE",
-        "R2",
-        "TRAIN SEC",
-    )
-
-    logging.info("-" * 70)
-
-    for experiment_id in EXPERIMENT_IDS:
-
-        result = results[experiment_id]
+        logging.info("")
+        logging.info("=" * 70)
+        logging.info("SALARY TRAINING SMOKE TEST SUMMARY")
+        logging.info("=" * 70)
 
         logging.info(
-            "%-6s %-14.2f %-14.2f %-10.4f %-12.4f",
-            experiment_id,
-            result.annual_metrics["mae"],
-            result.annual_metrics["rmse"],
-            result.annual_metrics["r2"],
-            result.training_seconds,
+            "%-6s %-14s %-14s %-10s %-12s",
+            "EXP",
+            "ANNUAL MAE",
+            "ANNUAL RMSE",
+            "R2",
+            "TRAIN SEC",
         )
 
-    logging.info("=" * 70)
+        logging.info("-" * 70)
 
-    logging.info("ALL SALARY TRAINING RUNNER " "SMOKE TESTS PASSED")
+        for experiment_id in EXPERIMENT_IDS:
 
-    logging.info("=" * 70)
+            result = results[experiment_id]
 
-    print("\nSALARY TRAINING RUNNER SMOKE TEST: " "ALL CHECKS PASSED")
+            logging.info(
+                "%-6s %-14.2f %-14.2f %-10.4f %-12.4f",
+                experiment_id,
+                result.annual_metrics["mae"],
+                result.annual_metrics["rmse"],
+                result.annual_metrics["r2"],
+                result.training_seconds,
+            )
+
+        logging.info("=" * 70)
+
+        logging.info("ALL SALARY TRAINING RUNNER SMOKE TESTS PASSED")
+
+        logging.info("=" * 70)
+
+        print("\nSALARY TRAINING RUNNER SMOKE TEST: " "ALL CHECKS PASSED")
 
 
 if __name__ == "__main__":
