@@ -50,7 +50,6 @@ logs/
 
 .pytest_cache/
 .coverage
-coverage.xml
 htmlcov/
 .pytest_cache/
 
@@ -102,3 +101,5 @@ data/processed/
 
 .DS_Store
 Thumbs.db
+
+coverage.xml
