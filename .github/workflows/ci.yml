@@ -5,51 +5,42 @@ on:
     branches:
       - main
       - develop
+      - "feature/**"
 
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
-
   test:
 
     name: Python Tests
 
     runs-on: ubuntu-latest
 
+    timeout-minutes: 20
+
     steps:
 
-      # --------------------------------------------------
       # Checkout
-      # --------------------------------------------------
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --------------------------------------------------
       # Python
-      # --------------------------------------------------
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
+          cache: pip
 
-      # --------------------------------------------------
       # Dependencies
-      # --------------------------------------------------
-
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
-      # --------------------------------------------------
-      # Basic import check
-      # --------------------------------------------------
-
+      # Import verification
       - name: Verify project imports
         run: |
           python -c "from src.exception import CustomException"
@@ -58,10 +49,20 @@ jobs:
           python -c "from src.components.salary_predict.salary_model_factory import SalaryModelFactory"
           echo "Project imports successful"
 
-      # --------------------------------------------------
-      # Unit / component tests
-      # --------------------------------------------------
-
-      - name: Run tests
+      # Tests + coverage
+      - name: Run tests with coverage
         run: |
-          pytest -q
+          pytest \
+            --cov=src \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            --cov-report=html
+
+      # Upload coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            coverage.xml
+            htmlcov/
