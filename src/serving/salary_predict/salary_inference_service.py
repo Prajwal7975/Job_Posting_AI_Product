@@ -38,6 +38,13 @@ from .salary_model_loader import (
     SalaryModelLoader,
 )
 
+# expm1(x) overflows to +inf for x beyond roughly this value (ln of the
+# largest representable float64). Checked BEFORE calling expm1 so an
+# absurd prediction is rejected as a controlled ValueError instead of
+# triggering "RuntimeWarning: overflow encountered in expm1" and then
+# being caught after the fact.
+_MAX_SAFE_LOG_SALARY = 700.0
+
 
 class SalaryInferenceService:
 
@@ -49,10 +56,7 @@ class SalaryInferenceService:
 
         self.model_loader = model_loader
 
-        self.feature_builder = (
-            feature_builder
-            or SalaryInferenceFeatureBuilder()
-        )
+        self.feature_builder = feature_builder or SalaryInferenceFeatureBuilder()
 
     # ==========================================================
     # PREDICT
@@ -63,9 +67,7 @@ class SalaryInferenceService:
         request: SalaryPredictionRequest,
     ) -> SalaryPredictionResponse:
 
-        logging.info(
-            "Running salary prediction."
-        )
+        logging.info("Running salary prediction.")
 
         # ------------------------------------------------------
         # Build raw model features
@@ -74,36 +76,24 @@ class SalaryInferenceService:
         features = self.feature_builder.build(
             title=request.title,
             skill_list=request.skill_list,
-            formatted_experience_level=(
-                request.formatted_experience_level
-            ),
+            formatted_experience_level=(request.formatted_experience_level),
             company_state=request.company_state,
             company_country=request.company_country,
             top_industry=request.top_industry,
         )
 
-        logging.info(
-            "Inference feature DataFrame created successfully."
-        )
+        logging.info("Inference feature DataFrame created successfully.")
 
         # ------------------------------------------------------
         # Model prediction
         # ------------------------------------------------------
 
-        prediction = self.model_loader.predict(
-            features
-        )
+        prediction = self.model_loader.predict(features)
 
-        predicted_log_salary = float(
-            np.asarray(prediction).reshape(-1)[0]
-        )
+        predicted_log_salary = float(np.asarray(prediction).reshape(-1)[0])
 
-        if not math.isfinite(
-            predicted_log_salary
-        ):
-            raise ValueError(
-                "Model returned a non-finite prediction."
-            )
+        if not math.isfinite(predicted_log_salary):
+            raise ValueError("Model returned a non-finite prediction.")
 
         # ------------------------------------------------------
         # Reverse log1p transformation
@@ -115,20 +105,22 @@ class SalaryInferenceService:
         # Inference:
         #
         #     annual_salary = expm1(log_salary)
+        #
+        # Checked against _MAX_SAFE_LOG_SALARY first so an absurd
+        # log-salary prediction is rejected as a clean ValueError rather
+        # than letting expm1 overflow and emit a RuntimeWarning.
         # ------------------------------------------------------
 
-        predicted_annual_salary = float(
-            np.expm1(
-                predicted_log_salary
-            )
-        )
-
-        if not math.isfinite(
-            predicted_annual_salary
-        ):
+        if predicted_log_salary > _MAX_SAFE_LOG_SALARY:
             raise ValueError(
-                "Inverse-transformed salary is non-finite."
+                "Model prediction is too large to invert safely "
+                f"(log-salary={predicted_log_salary})."
             )
+
+        predicted_annual_salary = float(np.expm1(predicted_log_salary))
+
+        if not math.isfinite(predicted_annual_salary):
+            raise ValueError("Inverse-transformed salary is non-finite.")
 
         logging.info(
             "Salary prediction completed successfully. "
@@ -138,7 +130,14 @@ class SalaryInferenceService:
 
         # ------------------------------------------------------
         # Response
+        #
+        # model_name comes from the loaded model's real MLflow metadata
+        # (resolved once at load time -- see SalaryModelLoader), not a
+        # hardcoded value. It's only "unknown" when that metadata
+        # genuinely couldn't be determined.
         # ------------------------------------------------------
+
+        metadata = self.model_loader.metadata
 
         return SalaryPredictionResponse(
             predicted_annual_salary=round(
@@ -149,11 +148,7 @@ class SalaryInferenceService:
                 predicted_log_salary,
                 6,
             ),
-            model_name="ridge",
-            model_alias=(
-                self.model_loader.config.model_alias
-            ),
-            registered_model_name=(
-                self.model_loader.config.registered_model_name
-            ),
+            model_name=(metadata.model_name if metadata is not None else "unknown"),
+            model_alias=(self.model_loader.config.model_alias),
+            registered_model_name=(self.model_loader.config.registered_model_name),
         )

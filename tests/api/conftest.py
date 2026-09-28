@@ -16,6 +16,11 @@ model). To keep tests fully offline:
   `SalaryModelLoader.load()`'s own short-circuit
   (`if self._model is not None: return self._model`) means startup never
   touches real MLflow.
+- It ALSO pre-populates `model_loader._metadata` directly, since that
+  same short-circuit means `_resolve_metadata()` (which needs a real
+  MLflow registry) never runs either. Without this, `metadata` would
+  stay `None` and `model_name` would report "unknown" -- a valid
+  fallback, but not what these tests want to verify.
 - `client` then enters the app via `TestClient(...)` as a context manager
   so the (now harmless) lifespan startup/shutdown actually runs.
 """
@@ -33,8 +38,13 @@ from src.components.salary_predict.salary_preprocessor_builder import (
     SalaryPreprocessorBuilder,
 )
 from src.configs.salary_predict.salary_experiment_config import build_e3b_config
+from src.serving.salary_predict.salary_model_loader import SalaryModelMetadata
 
 pytestmark = pytest.mark.api
+
+FAKE_MODEL_NAME = "ridge"
+FAKE_MODEL_VERSION = "3"
+FAKE_RUN_ID = "fake-run-id-0123456789"
 
 
 def _build_fake_production_model():
@@ -87,7 +97,16 @@ def _build_fake_production_model():
             ],
             "company_state": ["CA", "NY", None, "TX", "CA", "NY", "TX", "CA"],
             "company_country": ["US"] * 8,
-            "top_industry": ["Tech", "Tech", "Tech", "Retail", "Tech", "Tech", "Retail", "Tech"],
+            "top_industry": [
+                "Tech",
+                "Tech",
+                "Tech",
+                "Retail",
+                "Tech",
+                "Tech",
+                "Retail",
+                "Tech",
+            ],
             "skill_count": [2, 2, 2, 2, 2, 3, 3, 3],
         }
     )
@@ -96,7 +115,9 @@ def _build_fake_production_model():
     )
 
     preprocessor = SalaryPreprocessorBuilder().build(build_e3b_config())
-    pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("model", Ridge(alpha=1.0))])
+    pipeline = Pipeline(
+        steps=[("preprocessor", preprocessor), ("model", Ridge(alpha=1.0))]
+    )
     pipeline.fit(df, y)
     return pipeline
 
@@ -106,8 +127,16 @@ def api_module():
     from api import salary_api as api_module
 
     api_module.model_loader._model = _build_fake_production_model()
+    api_module.model_loader._metadata = SalaryModelMetadata(
+        registered_model_name=api_module.serving_config.registered_model_name,
+        model_alias=api_module.serving_config.model_alias,
+        model_name=FAKE_MODEL_NAME,
+        model_version=FAKE_MODEL_VERSION,
+        run_id=FAKE_RUN_ID,
+    )
     yield api_module
     api_module.model_loader._model = None  # keep tests isolated from each other
+    api_module.model_loader._metadata = None
 
 
 @pytest.fixture

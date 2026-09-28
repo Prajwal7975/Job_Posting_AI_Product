@@ -52,9 +52,14 @@ class TestValidPrediction:
 
     def test_model_metadata_fields(self, client, valid_payload, api_module):
         body = client.post("/api/v1/predict", json=valid_payload).json()
-        assert body["model_name"] == "ridge"
+        assert (
+            body["model_name"] == "ridge"
+        )  # matches conftest.FAKE_MODEL_NAME -- the fixture's SalaryModelMetadata, not a hardcoded API value anymore
         assert body["model_alias"] == api_module.serving_config.model_alias
-        assert body["registered_model_name"] == api_module.serving_config.registered_model_name
+        assert (
+            body["registered_model_name"]
+            == api_module.serving_config.registered_model_name
+        )
 
     def test_optional_fields_can_be_omitted(self, client):
         payload = {
@@ -66,7 +71,9 @@ class TestValidPrediction:
         assert response.status_code == 200
 
     def test_optional_fields_explicit_null_is_accepted(self, client, valid_payload):
-        payload = dict(valid_payload, company_state=None, company_country=None, top_industry=None)
+        payload = dict(
+            valid_payload, company_state=None, company_country=None, top_industry=None
+        )
         response = client.post("/api/v1/predict", json=payload)
         assert response.status_code == 200
 
@@ -81,7 +88,9 @@ class TestRequestValidationErrors:
         "missing_field",
         ["title", "skill_list", "formatted_experience_level"],
     )
-    def test_missing_required_field_returns_422(self, client, valid_payload, missing_field):
+    def test_missing_required_field_returns_422(
+        self, client, valid_payload, missing_field
+    ):
         payload = dict(valid_payload)
         del payload[missing_field]
         response = client.post("/api/v1/predict", json=payload)
@@ -128,14 +137,18 @@ class TestDomainValidationErrors:
         response = client.post("/api/v1/predict", json=payload)
         assert response.status_code == 400
 
-    def test_non_finite_model_output_returns_400(self, monkeypatch, client, valid_payload, api_module):
+    def test_non_finite_model_output_returns_400(
+        self, monkeypatch, client, valid_payload, api_module
+    ):
         monkeypatch.setattr(
             api_module.model_loader, "predict", lambda features: [float("nan")]
         )
         response = client.post("/api/v1/predict", json=valid_payload)
         assert response.status_code == 400
 
-    def test_non_finite_inverse_transform_returns_400(self, monkeypatch, client, valid_payload, api_module):
+    def test_non_finite_inverse_transform_returns_400(
+        self, monkeypatch, client, valid_payload, api_module
+    ):
         # A very large log-salary prediction overflows expm1 to inf.
         monkeypatch.setattr(
             api_module.model_loader, "predict", lambda features: [1000.0]
@@ -150,7 +163,9 @@ class TestDomainValidationErrors:
 
 
 class TestDependencyFailures:
-    def test_unexpected_model_failure_returns_500(self, monkeypatch, client, valid_payload, api_module):
+    def test_unexpected_model_failure_returns_500(
+        self, monkeypatch, client, valid_payload, api_module
+    ):
         def _raise(*_args, **_kwargs):
             raise RuntimeError("model unavailable")
 

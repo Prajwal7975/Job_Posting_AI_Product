@@ -1,27 +1,23 @@
 """
 tests/api/test_readiness.py
 
-NOTE ON SCOPE
--------------
-The current `salary_api.py` does not expose a dedicated `/readiness`
-route -- only `/health`, whose `model_loaded` flag and `degraded` status
-already serve that purpose (this is stated as a known simplification of
-the current serving layer, not an assumption made here). If a dedicated
-`/readiness` endpoint is added later, point these tests at it instead.
+Tests for GET /readiness on the real FastAPI app (api/salary_api.py).
 
-The app's `lifespan` handler calls `model_loader.load()` synchronously at
-startup and re-raises on failure (fail-fast: the app will not finish
-starting without a model). That means:
+CHANGED: a dedicated /readiness endpoint now exists, separate from
+/health (see test_health.py). /readiness answers "is the API able to
+serve predictions right now" by reading the already-loaded, in-memory
+model's cached state -- it makes no MLflow network call of its own.
 
-  - A live, started TestClient always reports `model_loaded=True` --
-    there's no way to reach a "degraded" `/health` response through a
-    normal request once the app is up.
-  - The "degraded" response *shape* is still real, reachable code
-    (`health()`'s `if not model_loader.is_loaded:` branch), so it's
-    tested here by calling the route function directly rather than
-    through a live app.
-  - The "model cannot be loaded" failure mode is tested at the level
-    where it actually manifests today: app startup itself.
+Because the app's `lifespan` handler calls `model_loader.load()`
+synchronously at startup and re-raises on failure (fail-fast: the app
+never finishes starting without a model), a *live* TestClient can only
+ever observe `model_loaded=True` through normal startup. The "not ready"
+response shape is still real, reachable code (the `if not
+model_loader.is_loaded:` branch in `readiness()`), so it's exercised here
+by resetting model state on an already-started client rather than by
+calling the route function directly -- unlike the previous version of
+this file, a real GET request now suffices since /readiness is a real
+endpoint.
 """
 
 from __future__ import annotations
@@ -32,30 +28,58 @@ from fastapi.testclient import TestClient
 pytestmark = pytest.mark.api
 
 
-class TestReadySignalViaHealthEndpoint:
-    def test_ready_when_model_is_loaded(self, client):
-        body = client.get("/health").json()
-        assert body["status"] == "healthy"
+class TestReadinessWhenModelLoaded:
+    def test_readiness_returns_200(self, client):
+        response = client.get("/readiness")
+        assert response.status_code == 200
+
+    def test_ready_response_structure_and_values(self, client, api_module):
+        body = client.get("/readiness").json()
+        assert set(body.keys()) == {
+            "status",
+            "model_loaded",
+            "registered_model_name",
+            "model_alias",
+            "model_version",
+        }
+        assert body["status"] == "ready"
         assert body["model_loaded"] is True
+        assert (
+            body["registered_model_name"]
+            == api_module.serving_config.registered_model_name
+        )
+        assert body["model_alias"] == api_module.serving_config.model_alias
+        # From the fixture's SalaryModelMetadata -- see conftest.py.
+        assert body["model_version"] == "3"
 
 
-class TestDegradedResponseShape:
-    def test_degraded_shape_when_model_not_loaded(self, api_module):
-        # Exercises health()'s "not loaded" branch directly -- the live
-        # app's fail-fast lifespan makes this otherwise unreachable via
-        # a real HTTP request (see module docstring).
+class TestReadinessWhenModelNotLoaded:
+    def test_not_ready_response_shape(self, client, api_module):
+        # Reset state on an already-started client -- readiness() reads
+        # current in-memory state on every call, no restart needed.
         api_module.model_loader._model = None
-        body = api_module.health()
+        api_module.model_loader._metadata = None
 
-        assert body["status"] == "degraded"
+        response = client.get("/readiness")
+        body = response.json()
+
+        assert response.status_code == 200  # readiness reports state, doesn't error
+        assert body["status"] == "not_ready"
         assert body["model_loaded"] is False
-        assert body["registered_model_name"] == api_module.serving_config.registered_model_name
+        assert "model_version" not in body
+        assert (
+            body["registered_model_name"]
+            == api_module.serving_config.registered_model_name
+        )
         assert body["model_alias"] == api_module.serving_config.model_alias
 
 
 class TestStartupFailureBehavior:
-    def test_app_refuses_to_start_when_model_cannot_be_loaded(self, monkeypatch, api_module):
+    def test_app_refuses_to_start_when_model_cannot_be_loaded(
+        self, monkeypatch, api_module
+    ):
         api_module.model_loader._model = None
+        api_module.model_loader._metadata = None
 
         def _raise_load_error():
             raise RuntimeError(
