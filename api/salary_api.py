@@ -25,25 +25,21 @@ from src.serving.salary_predict.salary_model_config import (
     SalaryServingConfig,
 )
 
-
 # ==========================================================
 # GLOBAL SERVICES
 # ==========================================================
 
 serving_config = SalaryServingConfig()
 
-model_loader = SalaryModelLoader(
-    config=serving_config
-)
+model_loader = SalaryModelLoader(config=serving_config)
 
-inference_service = SalaryInferenceService(
-    model_loader=model_loader
-)
+inference_service = SalaryInferenceService(model_loader=model_loader)
 
 
 # ==========================================================
 # APPLICATION LIFECYCLE
 # ==========================================================
+
 
 @asynccontextmanager
 async def lifespan(
@@ -51,7 +47,8 @@ async def lifespan(
 ) -> AsyncIterator[None]:
 
     logging.info(
-        "Starting Salary Prediction API."
+        "Starting Salary Prediction API (app_env=%s).",
+        serving_config.app_env,
     )
 
     try:
@@ -62,9 +59,7 @@ async def lifespan(
 
         model_loader.load()
 
-        logging.info(
-            "Production salary model loaded successfully."
-        )
+        logging.info("Production salary model loaded successfully.")
 
         logging.info(
             "Registered model: %s",
@@ -78,9 +73,7 @@ async def lifespan(
 
     except Exception:
 
-        logging.exception(
-            "Failed to load production salary model."
-        )
+        logging.exception("Failed to load production salary model.")
 
         # --------------------------------------------------
         # Fail fast
@@ -93,9 +86,7 @@ async def lifespan(
 
     yield
 
-    logging.info(
-        "Shutting down Salary Prediction API."
-    )
+    logging.info("Shutting down Salary Prediction API.")
 
 
 # ==========================================================
@@ -105,8 +96,7 @@ async def lifespan(
 app = FastAPI(
     title="LinkedIn Job Intelligence - Salary Prediction API",
     description=(
-        "Production salary prediction API backed by "
-        "MLflow Model Registry."
+        "Production salary prediction API backed by " "MLflow Model Registry."
     ),
     version="1.0.0",
     lifespan=lifespan,
@@ -115,23 +105,18 @@ app = FastAPI(
 
 # ==========================================================
 # CORS
+#
+# Origins come from CORS_ALLOWED_ORIGINS (comma-separated), with a
+# local-development-friendly default when unset -- see
+# salary_model_config.py. Wildcard origins are rejected at config
+# validation time, before the app even starts.
 # ==========================================================
 
 app.add_middleware(
     CORSMiddleware,
-
-    allow_origins=[
-        "http://localhost:5500",
-        "http://127.0.0.1:5500",
-
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
-
+    allow_origins=list(serving_config.cors_allowed_origins),
     allow_credentials=True,
-
     allow_methods=["*"],
-
     allow_headers=["*"],
 )
 
@@ -139,6 +124,7 @@ app.add_middleware(
 # ==========================================================
 # ROOT
 # ==========================================================
+
 
 @app.get(
     "/",
@@ -153,43 +139,67 @@ def root() -> dict[str, str]:
 
 
 # ==========================================================
-# HEALTH
+# HEALTH  (liveness: "the process is up")
+#
+# Deliberately independent of model state or any MLflow call -- a
+# health check should never require a network round-trip. Use
+# /readiness to ask whether the API can actually serve predictions.
 # ==========================================================
+
 
 @app.get(
     "/health",
     tags=["System"],
 )
-def health() -> dict[str, object]:
+def health() -> dict[str, str]:
+
+    return {
+        "status": "alive",
+        "service": "salary-prediction-api",
+    }
+
+
+# ==========================================================
+# READINESS  (readiness: "loaded and able to serve predictions")
+#
+# Cheap -- reads the already-loaded, in-memory model's cached state
+# and metadata; makes no MLflow network call of its own. Because the
+# lifespan above fails fast on a load error, a running process should
+# always report ready=True; this still checks is_loaded defensively
+# rather than assuming it, and surfaces model_version when available.
+# ==========================================================
+
+
+@app.get(
+    "/readiness",
+    tags=["System"],
+)
+def readiness() -> dict[str, object]:
+
+    metadata = model_loader.metadata
 
     if not model_loader.is_loaded:
 
         return {
-            "status": "degraded",
+            "status": "not_ready",
             "model_loaded": False,
-            "registered_model_name": (
-                serving_config.registered_model_name
-            ),
-            "model_alias": (
-                serving_config.model_alias
-            ),
+            "registered_model_name": (serving_config.registered_model_name),
+            "model_alias": (serving_config.model_alias),
         }
 
     return {
-        "status": "healthy",
+        "status": "ready",
         "model_loaded": True,
-        "registered_model_name": (
-            serving_config.registered_model_name
-        ),
-        "model_alias": (
-            serving_config.model_alias
-        ),
+        "registered_model_name": (serving_config.registered_model_name),
+        "model_alias": (serving_config.model_alias),
+        "model_version": (metadata.model_version if metadata is not None else None),
     }
 
 
 # ==========================================================
 # PREDICT
 # ==========================================================
+
 
 @app.post(
     "/api/v1/predict",
@@ -200,19 +210,13 @@ def predict(
     request: SalaryPredictionRequest,
 ) -> SalaryPredictionResponse:
 
-    logging.info(
-        "Received salary prediction request."
-    )
+    logging.info("Received salary prediction request.")
 
     try:
 
-        prediction = inference_service.predict(
-            request
-        )
+        prediction = inference_service.predict(request)
 
-        logging.info(
-            "Salary prediction request completed successfully."
-        )
+        logging.info("Salary prediction request completed successfully.")
 
         return prediction
 
@@ -230,9 +234,7 @@ def predict(
 
     except Exception:
 
-        logging.exception(
-            "Salary prediction failed unexpectedly."
-        )
+        logging.exception("Salary prediction failed unexpectedly.")
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
