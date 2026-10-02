@@ -12,6 +12,9 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+
 jobs:
   test:
 
@@ -39,6 +42,28 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
+
+      # Runtime version verification
+      #
+      # Catches dependency drift BEFORE it reaches tests or deployment.
+      # This is an exact-match check, not a minimum-version check -- the
+      # production model was trained against scikit-learn==1.9.0, and a
+      # scikit-learn version drift (1.9.0 -> 1.9.1) previously caused a
+      # serialization compatibility warning in serving. Do not loosen
+      # these to >= without updating this check deliberately.
+      #
+      # Each check is a single-line `python -c` (semicolon-separated)
+      # rather than a multi-line heredoc/script: a multi-line block here
+      # would inherit this step's YAML indentation as literal leading
+      # whitespace in the Python source, which breaks on the very first
+      # top-level statement with "IndentationError: unexpected indent".
+      - name: Verify runtime versions
+        run: |
+          set -e
+          python -c "import sys; actual = f'{sys.version_info.major}.{sys.version_info.minor}'; assert actual == '3.12', f'Python version mismatch: expected 3.12, got {actual}'; print(f'Python {actual} OK')"
+          python -c "import sklearn; assert sklearn.__version__ == '1.9.0', f'scikit-learn version mismatch: expected 1.9.0, got {sklearn.__version__}'; print(f'scikit-learn {sklearn.__version__} OK')"
+          python -c "import mlflow; assert mlflow.__version__ == '3.14.0', f'mlflow version mismatch: expected 3.14.0, got {mlflow.__version__}'; print(f'mlflow {mlflow.__version__} OK')"
+          echo "Runtime dependency verification passed."
 
       # Import verification
       - name: Verify project imports
