@@ -91,3 +91,51 @@ jobs:
           path: |
             coverage.xml
             htmlcov/
+
+  docker-build:
+
+    name: Docker Build Validation
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 30
+
+    steps:
+
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Compose config validation
+      #
+      # Parses compose.yaml against the installed Docker Compose schema
+      # and resolves it to its final form. Fails if the file is
+      # malformed or references an undefined service/build context --
+      # this is a cheap, fast check that should fail before any image
+      # build is attempted.
+      - name: Validate Docker Compose configuration
+        run: docker compose config
+
+      # Image builds
+      #
+      # Each service is built individually (docker compose build
+      # <service>) rather than building all three in one step, so a
+      # failure clearly attributes to the specific image that broke
+      # rather than an undifferentiated "docker compose build failed".
+      # Using `docker compose build` (not a raw `docker build` with
+      # manually duplicated -f/context flags) means these steps always
+      # follow whatever compose.yaml actually defines -- if a
+      # Dockerfile path or build context changes there, this workflow
+      # does not need a parallel edit to stay correct.
+      #
+      # No image is pushed anywhere and no container is started --
+      # these steps only prove the images build successfully on the
+      # existing Dockerfiles/compose architecture.
+      - name: Build MLflow image
+        run: docker compose build mlflow-server
+
+      - name: Build FastAPI salary-api image
+        run: docker compose build salary-api
+
+      - name: Build frontend/Nginx image
+        run: docker compose build frontend
