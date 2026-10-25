@@ -17,7 +17,6 @@ permissions:
 
 jobs:
   test:
-
     name: Python Tests
 
     runs-on: ubuntu-latest
@@ -25,7 +24,6 @@ jobs:
     timeout-minutes: 20
 
     steps:
-
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -93,7 +91,6 @@ jobs:
             htmlcov/
 
   docker-build:
-
     name: Docker Build Validation
 
     runs-on: ubuntu-latest
@@ -101,7 +98,6 @@ jobs:
     timeout-minutes: 30
 
     steps:
-
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -139,3 +135,120 @@ jobs:
 
       - name: Build frontend/Nginx image
         run: docker compose build frontend
+
+  docker-smoke:
+    name: Docker Smoke Test
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 30
+
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Python (needed on the RUNNER, not just inside the images, to
+      # run the registration/polling helper scripts below -- and
+      # installing from the same pinned requirements.txt guarantees the
+      # runner's scikit-learn/mlflow versions exactly match what's
+      # baked into the salary-api image, avoiding a repeat of the
+      # earlier 1.9.0-vs-1.9.1 serialization mismatch.)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+
+      # compose.ci.yaml overrides mlflow-server's storage to a fresh,
+      # project-scoped named volume instead of the local ./mlflow-data
+      # bind mount -- this validates that exact merged configuration,
+      # which Phase 2's `docker compose config` never checked (it only
+      # validated the base compose.yaml).
+      - name: Validate Docker Compose configuration (CI overlay)
+        run: docker compose -f compose.yaml -f compose.ci.yaml config
+
+      # Built as its own explicit step (separate from `up`) so a build
+      # failure is clearly attributed, rather than appearing as an
+      # ambiguous failure inside a later startup step.
+      - name: Build Docker images
+        run: docker compose -f compose.yaml -f compose.ci.yaml build
+
+      # Started alone, before salary-api/frontend: a fresh CI MLflow
+      # instance has no registered model yet, and salary-api's
+      # finalized lifespan fails fast if the model can't be loaded --
+      # so the model must be registered before salary-api starts, not
+      # after.
+      - name: Start MLflow (CI-isolated storage)
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d mlflow-server
+
+      - name: Wait for MLflow to be available
+        run: |
+          python scripts/ci/wait_for_http.py http://localhost:5000/health \
+            --timeout 60 --interval 2
+
+      # CI-ONLY fixture -- registers a tiny synthetic model under the
+      # same registered-model-name/alias the serving layer expects.
+      # See scripts/ci/register_ci_smoke_model.py for the full
+      # rationale; this is never the production training/registration
+      # pipeline.
+      - name: Register CI-only smoke-test model
+        env:
+          MLFLOW_TRACKING_URI: http://localhost:5000
+        run: python scripts/ci/register_ci_smoke_model.py
+
+      # salary-api's own depends_on/healthcheck (already defined in
+      # compose.yaml) blocks this command until salary-api itself is
+      # healthy before frontend is started, so the dependency chain is
+      # already enforced here -- the explicit checks below are for
+      # clear, separately-attributed CI diagnostics on top of that.
+      - name: Start FastAPI and frontend
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d salary-api frontend
+
+      - name: Verify FastAPI /health
+        run: |
+          python scripts/ci/wait_for_http.py http://localhost:8000/health \
+            --timeout 60 --interval 2
+
+      - name: Verify FastAPI /readiness (model_loaded=true)
+        run: |
+          python scripts/ci/wait_for_readiness.py http://localhost:8000/readiness \
+            --timeout 60 --interval 2 \
+            --expected-model-name salary_prediction_model \
+            --expected-model-alias production
+
+      - name: Prediction smoke test
+        run: python scripts/ci/smoke_predict.py http://localhost:8000/api/v1/predict
+
+      - name: Verify frontend availability
+        run: |
+          python scripts/ci/wait_for_http.py http://localhost:3000/ \
+            --timeout 30 --interval 2
+
+      # Always collected, even on failure, so the underlying Docker/
+      # service problem is visible rather than hidden behind a generic
+      # step failure.
+      - name: Collect Docker diagnostics
+        if: always()
+        run: |
+          echo "---- docker compose ps ----"
+          docker compose -f compose.yaml -f compose.ci.yaml ps
+          echo "---- mlflow-server logs ----"
+          docker compose -f compose.yaml -f compose.ci.yaml logs mlflow-server
+          echo "---- salary-api logs ----"
+          docker compose -f compose.yaml -f compose.ci.yaml logs salary-api
+          echo "---- frontend logs ----"
+          docker compose -f compose.yaml -f compose.ci.yaml logs frontend
+
+      # Always runs, even on failure. `-v` removes the CI-only named
+      # volume (mlflow-ci-data) created by compose.ci.yaml -- this is
+      # the ephemeral GitHub Actions runner's own Docker state, never a
+      # developer's local volumes or the production MLflow server.
+      - name: Tear down Docker stack
+        if: always()
+        run: docker compose -f compose.yaml -f compose.ci.yaml down -v

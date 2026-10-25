@@ -1,0 +1,24 @@
+# compose.ci.yaml
+#
+# CI-ONLY override for compose.yaml, used exclusively by the Phase 3
+# Docker smoke test GitHub Actions job. Never used for local
+# development or production -- always invoked as a second -f on top of
+# the base compose.yaml, e.g.:
+#
+#   docker compose -f compose.yaml -f compose.ci.yaml up -d mlflow-server
+#
+# Replaces mlflow-server's host bind mount (./mlflow-data, a
+# developer's local MLflow database/artifacts) with a project-scoped
+# named Docker volume. The named volume is created fresh by
+# `docker compose up` and destroyed by `docker compose down -v` at the
+# end of every CI run, so the smoke test can never read, depend on, or
+# accidentally pollute a developer's local MLflow state -- it always
+# starts from a completely empty registry.
+
+services:
+  mlflow-server:
+    volumes:
+      - mlflow-ci-data:/mlflow
+
+volumes:
+  mlflow-ci-data:
