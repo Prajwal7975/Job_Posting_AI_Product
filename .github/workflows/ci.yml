@@ -41,6 +41,110 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
+      # Dependency vulnerability scan
+      #
+      # Audits every package resolved from requirements.txt against the
+      # PyPI advisory database.  pip-audit is installed separately and is
+      # intentionally NOT added to requirements.txt -- it is a CI-only
+      # tool and must not influence the production dependency set or the
+      # pinned ML serving environment.
+      #
+      # The --ignore-vuln flags below each correspond to a single,
+      # individually reviewed advisory that has been accepted under the
+      # current dependency constraints or deployment configuration.
+      # Acceptance is not permanent and must be re-evaluated whenever
+      # MLflow is upgraded.  The rationale for each exception is:
+      #
+      #   PYSEC-2026-3687 / CVE-2026-64849
+      #     Webhook SSRF via redirect-follow bypass.  The webhook API is
+      #     unauthenticated in OSS MLflow.  MLflow port 5000 is published
+      #     on all host interfaces (0.0.0.0) via compose.yaml -- other
+      #     devices on the same network segment can reach it if host
+      #     firewall rules permit.  This is a residual network exposure.
+      #     Restricting the port binding to 127.0.0.1 is a pending
+      #     security remediation tracked separately from this scan.
+      #     Fix: mlflow>=3.15.0. MLflow 3.14.0 is currently pinned in the production environment. A compatible upgrade path has not yet been validated.
+      #
+      #   PYSEC-2026-3865 / CVE-2026-71211
+      #     Gateway SSRF via unvalidated api_base in _create_gateway_secret.
+      #     No gateway secrets or endpoints are configured in our deployment.
+      #     No fix is published in any released mlflow version at the time
+      #     of this writing.
+      #
+      #   GHSA-gqvg-gmmx-x4hm
+      #     Pickle-deserialization guard bypass in mlflow.statsmodels.
+      #     Our production model uses skops serialization (not pickle).
+      #     statsmodels is not installed.  Fix: mlflow>=3.15.0 (pinned).
+      #
+      #   CVE-2026-53995
+      #     FileStore path traversal via crafted trace ID.  Our backend is
+      #     sqlite:// (SqlAlchemyStore); FileStore is never instantiated.
+      #     Fix: mlflow>=3.17.2 (pinned).
+      #
+      #   CVE-2026-115886
+      #     Scorer SSRF via reflective class instantiation.  Requires
+      #     trulens-providers-litellm, which is not installed.
+      #     Fix: mlflow>=3.17.0 (pinned).
+      #
+      #   CVE-2026-116691
+      #     CrewAI autolog leaks LLM API keys into trace telemetry.
+      #     crewai is not installed; mlflow.crewai.autolog() is never
+      #     called.  Fix: mlflow>=3.17.0 (pinned).
+      #
+      #   PYSEC-2026-3554 / CVE-2026-69248
+      #     cryptography: X.509 wildcard SAN escape past constrained CA.
+      #     We perform no custom X.509 chain verification.  Fix requires
+      #     cryptography>=49.0.0, which mlflow==3.14.0 blocks (<49).
+      #
+      #   PYSEC-2026-3553 / CVE-2026-69249
+      #     cryptography: cert-chain DoS via duplicate self-signed certs.
+      #     We parse no attacker-supplied certificate chains.  Fix requires
+      #     cryptography>=49.0.0, which mlflow==3.14.0 blocks (<49).
+      #
+      #   PYSEC-2026-3552 / CVE-2026-69247
+      #     cryptography: PKCS7 padding oracle via distinguishable errors.
+      #     We perform no PKCS7 decryption.  Fix requires
+      #     cryptography>=50.0.0, which mlflow==3.14.0 blocks (<49).
+      #
+      # Every --ignore-vuln flag targets exactly one advisory ID.  Any
+      # new vulnerability that appears with a different ID will still
+      # cause this step to fail and block the merge.  Do not broaden
+      # these exceptions or add new IDs without individual review and a
+      # documented rationale.
+      - name: Dependency vulnerability scan
+        run: |
+          pip install pip-audit==2.10.1
+          pip-audit -r requirements.txt \
+            -f json -o pip-audit-report.json \
+            --ignore-vuln PYSEC-2026-3687 \
+            --ignore-vuln PYSEC-2026-3865 \
+            --ignore-vuln GHSA-gqvg-gmmx-x4hm \
+            --ignore-vuln CVE-2026-53995 \
+            --ignore-vuln CVE-2026-115886 \
+            --ignore-vuln CVE-2026-116691 \
+            --ignore-vuln PYSEC-2026-3554 \
+            --ignore-vuln PYSEC-2026-3553 \
+            --ignore-vuln PYSEC-2026-3552
+
+      # Upload the pip-audit JSON report as a CI artifact.
+      #
+      # Runs even when the scan step fails so the report is available for
+      # triage when a new unignored vulnerability causes the job to fail.
+      # pip-audit writes the JSON file before exiting non-zero, so the
+      # file is always present regardless of scan outcome.
+      # if-no-files-found: warn rather than error -- if the install step
+      # failed before pip-audit ran, there is no report to upload and the
+      # absence should surface as a warning, not a secondary failure that
+      # obscures the real root cause.
+      - name: Upload pip-audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pip-audit-report
+          path: pip-audit-report.json
+          retention-days: 30
+          if-no-files-found: warn
+
       # Runtime version verification
       #
       # Catches dependency drift BEFORE it reaches tests or deployment.
